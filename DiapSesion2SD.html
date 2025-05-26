@@ -16,76 +16,141 @@
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px 30px;
+            padding: 10px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .university-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .university-logo {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #3498db, #f39c12);
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
 
         .course-info h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #ffd700;
+            margin-bottom: 2px;
         }
 
         .course-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
         }
 
-        .controls {
+        .session-timer {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 20px;
         }
 
-        .nav-btn {
+        .timer-display {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 20px;
             cursor: pointer;
+            font-size: 0.9rem;
             font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .nav-btn:hover:not(:disabled) {
+        .nav-btn-header:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .nav-btn:disabled {
+        .nav-btn-header:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-        }
-
-        .slide-counter {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 15px;
-            font-size: 0.9rem;
         }
 
         .slide-container {
@@ -94,6 +159,7 @@
             align-items: center;
             justify-content: center;
             padding: 40px;
+            position: relative;
         }
 
         .slide {
@@ -107,6 +173,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
             display: none;
+            animation: slideIn 0.5s ease-in-out;
         }
 
         .slide.active {
@@ -120,12 +187,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .slide h2 {
             font-size: 2.5rem;
             margin-bottom: 25px;
             color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .slide h3 {
@@ -173,6 +242,7 @@
         .interactive-element:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         /* Compuertas lógicas */
@@ -380,18 +450,90 @@
             border-left: 4px solid #ffd700;
         }
 
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            transition: width 0.3s ease;
+        }
+
+        .wake-up-element {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: none;
+            animation: bounce 2s infinite;
+        }
+
         .intro-slide {
             background: rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
             }
             
             .slide {
                 padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
             }
             
             .slide h1 {
@@ -410,377 +552,357 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="university-info">
-            <div class="university-logo">⚡</div>
-            <div class="course-info">
-                <h1>SISTEMAS DIGITALES</h1>
-                <p>Universidad del SABES | Sesión 2 de 12 | 20 de mayo 2025</p>
-                <p>Prof. Fausto Noé Jiménez</p>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">⬅️ Anterior</button>
-            <div class="slide-counter">
-                <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
-            </div>
-            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente ➡️</button>
-        </div>
-    </div>
-
-    <div class="slide-container">
-        <!-- Slide 1: Título -->
-        <div class="slide active intro-slide">
-            <h1>🧠 ÁLGEBRA BOOLEANA Y COMPUERTAS LÓGICAS</h1>
-            <div style="font-size: 8rem; margin: 30px 0;">⚡🔣🔧</div>
-            <h3>Semana 2: El lenguaje de la lógica digital</h3>
-            <p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
-            <p><strong>Duración:</strong> 50 minutos + LAB3</p>
-            
-            <div class="interactive-element" onclick="showAlert('¡Bienvenidos al mundo de la lógica! 🧠⚡')">
-                <h3>🎯 ¡Descubre el poder de George Boole!</h3>
-                <p>De las matemáticas del siglo XIX a los microprocesadores modernos</p>
-            </div>
-        </div>
-
-        <!-- Slide 2: ¿Qué es el Álgebra Booleana? -->
-        <div class="slide">
-            <h2>🔣 ¿QUÉ ES EL ÁLGEBRA BOOLEANA?</h2>
-            
-            <p>Sistema matemático que opera con <strong>variables lógicas</strong> que solo pueden tomar dos valores:</p>
-            
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h4>🔵 VALOR LÓGICO 0</h4>
-                    <ul>
-                        <li>Falso (False)</li>
-                        <li>Apagado (Off)</li>
-                        <li>Bajo (Low)</li>
-                        <li>0 Voltios</li>
-                    </ul>
+    <div class="presentation-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="university-info">
+                    <div class="university-logo">⚡</div>
+                    <div class="course-info">
+                        <h1>SISTEMAS DIGITALES</h1>
+                        <p>Universidad del SABES | Sesión 2 de 12 | 20 de mayo 2025</p>
+                        <p>Prof. Fausto Noé Jiménez | fausto.noej@sabes.edu.mx</p>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="header-center">
+                <button class="nav-btn-header" id="prevBtn" onclick="changeSlide(-1)">
+                    ⬅️ Anterior
+                </button>
+                <div class="slide-counter">
+                    <div>Diapositiva</div>
+                    <div><span id="currentSlide">1</span> / <span id="totalSlides">10</span></div>
+                </div>
+                <button class="nav-btn-header" id="nextBtn" onclick="changeSlide(1)">
+                    Siguiente ➡️
+                </button>
+            </div>
+            
+            <div class="header-right">
+                <div class="session-timer">
+                    <div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">50:00</span>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="startTimer()">▶️</button>
+                        <button class="timer-btn" onclick="pauseTimer()">⏸️</button>
+                        <button class="timer-btn" onclick="resetTimer()">🔄</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slides -->
+        <div class="slide-container">
+            <!-- Slide 1: Título -->
+            <div class="slide active intro-slide">
+                <h1>🧠 ÁLGEBRA BOOLEANA Y COMPUERTAS LÓGICAS</h1>
+                <div style="font-size: 8rem; margin: 30px 0;">⚡🔣🔧</div>
+                <h3>Semana 2: El lenguaje de la lógica digital</h3>
+                <p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+                <p><strong>Duración:</strong> 50 minutos + LAB3</p>
                 
-                <div class="comparison-card">
-                    <h4>🟢 VALOR LÓGICO 1</h4>
-                    <ul>
-                        <li>Verdadero (True)</li>
-                        <li>Encendido (On)</li>
-                        <li>Alto (High)</li>
-                        <li>+5V o +3.3V</li>
-                    </ul>
+                <div class="interactive-element" onclick="showAlert('¡Bienvenidos al mundo de la lógica! 🧠⚡')">
+                    <h3>🎯 ¡Descubre el poder de George Boole!</h3>
+                    <p>De las matemáticas del siglo XIX a los microprocesadores modernos</p>
                 </div>
             </div>
-            
-            <div class="boolean-expression">
-                <h3>🎯 Operaciones Básicas:</h3>
-                <code>AND (·), OR (+), NOT (¯)</code>
-            </div>
-        </div>
 
-        <!-- Slide 3: Operación AND -->
-        <div class="slide">
-            <h2>🔗 OPERACIÓN AND (Y LÓGICO)</h2>
-            
-            <div class="gates-container">
-                <div class="gate-card">
-                    <h4>SÍMBOLO</h4>
-                    <div class="gate-symbol gate-and">AND</div>
-                </div>
-            </div>
-            
-            <div class="boolean-expression">
-                <code>Y = A · B = A ∧ B = A AND B</code>
-            </div>
-            
-            <div class="truth-table">
-                <table>
-                    <tr>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>Y = A · B</th>
-                    </tr>
-                    <tr><td>0</td><td>0</td><td>0</td></tr>
-                    <tr><td>0</td><td>1</td><td>0</td></tr>
-                    <tr><td>1</td><td>0</td><td>0</td></tr>
-                    <tr><td>1</td><td>1</td><td>1</td></tr>
-                </table>
-            </div>
-            
-            <div class="interactive-element" onclick="demonstrateAND()">
-                <h3>⚡ Regla de la operación AND</h3>
-                <p><strong>La salida es 1 SOLO cuando TODAS las entradas son 1</strong></p>
-                <p>Como un interruptor en serie: ¡Todos deben estar cerrados!</p>
-            </div>
-        </div>
-
-        <!-- Slide 4: Operación OR -->
-        <div class="slide">
-            <h2>➕ OPERACIÓN OR (O LÓGICO)</h2>
-            
-            <div class="gates-container">
-                <div class="gate-card">
-                    <h4>SÍMBOLO</h4>
-                    <div class="gate-symbol gate-or">OR</div>
-                </div>
-            </div>
-            
-            <div class="boolean-expression">
-                <code>Y = A + B = A ∨ B = A OR B</code>
-            </div>
-            
-            <div class="truth-table">
-                <table>
-                    <tr>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>Y = A + B</th>
-                    </tr>
-                    <tr><td>0</td><td>0</td><td>0</td></tr>
-                    <tr><td>0</td><td>1</td><td>1</td></tr>
-                    <tr><td>1</td><td>0</td><td>1</td></tr>
-                    <tr><td>1</td><td>1</td><td>1</td></tr>
-                </table>
-            </div>
-            
-            <div class="interactive-element" onclick="demonstrateOR()">
-                <h3>⚡ Regla de la operación OR</h3>
-                <p><strong>La salida es 1 cuando AL MENOS UNA entrada es 1</strong></p>
-                <p>Como interruptores en paralelo: ¡Cualquiera puede encender!</p>
-            </div>
-        </div>
-
-        <!-- Slide 5: Operación NOT -->
-        <div class="slide">
-            <h2>🔄 OPERACIÓN NOT (INVERSOR)</h2>
-            
-            <div class="gates-container">
-                <div class="gate-card">
-                    <h4>SÍMBOLO</h4>
-                    <div class="gate-symbol gate-not">NOT</div>
-                </div>
-            </div>
-            
-            <div class="boolean-expression">
-                <code>Y = Ā = ¬A = NOT A</code>
-            </div>
-            
-            <div class="truth-table">
-                <table>
-                    <tr>
-                        <th>A</th>
-                        <th>Y = Ā</th>
-                    </tr>
-                    <tr><td>0</td><td>1</td></tr>
-                    <tr><td>1</td><td>0</td></tr>
-                </table>
-            </div>
-            
-            <div class="interactive-element" onclick="demonstrateNOT()">
-                <h3>⚡ Regla de la operación NOT</h3>
-                <p><strong>La salida es SIEMPRE lo opuesto a la entrada</strong></p>
-                <p>¡El rebelde de las compuertas: siempre dice lo contrario!</p>
-            </div>
-        </div>
-
-        <!-- Slide 6: Simulador Interactivo AND -->
-        <div class="slide">
-            <h2>🔬 SIMULADOR INTERACTIVO - COMPUERTA AND</h2>
-            
-            <div class="circuit-simulator">
-                <h3>¡Experimenta con una compuerta AND real!</h3>
+            <!-- Slide 2: ¿Qué es el Álgebra Booleana? -->
+            <div class="slide">
+                <h2>🔣 ¿QUÉ ES EL ÁLGEBRA BOOLEANA?</h2>
                 
-                <div class="circuit-inputs">
-                    <div class="input-switch">
-                        <label>Entrada A</label>
-                        <div class="switch" id="switchA" onclick="toggleSwitch('A')">
-                            <div class="switch-handle"></div>
-                        </div>
-                        <span id="valueA">0</span>
+                <p>Sistema matemático que opera con <strong>variables lógicas</strong> que solo pueden tomar dos valores:</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔵 VALOR LÓGICO 0</h4>
+                        <ul>
+                            <li>Falso (False)</li>
+                            <li>Apagado (Off)</li>
+                            <li>Bajo (Low)</li>
+                            <li>0 Voltios</li>
+                        </ul>
                     </div>
                     
-                    <div class="input-switch">
-                        <label>Entrada B</label>
-                        <div class="switch" id="switchB" onclick="toggleSwitch('B')">
-                            <div class="switch-handle"></div>
-                        </div>
-                        <span id="valueB">0</span>
-                    </div>
-                </div>
-                
-                <div style="display: flex; justify-content: center; margin: 30px 0;">
-                    <div class="gate-symbol gate-and" style="width: 120px; height: 80px; font-size: 1.2rem;">
-                        AND
-                    </div>
-                </div>
-                
-                <div class="circuit-output">
-                    <label>Salida Y</label>
-                    <div class="output-led" id="outputLED"></div>
-                    <span id="outputValue">0</span>
-                </div>
-                
-                <div class="truth-table">
-                    <table>
-                        <tr>
-                            <th>A</th>
-                            <th>B</th>
-                            <th>Y</th>
-                        </tr>
-                        <tr id="row00"><td>0</td><td>0</td><td>0</td></tr>
-                        <tr id="row01"><td>0</td><td>1</td><td>0</td></tr>
-                        <tr id="row10"><td>1</td><td>0</td><td>0</td></tr>
-                        <tr id="row11"><td>1</td><td>1</td><td>1</td></tr>
-                    </table>
-                </div>
-            </div>
-            
-            <p><strong>💡 Experimenta con diferentes combinaciones y observa el patrón</strong></p>
-        </div>
-
-        <!-- Slide 7: Sistema Combinacional -->
-        <div class="slide">
-            <h2>🔬 SISTEMA COMBINACIONAL COMPLETO</h2>
-            <h3>Simulador: Sistema de Alarma Básico</h3>
-            
-            <div class="circuit-simulator">
-                <p><strong>Lógica:</strong> Alarma = (Puerta OR Ventana) AND Activada</p>
-                
-                <div class="circuit-inputs">
-                    <div class="input-switch">
-                        <label>Puerta</label>
-                        <div class="switch" id="switchDoor" onclick="toggleAlarmSwitch('Door')">
-                            <div class="switch-handle"></div>
-                        </div>
-                        <span id="valueDoor">Cerrada</span>
-                    </div>
-                    
-                    <div class="input-switch">
-                        <label>Ventana</label>
-                        <div class="switch" id="switchWindow" onclick="toggleAlarmSwitch('Window')">
-                            <div class="switch-handle"></div>
-                        </div>
-                        <span id="valueWindow">Cerrada</span>
-                    </div>
-                    
-                    <div class="input-switch">
-                        <label>Sistema</label>
-                        <div class="switch" id="switchSystem" onclick="toggleAlarmSwitch('System')">
-                            <div class="switch-handle"></div>
-                        </div>
-                        <span id="valueSystem">Desactivado</span>
+                    <div class="comparison-card">
+                        <h4>🟢 VALOR LÓGICO 1</h4>
+                        <ul>
+                            <li>Verdadero (True)</li>
+                            <li>Encendido (On)</li>
+                            <li>Alto (High)</li>
+                            <li>+5V o +3.3V</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="boolean-expression">
-                    <code>Alarma = (Puerta + Ventana) · Sistema</code>
+                    <h3>🎯 Operaciones Básicas:</h3>
+                    <code>AND (·), OR (+), NOT (¯)</code>
                 </div>
                 
-                <div class="circuit-output">
-                    <label>🚨 ALARMA</label>
-                    <div class="output-led" id="alarmLED"></div>
-                    <span id="alarmStatus">SILENCIOSA</span>
+                <div class="interactive-element" onclick="showBooleanHistory()">
+                    <h3>📚 George Boole (1815-1864)</h3>
+                    <p>¡Haz clic para conocer la historia del álgebra booleana!</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Operación AND -->
+            <div class="slide">
+                <h2>🔗 OPERACIÓN AND (Y LÓGICO)</h2>
+                
+                <div class="gates-container">
+                    <div class="gate-card">
+                        <h4>SÍMBOLO</h4>
+                        <div class="gate-symbol gate-and">AND</div>
+                    </div>
                 </div>
                 
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
-                    <p>La alarma suena cuando el sistema está activado Y (la puerta O la ventana están abiertas)</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: LAB3 -->
-        <div class="slide">
-            <h2>🔬 LABORATORIO 3: COMPUERTAS LÓGICAS</h2>
-            
-            <div style="font-size: 6rem; margin: 30px 0;">🔧⚡🔌</div>
-            
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h4>🎯 OBJETIVOS</h4>
-                    <ul>
-                        <li>Implementar compuertas básicas</li>
-                        <li>Verificar tablas de verdad</li>
-                        <li>Medir voltajes lógicos</li>
-                        <li>Construir sistema combinacional</li>
-                    </ul>
+                <div class="boolean-expression">
+                    <code>Y = A · B = A ∧ B = A AND B</code>
                 </div>
                 
-                <div class="comparison-card">
-                    <h4>🛠️ MATERIALES</h4>
-                    <ul>
-                        <li>Protoboard</li>
-                        <li>ICs: 7400, 7404, 7408, 7432</li>
-                        <li>LEDs y resistencias</li>
-                        <li>Fuente +5V</li>
-                    </ul>
+                <div class="truth-table">
+                    <h4>Tabla de Verdad</h4>
+                    <table>
+                        <tr>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>Y = A · B</th>
+                        </tr>
+                        <tr><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td></tr>
+                        <tr><td>1</td><td>0</td><td>0</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td></tr>
+                    </table>
+                </div>
+                
+                <div class="interactive-element" onclick="demonstrateAND()">
+                    <h3>⚡ Regla de la operación AND</h3>
+                    <p><strong>La salida es 1 SOLO cuando TODAS las entradas son 1</strong></p>
+                    <p>Como un interruptor en serie: ¡Todos deben estar cerrados!</p>
                 </div>
             </div>
-            
-            <div class="interactive-element" onclick="showLab3Details()">
-                <h3>📋 ACTIVIDADES DETALLADAS</h3>
-                <ol>
-                    <li>Implementar cada compuerta básica</li>
-                    <li>Comprobar funcionamiento con LEDs</li>
-                    <li>Construir circuito de alarma</li>
-                    <li>Documentar resultados</li>
-                </ol>
-                <p><strong>¡Haz clic para instrucciones completas!</strong></p>
-            </div>
-            
-            <div class="boolean-expression">
-                <h4>⚠️ PRECAUCIONES DE SEGURIDAD</h4>
-                <code>¡Verificar alimentación antes de conectar ICs!</code>
-            </div>
-        </div>
 
-        <!-- Slide 9: Puntos Clave -->
-        <div class="slide">
-            <h2>🎯 PUNTOS CLAVE</h2>
-            
-            <div style="font-size: 6rem; margin: 30px 0;">💡🎯✨</div>
-            
-            <ul style="font-size: 1.4rem;">
-                <li><strong>Álgebra booleana</strong> usa solo dos valores: 0 y 1</li>
-                <li><strong>Tres operaciones básicas:</strong> AND, OR, NOT</li>
-                <li><strong>Compuertas lógicas</strong> implementan las operaciones en hardware</li>
-                <li><strong>Familias lógicas</strong> determinan voltajes y características</li>
-                <li><strong>Sistemas combinacionales</strong> procesan entradas sin memoria</li>
-            </ul>
-            
-            <div class="interactive-element" onclick="showNextWeekPreview()">
-                <h3>🔮 Próxima semana: Operaciones y Teoremas</h3>
-                <p>Leyes de De Morgan y simplificación de circuitos</p>
-                <p><strong>¡Prepárate para optimizar tus diseños!</strong></p>
+            <!-- Slide 4: Operación OR -->
+            <div class="slide">
+                <h2>➕ OPERACIÓN OR (O LÓGICO)</h2>
+                
+                <div class="gates-container">
+                    <div class="gate-card">
+                        <h4>SÍMBOLO</h4>
+                        <div class="gate-symbol gate-or">OR</div>
+                    </div>
+                </div>
+                
+                <div class="boolean-expression">
+                    <code>Y = A + B = A ∨ B = A OR B</code>
+                </div>
+                
+                <div class="truth-table">
+                    <h4>Tabla de Verdad</h4>
+                    <table>
+                        <tr>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>Y = A + B</th>
+                        </tr>
+                        <tr><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>1</td></tr>
+                        <tr><td>1</td><td>0</td><td>1</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td></tr>
+                    </table>
+                </div>
+                
+                <div class="interactive-element" onclick="demonstrateOR()">
+                    <h3>⚡ Regla de la operación OR</h3>
+                    <p><strong>La salida es 1 cuando AL MENOS UNA entrada es 1</strong></p>
+                    <p>Como interruptores en paralelo: ¡Cualquiera puede encender!</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Slide 10: Siguiente Sesión -->
-        <div class="slide">
-            <h1>📅 PRÓXIMA SESIÓN</h1>
-            
-            <div style="font-size: 6rem; margin: 30px 0;">🧮⚡🔬</div>
-            
-            <h3>Semana 3: Operaciones Booleanas y Teoremas</h3>
-            <ul>
-                <li><strong>Leyes del álgebra booleana</strong></li>
-                <li><strong>Teoremas de De Morgan</strong></li>
-                <li><strong>Simplificación de expresiones</strong></li>
-                <li><strong>LAB4:</strong> Análisis de compuertas</li>
-            </ul>
-            
-            <div class="interactive-element" onclick="showHomework()">
-                <h3>📝 TAREA PARA CASA:</h3>
-                <ul>
-                    <li>Completar Actividad 2</li>
-                    <li>Practicar tablas de verdad</li>
-                    <li>Investigar Teoremas de De Morgan</li>
-                    <li>Preparar componentes para LAB3</li>
+            <!-- Slide 5: Operación NOT -->
+            <div class="slide">
+                <h2>🔄 OPERACIÓN NOT (INVERSOR)</h2>
+                
+                <div class="gates-container">
+                    <div class="gate-card">
+                        <h4>SÍMBOLO</h4>
+                        <div class="gate-symbol gate-not">NOT</div>
+                    </div>
+                </div>
+                
+                <div class="boolean-expression">
+                    <code>Y = Ā = ¬A = NOT A</code>
+                </div>
+                
+                <div class="truth-table">
+                    <h4>Tabla de Verdad</h4>
+                    <table>
+                        <tr>
+                            <th>A</th>
+                            <th>Y = Ā</th>
+                        </tr>
+                        <tr><td>0</td><td>1</td></tr>
+                        <tr><td>1</td><td>0</td></tr>
+                    </table>
+                </div>
+                
+                <div class="interactive-element" onclick="demonstrateNOT()">
+                    <h3>⚡ Regla de la operación NOT</h3>
+                    <p><strong>La salida es SIEMPRE lo opuesto a la entrada</strong></p>
+                    <p>¡El rebelde de las compuertas: siempre dice lo contrario!</p>
+                </div>
+            </div>
+
+            <!-- Slide 6: Simulador Interactivo AND -->
+            <div class="slide">
+                <h2>🔬 SIMULADOR INTERACTIVO - COMPUERTA AND</h2>
+                
+                <div class="circuit-simulator">
+                    <h3>¡Experimenta con una compuerta AND real!</h3>
+                    
+                    <div class="circuit-inputs">
+                        <div class="input-switch">
+                            <label>Entrada A</label>
+                            <div class="switch" id="switchA" onclick="toggleSwitch('A')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueA">0</span>
+                        </div>
+                        
+                        <div class="input-switch">
+                            <label>Entrada B</label>
+                            <div class="switch" id="switchB" onclick="toggleSwitch('B')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueB">0</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; margin: 30px 0;">
+                        <div class="gate-symbol gate-and" style="width: 120px; height: 80px; font-size: 1.2rem;">
+                            AND
+                        </div>
+                    </div>
+                    
+                    <div class="circuit-output">
+                        <label>🚨 ALARMA</label>
+                        <div class="output-led" id="alarmLED"></div>
+                        <span id="alarmStatus">SILENCIOSA</span>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                        <p>La alarma suena cuando el sistema está activado Y (la puerta O la ventana están abiertas)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: LAB3 -->
+            <div class="slide">
+                <h2>🔬 LABORATORIO 3: COMPUERTAS LÓGICAS</h2>
+                
+                <div style="font-size: 6rem; margin: 30px 0;">🔧⚡🔌</div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🎯 OBJETIVOS</h4>
+                        <ul>
+                            <li>Implementar compuertas básicas</li>
+                            <li>Verificar tablas de verdad</li>
+                            <li>Medir voltajes lógicos</li>
+                            <li>Construir sistema combinacional</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🛠️ MATERIALES</h4>
+                        <ul>
+                            <li>Protoboard</li>
+                            <li>ICs: 7400, 7404, 7408, 7432</li>
+                            <li>LEDs y resistencias</li>
+                            <li>Fuente +5V</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" onclick="showLab3Details()">
+                    <h3>📋 ACTIVIDADES DETALLADAS</h3>
+                    <ol>
+                        <li>Implementar cada compuerta básica</li>
+                        <li>Comprobar funcionamiento con LEDs</li>
+                        <li>Construir circuito de alarma</li>
+                        <li>Documentar resultados</li>
+                    </ol>
+                    <p><strong>¡Haz clic para instrucciones completas!</strong></p>
+                </div>
+                
+                <div class="boolean-expression">
+                    <h4>⚠️ PRECAUCIONES DE SEGURIDAD</h4>
+                    <code>¡Verificar alimentación antes de conectar ICs!</code>
+                </div>
+            </div>
+
+            <!-- Slide 9: Puntos Clave -->
+            <div class="slide">
+                <h2>🎯 PUNTOS CLAVE</h2>
+                
+                <div style="font-size: 6rem; margin: 30px 0;">💡🎯✨</div>
+                
+                <ul style="font-size: 1.4rem;">
+                    <li><strong>Álgebra booleana</strong> usa solo dos valores: 0 y 1</li>
+                    <li><strong>Tres operaciones básicas:</strong> AND, OR, NOT</li>
+                    <li><strong>Compuertas lógicas</strong> implementan las operaciones en hardware</li>
+                    <li><strong>Familias lógicas</strong> determinan voltajes y características</li>
+                    <li><strong>Sistemas combinacionales</strong> procesan entradas sin memoria</li>
                 </ul>
-                <p><strong>¡Haz clic para detalles completos!</strong></p>
+                
+                <div class="interactive-element" onclick="showNextWeekPreview()">
+                    <h3>🔮 Próxima semana: Operaciones y Teoremas</h3>
+                    <p>Leyes de De Morgan y simplificación de circuitos</p>
+                    <p><strong>¡Prepárate para optimizar tus diseños!</strong></p>
+                </div>
             </div>
-            
-            <h2 style="margin-top: 30px;">🎯 ¡ACTIVIDAD 2 + LAB3!</h2>
-            <p><strong>Fecha límite:</strong> 26 de mayo 2025</p>
+
+            <!-- Slide 10: Siguiente Sesión -->
+            <div class="slide">
+                <h1>📅 PRÓXIMA SESIÓN</h1>
+                
+                <div style="font-size: 6rem; margin: 30px 0;">🧮⚡🔬</div>
+                
+                <h3>Semana 3: Operaciones Booleanas y Teoremas</h3>
+                <ul>
+                    <li><strong>Leyes del álgebra booleana</strong></li>
+                    <li><strong>Teoremas de De Morgan</strong></li>
+                    <li><strong>Simplificación de expresiones</strong></li>
+                    <li><strong>LAB4:</strong> Análisis de compuertas</li>
+                </ul>
+                
+                <div class="interactive-element" onclick="showHomework()">
+                    <h3>📝 TAREA PARA CASA:</h3>
+                    <ul>
+                        <li>Completar Actividad 2</li>
+                        <li>Practicar tablas de verdad</li>
+                        <li>Investigar Teoremas de De Morgan</li>
+                        <li>Preparar componentes para LAB3</li>
+                    </ul>
+                    <p><strong>¡Haz clic para detalles completos!</strong></p>
+                </div>
+                
+                <h2 style="margin-top: 30px;">🎯 ¡ACTIVIDAD 2 + LAB3!</h2>
+                <p><strong>Fecha límite:</strong> 26 de mayo 2025</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-indicator">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Wake Up Element -->
+        <div class="wake-up-element" id="wakeUpAlert">
+            ¡Mantente conectado! ⚡🧠
         </div>
     </div>
 
@@ -788,6 +910,13 @@
         // Variables globales
         let currentSlideIndex = 0;
         let totalSlides = 10;
+        let sessionTime = 50 * 60; // 50 minutos en segundos
+        let timeRemaining = sessionTime;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        let wakeUpInterval = null;
+
+        // Variables del simulador
         let switchA = false;
         let switchB = false;
         let switchDoor = false;
@@ -797,15 +926,56 @@
         // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             updateSlideDisplay();
-            document.getElementById('totalSlides').textContent = totalSlides;
-            updateANDGate();
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSlideDisplay();
+            startWakeUpReminders();
             document.getElementById('totalSlides').textContent = totalSlides;
             updateANDGate();
             updateAlarmSystem();
         });
+
+        // Control del temporizador
+        function startTimer() {
+            if (!isTimerRunning) {
+                isTimerRunning = true;
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            if (isTimerRunning) {
+                isTimerRunning = false;
+                clearInterval(timerInterval);
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeRemaining = sessionTime;
+            updateTimerDisplay();
+            document.getElementById('sessionTimer').classList.remove('warning');
+        }
+
+        function updateTimer() {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            // Advertencia cuando quedan 10 minutos
+            if (timeRemaining <= 600) {
+                document.getElementById('sessionTimer').classList.add('warning');
+            }
+            
+            // Tiempo agotado
+            if (timeRemaining <= 0) {
+                pauseTimer();
+                alert('⏰ ¡Tiempo de teoría completado! Hora del laboratorio 🔬');
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timeRemaining').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
 
         // Control de slides
         function changeSlide(direction) {
@@ -825,11 +995,44 @@
             document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
             document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
             document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides - 1;
+            
+            // Actualizar barra de progreso
+            const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Recordatorios para mantener despiertos
+        function startWakeUpReminders() {
+            wakeUpInterval = setInterval(() => {
+                showWakeUpAlert();
+            }, 300000); // Cada 5 minutos
+        }
+
+        function showWakeUpAlert() {
+            const alert = document.getElementById('wakeUpAlert');
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
         }
 
         // Funciones interactivas
         function showAlert(message) {
             alert(message);
+        }
+
+        function showBooleanHistory() {
+            alert('📚 HISTORIA DEL ÁLGEBRA BOOLEANA:\n\n' +
+                  '👨‍🏫 George Boole (1815-1864)\n' +
+                  '• Matemático inglés autodidacta\n' +
+                  '• Publicó "An Investigation of the Laws of Thought" (1854)\n' +
+                  '• Creó un sistema para la lógica simbólica\n\n' +
+                  '🕰️ CRONOLOGÍA:\n' +
+                  '• 1854: Álgebra de Boole\n' +
+                  '• 1930s: Claude Shannon aplica la lógica a circuitos\n' +
+                  '• 1940s: Primeras computadoras digitales\n' +
+                  '• Actualidad: Base de toda la electrónica digital\n\n' +
+                  '💡 ¡Una idea de hace 170 años que cambió el mundo!');
         }
 
         function demonstrateAND() {
@@ -1052,7 +1255,75 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowLeft') changeSlide(-1);
             if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === ' ') {
+                e.preventDefault();
+                if (isTimerRunning) pauseTimer();
+                else startTimer();
+            }
         });
     </script>
 </body>
 </html>
+                        <label>Salida Y</label>
+                        <div class="output-led" id="outputLED"></div>
+                        <span id="outputValue">0</span>
+                    </div>
+                    
+                    <div class="truth-table">
+                        <h4>Tabla de Verdad Interactiva</h4>
+                        <table>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>Y</th>
+                            </tr>
+                            <tr id="row00"><td>0</td><td>0</td><td>0</td></tr>
+                            <tr id="row01"><td>0</td><td>1</td><td>0</td></tr>
+                            <tr id="row10"><td>1</td><td>0</td><td>0</td></tr>
+                            <tr id="row11"><td>1</td><td>1</td><td>1</td></tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <p><strong>💡 Experimenta con diferentes combinaciones y observa el patrón</strong></p>
+            </div>
+
+            <!-- Slide 7: Sistema Combinacional -->
+            <div class="slide">
+                <h2>🔬 SISTEMA COMBINACIONAL COMPLETO</h2>
+                <h3>Simulador: Sistema de Alarma Básico</h3>
+                
+                <div class="circuit-simulator">
+                    <p><strong>Lógica:</strong> Alarma = (Puerta OR Ventana) AND Activada</p>
+                    
+                    <div class="circuit-inputs">
+                        <div class="input-switch">
+                            <label>Puerta</label>
+                            <div class="switch" id="switchDoor" onclick="toggleAlarmSwitch('Door')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueDoor">Cerrada</span>
+                        </div>
+                        
+                        <div class="input-switch">
+                            <label>Ventana</label>
+                            <div class="switch" id="switchWindow" onclick="toggleAlarmSwitch('Window')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueWindow">Cerrada</span>
+                        </div>
+                        
+                        <div class="input-switch">
+                            <label>Sistema</label>
+                            <div class="switch" id="switchSystem" onclick="toggleAlarmSwitch('System')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueSystem">Desactivado</span>
+                        </div>
+                    </div>
+                    
+                    <div class="boolean-expression">
+                        <code>Alarma = (Puerta + Ventana) · Sistema</code>
+                    </div>
+                    
+                    <div class="circuit-output">
