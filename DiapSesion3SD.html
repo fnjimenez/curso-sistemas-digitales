@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Digitales - Sesión 3 | Universidad del SABES</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .university-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .university-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #f39c12);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .course-info h1 {
+            font-size: 1.3rem;
+            color: #ffd700;
+            margin-bottom: 2px;
+        }
+
+        .course-info p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer-display {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-header:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-btn-header:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e8f4fd;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "⚡";
+            position: absolute;
+            left: -30px;
+        }
+
+        .interactive-element {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .boolean-expression {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ffd700;
+        }
+
+        .boolean-expression code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            color: #ffd700;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .law-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .law-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .law-card h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .karnaugh-map {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            margin: 20px auto;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .karnaugh-cell {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .karnaugh-cell:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .karnaugh-cell.selected {
+            background: rgba(46, 213, 115, 0.5);
+            color: #000;
+        }
+
+        .simplification-demo {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .simplification-steps {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .simplification-steps .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #ffd700;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            transition: width 0.3s ease;
+        }
+
+        /* Clippy estilo Windows 98 */
+        .clippy-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            font-family: 'MS Sans Serif', sans-serif;
+            font-size: 11px;
+            color: #000;
+            max-width: 250px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .clippy-header {
+            background: linear-gradient(90deg, #0000ff, #0080ff);
+            color: white;
+            padding: 2px 5px;
+            margin: -15px -15px 10px -15px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .clippy-close {
+            float: right;
+            background: #c0c0c0;
+            border: 1px outset #c0c0c0;
+            width: 16px;
+            height: 14px;
+            cursor: pointer;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: center;
+        }
+
+        .clippy-character {
+            font-size: 3rem;
+            float: left;
+            margin-right: 10px;
+            animation: clippy-bounce 2s infinite;
+        }
+
+        .clippy-text {
+            line-height: 1.3;
+            margin-left: 60px;
+        }
+
+        @keyframes clippy-bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .intro-slide {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
+            }
+            
+            .slide {
+                padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .clippy-container {
+                position: relative;
+                right: auto;
+                top: auto;
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="university-info">
+                    <div class="university-logo">⚡</div>
+                    <div class="course-info">
+                        <h1>SISTEMAS DIGITALES</h1>
+                        <p>Universidad del SABES | Sesión 3 de 12 | 27 de mayo 2025</p>
+                        <p>Prof. Fausto Noé Jiménez | fausto.noej@sabes.edu.mx</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <button class="nav-btn-header" id="prevBtn" onclick="changeSlide(-1)">
+                    ⬅️ Anterior
+                </button>
+                <div class="slide-counter">
+                    <div>Diapositiva</div>
+                    <div><span id="currentSlide">1</span> / <span id="totalSlides">12</span></div>
+                </div>
+                <button class="nav-btn-header" id="nextBtn" onclick="changeSlide(1)">
+                    Siguiente ➡️
+                </button>
+            </div>
+            
+            <div class="header-right">
+                <div class="session-timer">
+                    <div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">50:00</span>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="startTimer()">▶️</button>
+                        <button class="timer-btn" onclick="pauseTimer()">⏸️</button>
+                        <button class="timer-btn" onclick="resetTimer()">🔄</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clippy Assistant -->
+        <div class="clippy-container" id="clippyContainer">
+            <div class="clippy-header">
+                Ayuda de Clippy
+                <div class="clippy-close" onclick="closeClippy()">×</div>
+            </div>
+            <div class="clippy-character">📎</div>
+            <div class="clippy-text" id="clippyText">
+                ¡Hola! Parece que llevas un rato viendo la presentación. ¿Te gustaría que te ayude con los teoremas de De Morgan?
+            </div>
+        </div>
+
+        <!-- Slides -->
+        <div class="slide-container">
+            <!-- Slide 1: Título -->
+            <div class="slide active intro-slide">
+                <h1>🧮 OPERACIONES BOOLEANAS Y TEOREMAS</h1>
+                <div style="font-size: 8rem; margin: 30px 0;">⚡🔣📐</div>
+                <h3>Semana 3: Leyes de De Morgan y Simplificación</h3>
+                <p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+                <p><strong>Duración:</strong> 50 minutos + LAB4</p>
+                
+                <div class="interactive-element" onclick="showAlert('¡Preparémonos para simplificar circuitos! 🧮⚡')">
+                    <h3>🎯 ¡Descubre el poder de la simplificación!</h3>
+                    <p>Aprende a hacer más con menos compuertas lógicas</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Objetivos -->
+            <div class="slide">
+                <h2>🎯 OBJETIVOS DE LA SESIÓN</h2>
+                <ul>
+                    <li><strong>Dominar</strong> las leyes fundamentales del álgebra booleana</li>
+                    <li><strong>Aplicar</strong> los teoremas de De Morgan</li>
+                    <li><strong>Simplificar</strong> expresiones booleanas complejas</li>
+                    <li><strong>Utilizar</strong> mapas de Karnaugh básicos</li>
+                    <li><strong>Optimizar</strong> circuitos digitales</li>
+                </ul>
+                
+                <div class="interactive-element" onclick="showDeMorganHistory()">
+                    <h3>📚 Augustus De Morgan (1806-1871)</h3>
+                    <p>Matemático británico que revolucionó la lógica</p>
+                    <p><strong>¡Haz clic para conocer su historia!</strong></p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Leyes Básicas del Álgebra Booleana -->
+            <div class="slide">
+                <h2>📋 LEYES BÁSICAS DEL ÁLGEBRA BOOLEANA</h2>
+                
+                <div class="laws-grid">
+                    <div class="law-card" onclick="explainLaw('identidad')">
+                        <h4>🔹 LEYES DE IDENTIDAD</h4>
+                        <div class="boolean-expression">
+                            <code>A + 0 = A</code><br>
+                            <code>A · 1 = A</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('nulo')">
+                        <h4>🔹 LEYES DEL ELEMENTO NULO</h4>
+                        <div class="boolean-expression">
+                            <code>A + 1 = 1</code><br>
+                            <code>A · 0 = 0</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('idempotencia')">
+                        <h4>🔹 LEYES DE IDEMPOTENCIA</h4>
+                        <div class="boolean-expression">
+                            <code>A + A = A</code><br>
+                            <code>A · A = A</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('complemento')">
+                        <h4>🔹 LEYES DEL COMPLEMENTO</h4>
+                        <div class="boolean-expression">
+                            <code>A + Ā = 1</code><br>
+                            <code>A · Ā = 0</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" onclick="practiceBasicLaws()">
+                    <h3>🎮 ¡Practica las leyes básicas!</h3>
+                    <p>Ejercicios interactivos para dominar los fundamentos</p>
+                </div>
+            </div>
+
+            <!-- Slide 4: Leyes Avanzadas -->
+            <div class="slide">
+                <h2>⚡ LEYES AVANZADAS</h2>
+                
+                <div class="laws-grid">
+                    <div class="law-card" onclick="explainLaw('conmutativa')">
+                        <h4>🔄 LEYES CONMUTATIVAS</h4>
+                        <div class="boolean-expression">
+                            <code>A + B = B + A</code><br>
+                            <code>A · B = B · A</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('asociativa')">
+                        <h4>🔗 LEYES ASOCIATIVAS</h4>
+                        <div class="boolean-expression">
+                            <code>(A + B) + C = A + (B + C)</code><br>
+                            <code>(A · B) · C = A · (B · C)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('distributiva')">
+                        <h4>📊 LEYES DISTRIBUTIVAS</h4>
+                        <div class="boolean-expression">
+                            <code>A · (B + C) = A·B + A·C</code><br>
+                            <code>A + (B · C) = (A+B)·(A+C)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="law-card" onclick="explainLaw('absorcion')">
+                        <h4>🌪️ LEYES DE ABSORCIÓN</h4>
+                        <div class="boolean-expression">
+                            <code>A + (A · B) = A</code><br>
+                            <code>A · (A + B) = A</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Teoremas de De Morgan -->
+            <div class="slide">
+                <h2>🔥 TEOREMAS DE DE MORGAN</h2>
+                
+                <p>Los teoremas más importantes para simplificación de circuitos:</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📜 PRIMER TEOREMA</h4>
+                        <div class="boolean-expression">
+                            <code>(A + B)̄ = Ā · B̄</code>
+                        </div>
+                        <p>"La negación de una suma es igual al producto de las negaciones"</p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>📜 SEGUNDO TEOREMA</h4>
+                        <div class="boolean-expression">
+                            <code>(A · B)̄ = Ā + B̄</code>
+                        </div>
+                        <p>"La negación de un producto es igual a la suma de las negaciones"</p>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" onclick="demonstrateDeMorgan()">
+                    <h3>🔬 Demostración Interactiva</h3>
+                    <p>Verifica los teoremas con tablas de verdad</p>
+                    <p><strong>¡Haz clic para ver la demostración!</strong></p>
+                </div>
+                
+                <div class="boolean-expression">
+                    <h4>🎯 Regla Nemotécnica:</h4>
+                    <code>"Rompe la barra, cambia el signo" 🔄</code>
+                </div>
+            </div>
+
+            <!-- Slide 6: Aplicación de De Morgan -->
+            <div class="slide">
+                <h2>🛠️ APLICACIÓN DE LOS TEOREMAS</h2>
+                
+                <div class="simplification-demo">
+                    <h3>📝 Ejemplo paso a paso:</h3>
+                    <div class="simplification-steps">
+                        <div class="step">
+                            <strong>Expresión original:</strong> (A + B) · C̄ + (A + B)̄
+                        </div>
+                        <div class="step">
+                            <strong>Aplicar De Morgan:</strong> (A + B) · C̄ + Ā · B̄
+                        </div>
+                        <div class="step">
+                            <strong>Factorizar:</strong> (A + B) · C̄ + Ā · B̄
+                        </div>
+                        <div class="step">
+                            <strong>Resultado final:</strong> Forma simplificada
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" onclick="practiceSimplification()">
+                    <h3>🎯 Ejercicio Práctico</h3>
+                    <p>Simplifica: (A · B̄) + (A · B̄)̄</p>
+                    <p><strong>¡Haz clic para resolverlo paso a paso!</strong></p>
+                </div>
+            </div>
+
+            <!-- Slide 7: Introducción a Mapas de Karnaugh -->
+            <div class="slide">
+                <h2>🗺️ MAPAS DE KARNAUGH</h2>
+                
+                <p>Método gráfico para simplificar expresiones booleanas</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📋 VENTAJAS</h4>
+                        <ul>
+                            <li>Visualización clara</li>
+                            <li>Simplificación sistemática</li>
+                            <li>Detecta patrones fácilmente</li>
+                            <li>Minimiza errores</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🎯 APLICACIONES</h4>
+                        <ul>
+                            <li>2, 3 y 4 variables</li>
+                            <li>Funciones combinacionales</li>
+                            <li>Optimización de circuitos</li>
+                            <li>Diseño de sistemas</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" onclick="showKarnaughDemo()">
+                    <h3>🗺️ Mapa de Karnaugh 2x2</h3>
+                    <div class="karnaugh-map">
+                        <div class="karnaugh-cell" onclick="toggleCell(this, 0)">0</div>
+                        <div class="karnaugh-cell" onclick="toggleCell(this, 1)">1</div>
+                        <div class="karnaugh-cell" onclick="toggleCell(this, 2)">0</div>
+                        <div class="karnaugh-cell" onclick="toggleCell(this, 3)">1</div>
+                    </div>
+                    <p>¡Haz clic en las celdas para practicar!</p>
+                </div>
+            </div>
+
+            <!-- Slide 8: Circuitos Equivalentes -->
+            <div class="slide">
+                <h2>⚖️ CIRCUITOS EQUIVALENTES</h2>
+                
+                <p>Diferentes implementaciones de la misma función lógica</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔧 CIRCUITO ORIGINAL</h4>
+                        <div class="boolean-expression">
+                            <code>Y = (A + B) · (C + D)</code>
+                        </div>
+                        <p>Requiere: 2 OR + 1 AND</p>
+                        <p><strong>Total: 3 compuertas</strong></p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚡ CIRCUITO OPTIMIZADO</h4>
+                        <div class="boolean-expression">
+                            <code>Y = A·C + A·D + B·C + B·D</code>
+                        </div>
+                        <p>Requiere: 4 AND + 1 OR</p>
+                        <p><strong>Total: 5 compuertas</strong></p>
