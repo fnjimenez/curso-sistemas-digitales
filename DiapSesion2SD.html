@@ -553,7 +553,7 @@
 </head>
 <body>
     <div class="presentation-container">
-        <!-- Header -->
+        <!-- Header con todos los controles -->
         <div class="header">
             <div class="header-left">
                 <div class="university-info">
@@ -785,6 +785,69 @@
                         <div class="gate-symbol gate-and" style="width: 120px; height: 80px; font-size: 1.2rem;">
                             AND
                         </div>
+                    </div>
+                    
+                    <div class="circuit-output">
+                        <label>Salida Y</label>
+                        <div class="output-led" id="outputLED"></div>
+                        <span id="outputValue">0</span>
+                    </div>
+                    
+                    <div class="truth-table">
+                        <h4>Tabla de Verdad Interactiva</h4>
+                        <table>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>Y</th>
+                            </tr>
+                            <tr id="row00"><td>0</td><td>0</td><td>0</td></tr>
+                            <tr id="row01"><td>0</td><td>1</td><td>0</td></tr>
+                            <tr id="row10"><td>1</td><td>0</td><td>0</td></tr>
+                            <tr id="row11"><td>1</td><td>1</td><td>1</td></tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <p><strong>💡 Experimenta con diferentes combinaciones y observa el patrón</strong></p>
+            </div>
+
+            <!-- Slide 7: Sistema Combinacional -->
+            <div class="slide">
+                <h2>🔬 SISTEMA COMBINACIONAL COMPLETO</h2>
+                <h3>Simulador: Sistema de Alarma Básico</h3>
+                
+                <div class="circuit-simulator">
+                    <p><strong>Lógica:</strong> Alarma = (Puerta OR Ventana) AND Activada</p>
+                    
+                    <div class="circuit-inputs">
+                        <div class="input-switch">
+                            <label>Puerta</label>
+                            <div class="switch" id="switchDoor" onclick="toggleAlarmSwitch('Door')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueDoor">Cerrada</span>
+                        </div>
+                        
+                        <div class="input-switch">
+                            <label>Ventana</label>
+                            <div class="switch" id="switchWindow" onclick="toggleAlarmSwitch('Window')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueWindow">Cerrada</span>
+                        </div>
+                        
+                        <div class="input-switch">
+                            <label>Sistema</label>
+                            <div class="switch" id="switchSystem" onclick="toggleAlarmSwitch('System')">
+                                <div class="switch-handle"></div>
+                            </div>
+                            <span id="valueSystem">Desactivado</span>
+                        </div>
+                    </div>
+                    
+                    <div class="boolean-expression">
+                        <code>Alarma = (Puerta + Ventana) · Sistema</code>
                     </div>
                     
                     <div class="circuit-output">
@@ -1264,66 +1327,3 @@
     </script>
 </body>
 </html>
-                        <label>Salida Y</label>
-                        <div class="output-led" id="outputLED"></div>
-                        <span id="outputValue">0</span>
-                    </div>
-                    
-                    <div class="truth-table">
-                        <h4>Tabla de Verdad Interactiva</h4>
-                        <table>
-                            <tr>
-                                <th>A</th>
-                                <th>B</th>
-                                <th>Y</th>
-                            </tr>
-                            <tr id="row00"><td>0</td><td>0</td><td>0</td></tr>
-                            <tr id="row01"><td>0</td><td>1</td><td>0</td></tr>
-                            <tr id="row10"><td>1</td><td>0</td><td>0</td></tr>
-                            <tr id="row11"><td>1</td><td>1</td><td>1</td></tr>
-                        </table>
-                    </div>
-                </div>
-                
-                <p><strong>💡 Experimenta con diferentes combinaciones y observa el patrón</strong></p>
-            </div>
-
-            <!-- Slide 7: Sistema Combinacional -->
-            <div class="slide">
-                <h2>🔬 SISTEMA COMBINACIONAL COMPLETO</h2>
-                <h3>Simulador: Sistema de Alarma Básico</h3>
-                
-                <div class="circuit-simulator">
-                    <p><strong>Lógica:</strong> Alarma = (Puerta OR Ventana) AND Activada</p>
-                    
-                    <div class="circuit-inputs">
-                        <div class="input-switch">
-                            <label>Puerta</label>
-                            <div class="switch" id="switchDoor" onclick="toggleAlarmSwitch('Door')">
-                                <div class="switch-handle"></div>
-                            </div>
-                            <span id="valueDoor">Cerrada</span>
-                        </div>
-                        
-                        <div class="input-switch">
-                            <label>Ventana</label>
-                            <div class="switch" id="switchWindow" onclick="toggleAlarmSwitch('Window')">
-                                <div class="switch-handle"></div>
-                            </div>
-                            <span id="valueWindow">Cerrada</span>
-                        </div>
-                        
-                        <div class="input-switch">
-                            <label>Sistema</label>
-                            <div class="switch" id="switchSystem" onclick="toggleAlarmSwitch('System')">
-                                <div class="switch-handle"></div>
-                            </div>
-                            <span id="valueSystem">Desactivado</span>
-                        </div>
-                    </div>
-                    
-                    <div class="boolean-expression">
-                        <code>Alarma = (Puerta + Ventana) · Sistema</code>
-                    </div>
-                    
-                    <div class="circuit-output">
