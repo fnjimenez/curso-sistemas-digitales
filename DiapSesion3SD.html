@@ -374,132 +374,45 @@
             transition: width 0.3s ease;
         }
 
-        /* Clippy estilo Windows 98 - MEJORADO */
-        .clippy-container {
-            position: fixed;
-            top: 120px;
-            right: 20px;
-            background: #c0c0c0;
-            border: 2px outset #c0c0c0;
-            padding: 15px;
+        .arduino-code {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-align: left;
+            position: relative;
+        }
+
+        .arduino-code::before {
+            content: "🔧 Código Arduino";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #1e3c72;
+            padding: 5px 10px;
             border-radius: 5px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            font-family: 'MS Sans Serif', sans-serif;
-            font-size: 11px;
-            color: #000;
-            max-width: 280px;
-            z-index: 1000;
-            opacity: 0;
-            transform: scale(0);
-            transform-origin: bottom right;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 0.8rem;
+            color: #ffd700;
         }
 
-        .clippy-container.show {
-            opacity: 1;
-            transform: scale(1);
+        .code-explanation {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 4px solid #ffff00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
         }
 
-        .clippy-container.hide {
-            opacity: 0;
-            transform: scale(0);
-        }
-
-        .clippy-header {
-            background: linear-gradient(90deg, #0000ff, #0080ff);
-            color: white;
-            padding: 3px 6px;
-            margin: -15px -15px 10px -15px;
-            font-weight: bold;
-            font-size: 11px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .clippy-close {
-            background: #c0c0c0;
-            border: 1px outset #c0c0c0;
-            width: 16px;
-            height: 14px;
-            cursor: pointer;
-            font-size: 10px;
-            line-height: 12px;
+        .arduino-diagram {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
             text-align: center;
-            color: #000;
-        }
-
-        .clippy-close:hover {
-            background: #e0e0e0;
-        }
-
-        .clippy-character {
-            font-size: 3.5rem;
-            float: left;
-            margin-right: 15px;
-            animation: clippy-entrance 3s ease-out;
-        }
-
-        .clippy-text {
-            line-height: 1.4;
-            margin-left: 70px;
-            padding-top: 5px;
-        }
-
-        .clippy-actions {
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #808080;
-            display: flex;
-            gap: 5px;
-        }
-
-        .clippy-btn {
-            background: #c0c0c0;
-            border: 1px outset #c0c0c0;
-            padding: 2px 8px;
-            font-size: 10px;
-            cursor: pointer;
-            font-family: 'MS Sans Serif', sans-serif;
-        }
-
-        .clippy-btn:hover {
-            background: #e0e0e0;
-        }
-
-        .clippy-btn:active {
-            border: 1px inset #c0c0c0;
-        }
-
-        @keyframes clippy-entrance {
-            0% { 
-                transform: scale(0) rotate(-180deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2) rotate(0deg);
-                opacity: 1;
-            }
-            70% {
-                transform: scale(0.9) rotate(5deg);
-            }
-            85% {
-                transform: scale(1.05) rotate(-2deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        @keyframes clippy-bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(0deg); }
-            40% { transform: translateY(-8px) rotate(-5deg); }
-            60% { transform: translateY(-4px) rotate(3deg); }
-        }
-
-        .clippy-character.bounce {
-            animation: clippy-bounce 2s infinite;
         }
 
         .intro-slide {
@@ -551,14 +464,6 @@
             .comparison-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .clippy-container {
-                position: relative;
-                right: auto;
-                top: auto;
-                margin: 20px auto;
-                max-width: 90%;
-            }
         }
     </style>
 </head>
@@ -571,21 +476,21 @@
                     <div class="university-logo">⚡</div>
                     <div class="course-info">
                         <h1>SISTEMAS DIGITALES</h1>
-                        <p>Universidad del SABES | Sesión 3 de 12 | 27 de mayo 2025</p>
+                        <p>Universidad del SABES | Sesión 3 de 12 | 31 de mayo 2025</p>
                         <p>Prof. Fausto Noé Jiménez | fausto.noej@sabes.edu.mx</p>
                     </div>
                 </div>
             </div>
             
             <div class="header-center">
-                <button class="nav-btn-header" id="prevBtn" onclick="changeSlide(-1)">
+                <button class="nav-btn-header" id="prevBtn">
                     ⬅️ Anterior
                 </button>
                 <div class="slide-counter">
                     <div>Diapositiva</div>
-                    <div><span id="currentSlide">1</span> / <span id="totalSlides">12</span></div>
+                    <div><span id="currentSlide">1</span> / <span id="totalSlides">17</span></div>
                 </div>
-                <button class="nav-btn-header" id="nextBtn" onclick="changeSlide(1)">
+                <button class="nav-btn-header" id="nextBtn">
                     Siguiente ➡️
                 </button>
             </div>
@@ -596,30 +501,17 @@
                         ⏱️ <span id="timeRemaining">50:00</span>
                     </div>
                     <div class="timer-controls">
-                        <button class="timer-btn" onclick="startTimer()">▶️</button>
-                        <button class="timer-btn" onclick="pauseTimer()">⏸️</button>
-                        <button class="timer-btn" onclick="resetTimer()">🔄</button>
+                        <button class="timer-btn" id="startBtn">▶️</button>
+                        <button class="timer-btn" id="pauseBtn">⏸️</button>
+                        <button class="timer-btn" id="resetBtn">🔄</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Clippy Assistant Mejorado -->
-        <div class="clippy-container" id="clippyContainer">
-            <div class="clippy-header">
-                <span>💡 Asistente Clippy</span>
-                <div class="clippy-close" onclick="closeClippy()">×</div>
-            </div>
-            <div class="clippy-character" id="clippyChar">📎</div>
-            <div class="clippy-text" id="clippyText">
-                ¡Hola! Soy tu asistente para esta clase de Sistemas Digitales. 🧮⚡<br><br>
-                ¿Estás listo para dominar los teoremas de De Morgan y simplificar circuitos como un pro? 🚀
-            </div>
-            <div class="clippy-actions">
-                <button class="clippy-btn" onclick="showClippyHelp()">Ayuda</button>
-                <button class="clippy-btn" onclick="showClippyTips()">Consejos</button>
-                <button class="clippy-btn" onclick="changeClippyMessage()">Siguiente</button>
-            </div>
+        <!-- Progress Bar -->
+        <div class="progress-indicator">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
 
         <!-- Slides -->
@@ -628,13 +520,19 @@
             <div class="slide active intro-slide">
                 <h1>🧮 OPERACIONES BOOLEANAS Y TEOREMAS</h1>
                 <div style="font-size: 8rem; margin: 30px 0;">⚡🔣📐</div>
-                <h3>Semana 3: Leyes de De Morgan y Simplificación</h3>
+                <h3>Semana 3: Análisis, Simplificación y Minimización</h3>
                 <p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
-                <p><strong>Duración:</strong> 50 minutos + LAB4</p>
+                <p><strong>Duración:</strong> 50 minutos + LAB4 Arduino</p>
                 
-                <div class="interactive-element" onclick="showAlert('¡Preparémonos para simplificar circuitos! 🧮⚡')">
-                    <h3>🎯 ¡Descubre el poder de la simplificación!</h3>
-                    <p>Aprende a hacer más con menos compuertas lógicas</p>
+                <div class="interactive-element">
+                    <h3>🎯 Temas de esta sesión:</h3>
+                    <ul style="text-align: left; font-size: 1.1rem;">
+                        <li><strong>2.4.</strong> Análisis de circuitos lógicos</li>
+                        <li><strong>2.4.1.</strong> Simplificación mediante álgebra booleana</li>
+                        <li><strong>2.4.2.</strong> Tablas de verdad y análisis</li>
+                        <li><strong>2.5.</strong> Minimización mediante mapas de Karnaugh</li>
+                        <li><strong>LAB4:</strong> PWM con Arduino y LED</li>
+                    </ul>
                 </div>
             </div>
 
@@ -642,104 +540,174 @@
             <div class="slide">
                 <h2>🎯 OBJETIVOS DE LA SESIÓN</h2>
                 <ul>
+                    <li><strong>Analizar</strong> circuitos lógicos existentes mediante tablas de verdad</li>
                     <li><strong>Dominar</strong> las leyes fundamentales del álgebra booleana</li>
-                    <li><strong>Aplicar</strong> los teoremas de De Morgan</li>
-                    <li><strong>Simplificar</strong> expresiones booleanas complejas</li>
-                    <li><strong>Utilizar</strong> mapas de Karnaugh básicos</li>
-                    <li><strong>Optimizar</strong> circuitos digitales</li>
+                    <li><strong>Aplicar</strong> técnicas de simplificación algebraica</li>
+                    <li><strong>Utilizar</strong> mapas de Karnaugh para minimización</li>
+                    <li><strong>Implementar</strong> circuitos optimizados</li>
+                    <li><strong>Programar</strong> Arduino con PWM para control de LED</li>
                 </ul>
                 
-                <div class="interactive-element" onclick="showDeMorganHistory()">
-                    <h3>📚 Augustus De Morgan (1806-1871)</h3>
-                    <p>Matemático británico que revolucionó la lógica</p>
-                    <p><strong>¡Haz clic para conocer su historia!</strong></p>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📊 Análisis de Circuitos</h4>
+                        <p>Determinar la función lógica de un circuito existente mediante inspección y tablas de verdad</p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚡ Simplificación</h4>
+                        <p>Reducir el número de compuertas manteniendo la misma funcionalidad</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Slide 3: Leyes Básicas del Álgebra Booleana -->
+            <!-- Slide 3: 2.4 Análisis de Circuitos Lógicos -->
             <div class="slide">
-                <h2>📋 LEYES BÁSICAS DEL ÁLGEBRA BOOLEANA</h2>
+                <h2>📋 2.4 ANÁLISIS DE CIRCUITOS LÓGICOS</h2>
                 
-                <div class="laws-grid">
-                    <div class="law-card" onclick="explainLaw('identidad')">
-                        <h4>🔹 LEYES DE IDENTIDAD</h4>
-                        <div class="boolean-expression">
-                            <code>A + 0 = A</code><br>
-                            <code>A · 1 = A</code>
+                <div class="simplification-demo">
+                    <h3>🔍 Proceso de Análisis</h3>
+                    <div class="simplification-steps">
+                        <div class="step">
+                            <strong>Paso 1:</strong> Identificar las entradas y salidas del circuito
                         </div>
-                    </div>
-                    
-                    <div class="law-card" onclick="explainLaw('nulo')">
-                        <h4>🔹 LEYES DEL ELEMENTO NULO</h4>
-                        <div class="boolean-expression">
-                            <code>A + 1 = 1</code><br>
-                            <code>A · 0 = 0</code>
+                        <div class="step">
+                            <strong>Paso 2:</strong> Escribir la expresión booleana desde la entrada hasta la salida
                         </div>
-                    </div>
-                    
-                    <div class="law-card" onclick="explainLaw('idempotencia')">
-                        <h4>🔹 LEYES DE IDEMPOTENCIA</h4>
-                        <div class="boolean-expression">
-                            <code>A + A = A</code><br>
-                            <code>A · A = A</code>
+                        <div class="step">
+                            <strong>Paso 3:</strong> Construir la tabla de verdad correspondiente
                         </div>
-                    </div>
-                    
-                    <div class="law-card" onclick="explainLaw('complemento')">
-                        <h4>🔹 LEYES DEL COMPLEMENTO</h4>
-                        <div class="boolean-expression">
-                            <code>A + Ā = 1</code><br>
-                            <code>A · Ā = 0</code>
+                        <div class="step">
+                            <strong>Paso 4:</strong> Verificar el comportamiento para todas las combinaciones
+                        </div>
+                        <div class="step">
+                            <strong>Paso 5:</strong> Determinar la función lógica final
                         </div>
                     </div>
                 </div>
                 
-                <div class="interactive-element" onclick="practiceBasicLaws()">
-                    <h3>🎮 ¡Practica las leyes básicas!</h3>
-                    <p>Ejercicios interactivos para dominar los fundamentos</p>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📝 Ejemplo de Análisis</h4>
+                        <div class="boolean-expression">
+                            <code>Circuito: (A + B) · C̄</code>
+                        </div>
+                        <p>La salida es 1 cuando (A OR B) AND NOT C</p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>📊 Tabla de Verdad</h4>
+                        <div style="font-family: monospace; font-size: 0.9rem;">
+                            A | B | C | A+B | C̄ | Y<br>
+                            --|---|---|-----|---|---<br>
+                            0 | 0 | 0 |  0  | 1 | 0<br>
+                            0 | 0 | 1 |  0  | 0 | 0<br>
+                            0 | 1 | 0 |  1  | 1 | 1<br>
+                            0 | 1 | 1 |  1  | 0 | 0<br>
+                            1 | 0 | 0 |  1  | 1 | 1<br>
+                            1 | 0 | 1 |  1  | 0 | 0<br>
+                            1 | 1 | 0 |  1  | 1 | 1<br>
+                            1 | 1 | 1 |  1  | 0 | 0
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Slide 4: Leyes Avanzadas -->
+            <!-- Slide 4: Leyes Básicas del Álgebra Booleana -->
             <div class="slide">
-                <h2>⚡ LEYES AVANZADAS</h2>
+                <h2>📋 LEYES FUNDAMENTALES DEL ÁLGEBRA BOOLEANA</h2>
                 
                 <div class="laws-grid">
-                    <div class="law-card" onclick="explainLaw('conmutativa')">
+                    <div class="law-card">
+                        <h4>🔹 REGLAS 1-2: LEYES DE IDENTIDAD</h4>
+                        <div class="boolean-expression">
+                            <code>1. A + 0 = A</code><br>
+                            <code>2. A · 1 = A</code>
+                        </div>
+                        <p>El elemento neutro no afecta la variable</p>
+                    </div>
+                    
+                    <div class="law-card">
+                        <h4>🔹 REGLAS 3-4: LEYES DEL ELEMENTO NULO</h4>
+                        <div class="boolean-expression">
+                            <code>3. A + 1 = 1</code><br>
+                            <code>4. A · 0 = 0</code>
+                        </div>
+                        <p>El elemento dominante absorbe cualquier valor</p>
+                    </div>
+                    
+                    <div class="law-card">
+                        <h4>🔹 REGLAS 5-6: LEYES DE IDEMPOTENCIA</h4>
+                        <div class="boolean-expression">
+                            <code>5. A + A = A</code><br>
+                            <code>6. A · A = A</code>
+                        </div>
+                        <p>Una variable operada consigo misma no cambia</p>
+                    </div>
+                    
+                    <div class="law-card">
+                        <h4>🔹 REGLAS 7-8: LEYES DEL COMPLEMENTO</h4>
+                        <div class="boolean-expression">
+                            <code>7. A + Ā = 1</code><br>
+                            <code>8. A · Ā = 0</code>
+                        </div>
+                        <p>Variable y su complemento son exhaustivos</p>
+                    </div>
+                    
+                    <div class="law-card">
+                        <h4>🔹 REGLA 9: LEY DE INVOLUCIÓN</h4>
+                        <div class="boolean-expression">
+                            <code>9. A̿ = A</code>
+                        </div>
+                        <p>Doble negación equivale a la variable original</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Leyes Avanzadas -->
+            <div class="slide">
+                <h2>⚡ LEYES AVANZADAS Y REGLAS ESPECIALES</h2>
+                
+                <div class="laws-grid">
+                    <div class="law-card">
                         <h4>🔄 LEYES CONMUTATIVAS</h4>
                         <div class="boolean-expression">
                             <code>A + B = B + A</code><br>
                             <code>A · B = B · A</code>
                         </div>
+                        <p>El orden de las variables no importa</p>
                     </div>
                     
-                    <div class="law-card" onclick="explainLaw('asociativa')">
+                    <div class="law-card">
                         <h4>🔗 LEYES ASOCIATIVAS</h4>
                         <div class="boolean-expression">
                             <code>(A + B) + C = A + (B + C)</code><br>
                             <code>(A · B) · C = A · (B · C)</code>
                         </div>
+                        <p>La agrupación de variables no afecta el resultado</p>
                     </div>
                     
-                    <div class="law-card" onclick="explainLaw('distributiva')">
+                    <div class="law-card">
                         <h4>📊 LEYES DISTRIBUTIVAS</h4>
                         <div class="boolean-expression">
                             <code>A · (B + C) = A·B + A·C</code><br>
                             <code>A + (B · C) = (A+B)·(A+C)</code>
                         </div>
+                        <p>Factorización y expansión de expresiones</p>
                     </div>
                     
-                    <div class="law-card" onclick="explainLaw('absorcion')">
+                    <div class="law-card">
                         <h4>🌪️ LEYES DE ABSORCIÓN</h4>
                         <div class="boolean-expression">
                             <code>A + (A · B) = A</code><br>
                             <code>A · (A + B) = A</code>
                         </div>
+                        <p>Eliminación de términos redundantes</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 5: Teoremas de De Morgan -->
+            <!-- Slide 6: Teoremas de De Morgan -->
             <div class="slide">
                 <h2>🔥 TEOREMAS DE DE MORGAN</h2>
                 
@@ -752,6 +720,7 @@
                             <code>(A + B)̄ = Ā · B̄</code>
                         </div>
                         <p>"La negación de una suma es igual al producto de las negaciones"</p>
+                        <p><strong>Equivalencia:</strong> NAND ↔ Negativa-OR</p>
                     </div>
                     
                     <div class="comparison-card">
@@ -760,13 +729,14 @@
                             <code>(A · B)̄ = Ā + B̄</code>
                         </div>
                         <p>"La negación de un producto es igual a la suma de las negaciones"</p>
+                        <p><strong>Equivalencia:</strong> NOR ↔ Negativa-AND</p>
                     </div>
                 </div>
                 
-                <div class="interactive-element" onclick="demonstrateDeMorgan()">
-                    <h3>🔬 Demostración Interactiva</h3>
-                    <p>Verifica los teoremas con tablas de verdad</p>
-                    <p><strong>¡Haz clic para ver la demostración!</strong></p>
+                <div class="boolean-expression">
+                    <h4>🎯 Para más de dos variables:</h4>
+                    <code>(A + B + C + ...)̄ = Ā · B̄ · C̄ · ...</code><br>
+                    <code>(A · B · C · ...)̄ = Ā + B̄ + C̄ + ...</code>
                 </div>
                 
                 <div class="boolean-expression">
@@ -775,44 +745,761 @@
                 </div>
             </div>
 
-            <!-- Slide 6: Aplicación de De Morgan -->
+            <!-- Slide 7: Ejemplo Práctico de Simplificación -->
             <div class="slide">
-                <h2>🛠️ APLICACIÓN DE LOS TEOREMAS</h2>
+                <h2>🛠️ 2.4.1 SIMPLIFICACIÓN MEDIANTE ÁLGEBRA BOOLEANA</h2>
                 
                 <div class="simplification-demo">
-                    <h3>📝 Ejemplo paso a paso:</h3>
+                    <h3>📝 Ejemplo paso a paso: BD + B(D + E) + D̄(D + F)</h3>
+                    
                     <div class="simplification-steps">
                         <div class="step">
-                            <strong>Expresión original:</strong> (A + B) · C̄ + (A + B)̄
+                            <strong>Expresión original:</strong> BD + B(D + E) + D̄(D + F)
                         </div>
                         <div class="step">
-                            <strong>Aplicar De Morgan:</strong> (A + B) · C̄ + Ā · B̄
+                            <strong>Expandir términos:</strong> BD + BD + BE + D̄D + D̄F
                         </div>
                         <div class="step">
-                            <strong>Factorizar:</strong> (A + B) · C̄ + Ā · B̄
+                            <strong>Aplicar A + A = A:</strong> BD + BE + D̄D + D̄F
                         </div>
                         <div class="step">
-                            <strong>Resultado final:</strong> Forma simplificada
+                            <strong>Aplicar A · Ā = 0:</strong> BD + BE + 0 + D̄F
+                        </div>
+                        <div class="step">
+                            <strong>Resultado final:</strong> BD + BE + D̄F = B(D + E) + D̄F
                         </div>
                     </div>
                 </div>
                 
-                <div class="interactive-element" onclick="practiceSimplification()">
-                    <h3>🎯 Ejercicio Práctico</h3>
-                    <p>Simplifica: (A · B̄) + (A · B̄)̄</p>
-                    <p><strong>¡Haz clic para resolverlo paso a paso!</strong></p>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔧 FUNCIÓN ORIGINAL</h4>
+                        <div class="boolean-expression">
+                            <code>BD + B(D + E) + D̄(D + F)</code>
+                        </div>
+                        <p><strong>Costo:</strong> 7 compuertas lógicas</p>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚡ FUNCIÓN SIMPLIFICADA</h4>
+                        <div class="boolean-expression">
+                            <code>B(D + E) + D̄F</code>
+                        </div>
+                        <p><strong>Costo:</strong> 4 compuertas lógicas</p>
+                        <p><strong>🎯 Ahorro:</strong> 43% menos compuertas</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Slide 7: Introducción a Mapas de Karnaugh -->
+            <!-- Slide 8: Mapas de Karnaugh -->
             <div class="slide">
-                <h2>🗺️ MAPAS DE KARNAUGH</h2>
+                <h2>🗺️ 2.5 MINIMIZACIÓN MEDIANTE MAPAS DE KARNAUGH</h2>
                 
-                <p>Método gráfico para simplificar expresiones booleanas</p>
+                <p>Método gráfico desarrollado por <strong>Maurice Karnaugh (1953)</strong> para simplificar expresiones booleanas</p>
                 
                 <div class="comparison-grid">
                     <div class="comparison-card">
-                        <h4>📋 VENTAJAS</h4>
+                        <h4>📋 VENTAJAS DEL MÉTODO</h4>
                         <ul>
-                            <li>Visualización clara</li>
-                            <li>Simplificación sistemática</li>
+                            <li><strong>Visualización clara</strong> de patrones</li>
+                            <li><strong>Simplificación sistemática</strong></li>
+                            <li><strong>Detecta grupos</strong> fácilmente</li>
+                            <li><strong>Minimiza errores</strong> humanos</li>
+                            <li><strong>Resultado óptimo</strong> garantizado</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🎯 PRINCIPIO FUNDAMENTAL</h4>
+                        <div class="boolean-expression">
+                            <code>Código Gray: Solo cambia 1 bit entre celdas adyacentes</code>
+                        </div>
+                        <ul>
+                            <li><strong>Celdas adyacentes</strong> difieren en 1 variable</li>
+                            <li><strong>Grupos de 1s</strong> = términos simplificados</li>
+                            <li><strong>Tamaños válidos:</strong> 1, 2, 4, 8, 16...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Mapas de Karnaugh 3 Variables -->
+            <div class="slide">
+                <h2>🗺️ MAPAS DE KARNAUGH - 3 VARIABLES</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📊 Estructura del Mapa 2x4</h4>
+                        <div style="text-align: center;">
+                            <div style="display: grid; grid-template-columns: 40px repeat(4, 40px); gap: 2px; margin: 20px auto; max-width: 300px;">
+                                <div></div>
+                                <div style="font-weight: bold; color: #ffd700; font-size: 0.8rem;">C̄B̄</div>
+                                <div style="font-weight: bold; color: #ffd700; font-size: 0.8rem;">C̄B</div>
+                                <div style="font-weight: bold; color: #ffd700; font-size: 0.8rem;">CB</div>
+                                <div style="font-weight: bold; color: #ffd700; font-size: 0.8rem;">CB̄</div>
+                                <div style="font-weight: bold; color: #ffd700;">Ā</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">0</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">1</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">3</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">2</div>
+                                <div style="font-weight: bold; color: #ffd700;">A</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">4</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">5</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">7</div>
+                                <div class="karnaugh-cell" style="font-size: 0.8rem;">6</div>
+                            </div>
+                        </div>
+                        <div class="boolean-expression">
+                            <code>¡Importante! Orden: 00, 01, 11, 10 (Código Gray)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🎯 Ejemplo: y = C(A B̄ D + D) + ĀBC + D̄</h4>
+                        <div class="simplification-steps">
+                            <div class="step"><strong>Paso 1:</strong> Identificar mintérminos</div>
+                            <div class="step"><strong>Paso 2:</strong> Marcar en el mapa de Karnaugh</div>
+                            <div class="step"><strong>Paso 3:</strong> Formar grupos de potencias de 2</div>
+                            <div class="step"><strong>Paso 4:</strong> Escribir expresión simplificada</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: Ejercicios de Simplificación -->
+            <div class="slide">
+                <h2>📝 EJERCICIOS DE SIMPLIFICACIÓN</h2>
+                
+                <div class="simplification-demo">
+                    <h3>🎯 Ejercicio 1: Simplificar ABC + AB + AC</h3>
+                    <div class="simplification-steps">
+                        <div class="step">
+                            <strong>Paso 1:</strong> Factorizar A: A(BC + B + C)
+                        </div>
+                        <div class="step">
+                            <strong>Paso 2:</strong> Aplicar absorción B + BC = B: A(B + C)
+                        </div>
+                        <div class="step">
+                            <strong>Resultado:</strong> ABC + AB + AC = A(B + C)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📊 Ejercicio 2: (B + BC)(B + B̄C)(B + D)</h4>
+                        <p><strong>Aplicar leyes de absorción y simplificación</strong></p>
+                        <div class="boolean-expression">
+                            <code>Resultado: B(B + C + D) = B</code>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🔍 Verificación con Tabla de Verdad</h4>
+                        <p>Siempre verificar que la expresión original y simplificada den los mismos resultados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 11: LAB4 - Introducción a Arduino -->
+            <div class="slide">
+                <h2>🔧 LAB4: PWM CON ARDUINO - INTRODUCCIÓN</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🎯 ¿Qué es Arduino?</h4>
+                        <ul>
+                            <li><strong>Microcontrolador:</strong> Pequeña computadora programable</li>
+                            <li><strong>Entradas digitales:</strong> Leen 0V (LOW) o 5V (HIGH)</li>
+                            <li><strong>Salidas digitales:</strong> Envían 0V o 5V</li>
+                            <li><strong>PWM:</strong> Simula señales analógicas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚡ ¿Qué es PWM?</h4>
+                        <p><strong>Pulse Width Modulation</strong> (Modulación por Ancho de Pulso)</p>
+                        <div class="boolean-expression">
+                            <code>Cambia el tiempo que la señal está en HIGH vs LOW</code>
+                        </div>
+                        <ul>
+                            <li><strong>20% HIGH:</strong> ≈ 1V efectivo</li>
+                            <li><strong>50% HIGH:</strong> ≈ 2.5V efectivo</li>
+                            <li><strong>80% HIGH:</strong> ≈ 4V efectivo</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="arduino-diagram">
+                    <h4>🔌 Pines PWM en Arduino UNO</h4>
+                    <div class="boolean-expression">
+                        <code>Pines PWM: 3, 5, 6, 9, 10, 11 (marcados con ~)</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 12: LAB4 - Estructura del Código -->
+            <div class="slide">
+                <h2>💻 LAB4: ESTRUCTURA DEL CÓDIGO ARDUINO</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📋 Partes de un programa Arduino</h4>
+                        <ul>
+                            <li><strong>Variables globales:</strong> Se declaran al inicio</li>
+                            <li><strong>setup():</strong> Se ejecuta UNA vez al inicio</li>
+                            <li><strong>loop():</strong> Se ejecuta INFINITAMENTE</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🎯 Funciones importantes</h4>
+                        <ul>
+                            <li><strong>pinMode():</strong> Configura pin como entrada/salida</li>
+                            <li><strong>analogWrite():</strong> Envía valor PWM (0-255)</li>
+                            <li><strong>delay():</strong> Pausa en milisegundos</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="arduino-code">
+// DECLARACIÓN DE VARIABLES (al inicio del programa)
+int BRILLO;        // Variable para controlar el brillo (0-255)
+int LED = 3;       // Pin donde está conectado el LED
+
+// FUNCIÓN SETUP - Se ejecuta UNA sola vez
+void setup() {
+    pinMode(LED, OUTPUT);  // Configura el pin LED como salida
+}
+
+// FUNCIÓN LOOP - Se ejecuta INFINITAMENTE
+void loop() {
+    // Aquí va el código que se repite
+}
+                </div>
+                
+                <div class="code-explanation">
+                    <p><strong>💡 Explicación:</strong> El programa Arduino tiene una estructura fija que SIEMPRE debe respetarse</p>
+                </div>
+            </div>
+
+            <!-- Slide 13: LAB4 - Código Completo Explicado -->
+            <div class="slide">
+                <h2>🔍 LAB4: CÓDIGO COMPLETO EXPLICADO</h2>
+                
+                <div class="arduino-code">
+int BRILLO;        // Variable para el brillo (número entre 0 y 255)
+int LED = 3;       // El LED está conectado al pin 3 (PWM)
+
+void setup() {
+    pinMode(LED, OUTPUT);  // El pin 3 envía señales (OUTPUT)
+}
+
+void loop() {
+    // PRIMER BUCLE: Aumentar brillo de 0 a 255
+    for (BRILLO = 0; BRILLO < 256; BRILLO++) {
+        analogWrite(LED, BRILLO);  // Enviar valor PWM al LED
+        delay(15);                 // Esperar 15 milisegundos
+    }
+    
+    // SEGUNDO BUCLE: Disminuir brillo de 255 a 0
+    for (BRILLO = 255; BRILLO >= 0; BRILLO--) {
+        analogWrite(LED, BRILLO);  // Enviar valor PWM al LED
+        delay(15);                 // Esperar 15 milisegundos
+    }
+    // El loop() termina y vuelve a empezar automáticamente
+}
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔄 Bucle FOR explicado</h4>
+                        <div class="code-explanation">
+                            <p><strong>for (inicio; condición; incremento)</strong></p>
+                            <ul>
+                                <li><strong>inicio:</strong> BRILLO = 0</li>
+                                <li><strong>condición:</strong> BRILLO < 256</li>
+                                <li><strong>incremento:</strong> BRILLO++</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚡ analogWrite() explicado</h4>
+                        <div class="code-explanation">
+                            <p><strong>analogWrite(pin, valor)</strong></p>
+                            <ul>
+                                <li><strong>0:</strong> LED completamente apagado</li>
+                                <li><strong>127:</strong> LED al 50% de brillo</li>
+                                <li><strong>255:</strong> LED completamente encendido</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: LAB4 - Conexión del Circuito -->
+            <div class="slide">
+                <h2>🔌 LAB4: CONEXIÓN DEL CIRCUITO</h2>
+                
+                <div class="arduino-diagram">
+                    <h3>📋 Componentes necesarios:</h3>
+                    <ul style="text-align: left; font-size: 1.2rem;">
+                        <li>1 Arduino UNO</li>
+                        <li>1 LED (cualquier color)</li>
+                        <li>1 Resistencia de 330Ω</li>
+                        <li>2 Cables jumper</li>
+                        <li>1 Protoboard</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>🔧 Pasos de conexión:</h4>
+                        <div class="simplification-steps">
+                            <div class="step">
+                                <strong>1.</strong> Conectar cable del pin 3 al protoboard
+                            </div>
+                            <div class="step">
+                                <strong>2.</strong> Conectar resistencia en serie con el LED
+                            </div>
+                            <div class="step">
+                                <strong>3.</strong> Conectar el otro extremo a GND (tierra)
+                            </div>
+                            <div class="step">
+                                <strong>4.</strong> Verificar polaridad del LED
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>⚠️ Importante:</h4>
+                        <div class="code-explanation">
+                            <p><strong>LED tiene polaridad:</strong></p>
+                            <ul>
+                                <li><strong>Ánodo (+):</strong> Pata larga → Resistencia</li>
+                                <li><strong>Cátodo (-):</strong> Pata corta → GND</li>
+                            </ul>
+                            <p><strong>La resistencia protege el LED</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 15: LAB4 - Pasos para Programar -->
+            <div class="slide">
+                <h2>💾 LAB4: PASOS PARA PROGRAMAR ARDUINO</h2>
+                
+                <div class="simplification-demo">
+                    <h3>🚀 Proceso completo:</h3>
+                    <div class="simplification-steps">
+                        <div class="step">
+                            <strong>Paso 1:</strong> Abrir Arduino IDE en la computadora
+                        </div>
+                        <div class="step">
+                            <strong>Paso 2:</strong> Conectar Arduino UNO con cable USB
+                        </div>
+                        <div class="step">
+                            <strong>Paso 3:</strong> Verificar que encienda LED verde "ON"
+                        </div>
+                        <div class="step">
+                            <strong>Paso 4:</strong> Borrar código existente y escribir el nuevo
+                        </div>
+                        <div class="step">
+                            <strong>Paso 5:</strong> Verificar código (botón ✓) - guardarlo como "PWMconLed"
+                        </div>
+                        <div class="step">
+                            <strong>Paso 6:</strong> Subir a Arduino (botón →)
+                        </div>
+                        <div class="step">
+                            <strong>Paso 7:</strong> ¡Observar el LED parpadeando gradualmente!
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>✅ Resultado esperado:</h4>
+                        <ul>
+                            <li>LED aumenta brillo gradualmente</li>
+                            <li>LED disminuye brillo gradualmente</li>
+                            <li>Ciclo se repite infinitamente</li>
+                            <li>Efecto "respiración" del LED</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🛠️ Troubleshooting:</h4>
+                        <ul>
+                            <li><strong>LED no enciende:</strong> Verificar polaridad</li>
+                            <li><strong>Error al subir:</strong> Revisar puerto COM</li>
+                            <li><strong>LED muy tenue:</strong> Cambiar resistencia</li>
+                            <li><strong>No compila:</strong> Revisar sintaxis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 16: Referencias Bibliográficas Detalladas -->
+            <div class="slide">
+                <h2>📚 REFERENCIAS BIBLIOGRÁFICAS DETALLADAS</h2>
+                
+                <div style="text-align: left; max-width: 1100px; margin: 0 auto;">
+                    
+                    <div class="comparison-grid" style="grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px;">
+                        <div class="comparison-card">
+                            <h4>📖 BIBLIOGRAFÍA PRINCIPAL</h4>
+                            <div style="font-size: 1.1rem; line-height: 1.8;">
+                                <p><strong>Flores, H.A.</strong> (2014). <em>Sistemas digitales. Principios, análisis y diseño.</em> Ediciones de la U. Primera edición.</p>
+                                
+                                <p><strong>Floyd, T.</strong> (2006). <em>Fundamentos de Sistemas Digitales.</em> Pearson Educación. Novena edición.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="laws-grid" style="grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <div class="law-card">
+                            <h4>🏛️ FUENTES ACADÉMICAS DIGITALES</h4>
+                            <div style="font-size: 0.95rem; line-height: 1.6;">
+                                <p><strong>Escuela Politécnica Superior</strong></p>
+                                <p><em>"Leyes Básicas del Álgebra de Boole"</em></p>
+                                <div class="boolean-expression" style="margin: 10px 0; font-size: 0.8rem;">
+                                    <code>khamme.wordpress.com/wp-content/uploads/2015/09/leyesboole.pdf</code>
+                                </div>
+                                
+                                <p><strong>Universidad Nacional Autónoma de México (UNAM)</strong></p>
+                                <p><em>"Álgebra Booleana - Sistemas Digitales"</em></p>
+                                <p>Facultad de Estudios Superiores Cuautitlán</p>
+                                <div class="boolean-expression" style="margin: 10px 0; font-size: 0.8rem;">
+                                    <code>virtual.cuautitlan.unam.mx/intar/sistdig/algebra-booleana/</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="law-card">
+                            <h4>📝 RECURSOS ADICIONALES</h4>
+                            <div style="font-size: 0.95rem; line-height: 1.6;">
+                                <p><strong>Monografías.com</strong></p>
+                                <p><em>"Reglas básicas del álgebra de Boole"</em></p>
+                                <p>Por Pablo Turmero - Ejemplos prácticos y ejercicios</p>
+                                <div class="boolean-expression" style="margin: 10px 0; font-size: 0.8rem;">
+                                    <code>monografias.com/trabajos104/reglas-basicas-del-algebra-boole/</code>
+                                </div>
+                                
+                                <p><strong>Arduino.cc</strong></p>
+                                <p><em>Documentación oficial PWM y tutoriales</em></p>
+                                <div class="boolean-expression" style="margin: 10px 0; font-size: 0.8rem;">
+                                    <code>arduino.cc/en/Tutorial/PWM</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px;">
+                        <div class="law-card">
+                            <h4>📚 LIBROS COMPLEMENTARIOS</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.5;">
+                                <li><strong>Morris Mano, M.</strong> "Digital Design" 5th Ed.</li>
+                                <li><strong>Tocci, R.</strong> "Digital Systems" 12th Ed.</li>
+                                <li><strong>Wakerly, J.</strong> "Digital Design Principles" 4th Ed.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="law-card">
+                            <h4>🌐 HERRAMIENTAS ONLINE</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.5;">
+                                <li><strong>Boolean Calculator:</strong> dcode.fr</li>
+                                <li><strong>Karnaugh Solver:</strong> 32x8.com</li>
+                                <li><strong>Circuit Simulator:</strong> circuitverse.org</li>
+                                <li><strong>Tinkercad:</strong> tinkercad.com</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="law-card">
+                            <h4>🔬 FUNDAMENTOS HISTÓRICOS</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.5;">
+                                <li><strong>George Boole</strong> (1815-1864)</li>
+                                <li><em>"Investigation of the Laws of Thought"</em> (1854)</li>
+                                <li><strong>Augustus De Morgan</strong> (1806-1871)</li>
+                                <li><strong>Maurice Karnaugh</strong> (1924-2022)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" style="margin-top: 30px;">
+                    <h3>📋 Actividad 3 - Ejercicios de Simplificación</h3>
+                    <p><strong>Documento de referencia:</strong> Universidad del SABES</p>
+                    <p><strong>Contenido:</strong> 2.4 Análisis de circuitos lógicos | 2.5 Minimización con Karnaugh</p>
+                    <div class="boolean-expression" style="margin-top: 15px;">
+                        <code>Tiempo estimado: 2 horas | LAB4 incluido</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 17: Créditos y Fin -->
+            <div class="slide">
+                <h2>🎓 UNIVERSIDAD DEL SABES</h2>
+                
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="font-size: 8rem; margin: 30px 0;">🎉✨🔧</div>
+                    <h1 style="font-size: 4rem; margin-bottom: 30px;">¡SESIÓN COMPLETADA!</h1>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>📊 TEMAS CUBIERTOS</h4>
+                        <ul style="font-size: 1.1rem;">
+                            <li>✅ <strong>2.4</strong> Análisis de circuitos lógicos</li>
+                            <li>✅ <strong>2.4.1</strong> Simplificación booleana</li>
+                            <li>✅ <strong>2.4.2</strong> Tablas de verdad</li>
+                            <li>✅ <strong>2.5</strong> Mapas de Karnaugh</li>
+                            <li>✅ <strong>LAB4</strong> PWM con Arduino</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="comparison-card">
+                        <h4>🎯 SIGUIENTES PASOS</h4>
+                        <ul style="font-size: 1.1rem;">
+                            <li>📝 Completar <strong>Actividad 3</strong></li>
+                            <li>🔧 Implementar <strong>LAB4</strong> Arduino</li>
+                            <li>📚 Revisar material de apoyo</li>
+                            <li>🤔 Resolver ejercicios de práctica</li>
+                            <li>⏰ Prepararse para Semana 4</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" style="margin-top: 40px;">
+                    <h3>👨‍🏫 CONTACTO DEL PROFESOR</h3>
+                    <p><strong>Prof. Fausto Noé Jiménez</strong></p>
+                    <p>📧 <strong>fausto.noej@sabes.edu.mx</strong></p>
+                    <p>🏫 <strong>Universidad del SABES</strong></p>
+                    <p>📅 <strong>Cuatrimestre 6 | Mayo - Agosto 2025</strong></p>
+                    
+                    <div class="boolean-expression" style="margin-top: 20px;">
+                        <code>¡Gracias por su participación! 🚀</code><br>
+                        <code>Sistemas Digitales - Sesión 3 | 31 de mayo 2025</code>
+                    </div>
+                </div>
+
+            <!-- Slide 16: Referencias Bibliográficas -->
+            <div class="slide">
+                <h2>📚 REFERENCIAS BIBLIOGRÁFICAS Y RECURSOS</h2>
+                
+                <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                    <h3 style="color: #ffd700; margin-bottom: 20px;">📖 Fuentes Académicas Principales</h3>
+                    
+                    <div class="comparison-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                        <div class="comparison-card">
+                            <h4>🏛️ Temas 2.4 y 2.5 - Contenido Programático</h4>
+                            <p><strong>Análisis de circuitos lógicos, Simplificación y Mapas de Karnaugh</strong></p>
+                            <div class="boolean-expression">
+                                <code>Flores, H.A. Sistemas digitales. Principios, análisis y diseño. 2014.</code>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-card">
+                            <h4>🎓 Universidad Nacional Autónoma de México (UNAM)</h4>
+                            <p><strong>"Álgebra Booleana - Sistemas Digitales"</strong></p>
+                            <div class="boolean-expression">
+                                <code>Floyd, T. Fundamentos de Sistemas Digitales. Pearson. 2006.</code>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-card">
+                            <h4>🔧 Arduino Programming</h4>
+                            <p><strong>Documentación oficial y tutoriales PWM</strong></p>
+                            <div class="boolean-expression">
+                                <code>Arduino.cc - Official Documentation & Tutorials</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="color: #ffd700; margin: 30px 0 20px 0;">📘 Herramientas Recomendadas</h3>
+                    
+                    <div class="laws-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                        <div class="law-card">
+                            <h4>🧮 Simplificación Booleana</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.4;">
+                                <li><strong>Boolean Algebra Calculator:</strong> dcode.fr</li>
+                                <li><strong>Karnaugh Map Solver:</strong> 32x8.com</li>
+                                <li><strong>Logic Circuit Simulator:</strong> circuitverse.org</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="law-card">
+                            <h4>💻 Arduino Development</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.4;">
+                                <li><strong>Arduino IDE:</strong> arduino.cc/downloads</li>
+                                <li><strong>Tinkercad Circuits:</strong> Simulación online</li>
+                                <li><strong>Fritzing:</strong> Diseño de circuitos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="law-card">
+                            <h4>📊 Evaluación</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.4;">
+                                <li><strong>Actividad 3:</strong> Ejercicios de simplificación</li>
+                                <li><strong>LAB4:</strong> Implementación PWM Arduino</li>
+                                <li><strong>Tiempo estimado:</strong> 2 horas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-element" style="margin-top: 30px;">
+                    <h3>🎓 Universidad del SABES - Sistemas Digitales</h3>
+                    <p><strong>Prof. Fausto Noé Jiménez</strong> | fausto.noej@sabes.edu.mx</p>
+                    <p>Sesión 3: Análisis, Simplificación y Minimización + LAB4 | 31 de mayo 2025</p>
+                    <div class="boolean-expression" style="margin-top: 15px;">
+                        <code>¡Listos para simplificar circuitos y programar Arduino! 🎉</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentSlideIndex = 0;
+        let totalSlides = 17;
+        let timer = null;
+        let timeLeft = 50 * 60; // 50 minutos en segundos
+        let isTimerRunning = false;
+
+        // Función para cambiar diapositivas
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            
+            // Ocultar diapositiva actual
+            slides[currentSlideIndex].classList.remove('active');
+            
+            // Calcular nueva diapositiva
+            currentSlideIndex += direction;
+            
+            // Verificar límites
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex >= totalSlides) {
+                currentSlideIndex = totalSlides - 1;
+            }
+            
+            // Mostrar nueva diapositiva
+            slides[currentSlideIndex].classList.add('active');
+            
+            // Actualizar interfaz
+            updateSlideCounter();
+            updateProgressBar();
+            updateNavigationButtons();
+        }
+
+        // Actualizar contador de diapositivas
+        function updateSlideCounter() {
+            const currentElement = document.getElementById('currentSlide');
+            const totalElement = document.getElementById('totalSlides');
+            if (currentElement) currentElement.textContent = currentSlideIndex + 1;
+            if (totalElement) totalElement.textContent = totalSlides;
+        }
+
+        // Actualizar barra de progreso
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+            }
+        }
+
+        // Actualizar botones de navegación
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (prevBtn) prevBtn.disabled = currentSlideIndex === 0;
+            if (nextBtn) nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+        }
+
+        // Timer functions
+        function startTimer() {
+            if (!isTimerRunning) {
+                isTimerRunning = true;
+                timer = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            if (isTimerRunning) {
+                isTimerRunning = false;
+                clearInterval(timer);
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 50 * 60;
+            updateTimerDisplay();
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                pauseTimer();
+                alert('¡Tiempo agotado! La sesión ha terminado.');
+            } else if (timeLeft <= 300) { // 5 minutos
+                const timerElement = document.getElementById('sessionTimer');
+                if (timerElement) timerElement.classList.add('warning');
+            }
+        }
+
+        function updateTimerDisplay() {
+            const timeElement = document.getElementById('timeRemaining');
+            if (timeElement) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Event bindings
+        function bindEvents() {
+            // Navegación
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.addEventListener('click', () => changeSlide(-1));
+            if (nextBtn) nextBtn.addEventListener('click', () => changeSlide(1));
+            
+            // Timer controls
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            if (startBtn) startBtn.addEventListener('click', startTimer);
+            if (pauseBtn) pauseBtn.addEventListener('click', pauseTimer);
+            if (resetBtn) resetBtn.addEventListener('click', resetTimer);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    changeSlide(-1);
+                } else if (e.key === 'ArrowRight') {
+                    changeSlide(1);
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    changeSlide(1);
+                }
+            });
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSlideCounter();
+            updateProgressBar();
+            updateNavigationButtons();
+            bindEvents();
+        });
+    </script>
+</body>
+</html>
