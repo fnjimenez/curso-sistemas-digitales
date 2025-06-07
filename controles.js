@@ -1,11 +1,11 @@
-// Navegación entre diapositivas
 let currentSlide = 1;
-const totalSlides = 15; // Ajusta según el número total de diapositivas
+const totalSlides = 15;
 
 function updateSlideDisplay() {
-  const display = document.getElementById("slideDisplay");
+  const display = document.getElementById("currentSlide");
   if (display) {
-    display.textContent = `Diapositiva ${currentSlide} / ${totalSlides}`;
+    display.textContent = currentSlide;
+    document.getElementById("totalSlides").textContent = totalSlides;
   }
 }
 
@@ -26,9 +26,9 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 updateSlideDisplay();
 
 // Temporizador
-let timer = 2400; // 40 minutos en segundos
+let timer = 2400; // 40 minutos
 let timerInterval;
-const timerDisplay = document.getElementById("timerDisplay");
+const timerDisplay = document.getElementById("timeRemaining");
 
 function formatTime(seconds) {
   const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -63,6 +63,4 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   timerDisplay.textContent = formatTime(timer);
 });
 
-if (timerDisplay) {
-  timerDisplay.textContent = formatTime(timer);
-}
+timerDisplay.textContent = formatTime(timer);
