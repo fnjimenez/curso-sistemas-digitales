@@ -1,7 +1,6 @@
-
 // Navegación entre diapositivas
 let currentSlide = 1;
-const totalSlides = 15;  // Ajustar si es diferente
+const totalSlides = 15; // Ajusta según el número total de diapositivas
 
 function updateSlideDisplay() {
   const display = document.getElementById("slideDisplay");
