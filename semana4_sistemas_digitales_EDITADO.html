@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sistemas Digitales - Semana 4 | Universidad del SABES</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .university-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .university-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #f39c12);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .course-info h1 {
+            font-size: 1.3rem;
+            color: #ffd700;
+            margin-bottom: 2px;
+        }
+
+        .course-info p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer-display {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-header:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-btn-header:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e8f4fd;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "⚡";
+            position: absolute;
+            left: -30px;
+        }
+
+        .clippy-tip {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clippy-tip:hover {
+            background: rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .clippy-tip::before {
+            content: "📎";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #1e3c72;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .clippy-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .clippy-content.active {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        .clippy-header {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .collapsible {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .collapsible.active {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0 20px;
+        }
+
+        .content.active {
+            max-height: 1000px;
+            padding: 20px;
+        }
+
+        .karnaugh-map {
+            display: grid;
+            grid-template-columns: 40px repeat(4, 60px);
+            grid-template-rows: 40px repeat(4, 60px);
+            gap: 2px;
+            margin: 20px auto;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .karnaugh-label {
+            background: rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        .karnaugh-cell {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .karnaugh-cell:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .karnaugh-cell.selected {
+            background: rgba(46, 213, 115, 0.5);
+            border-color: #2ed573;
+            color: #000;
+        }
+
+        .karnaugh-cell.grouped {
+            background: rgba(255, 107, 107, 0.5);
+            border-color: #ff6b6b;
+            color: #000;
+        }
+
+        .karnaugh-controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .karnaugh-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .karnaugh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .expression-display {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffd700;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .truth-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .truth-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background: rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .truth-table td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .steps-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #ffd700;
+        }
+
+        .step strong {
+            color: #ffd700;
+        }
+
+        .exercise-box {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .exercise-box h4 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            transition: width 0.3s ease;
+        }
+
+        .intro-slide {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
+            }
+            
+            .slide {
+                padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .karnaugh-map {
+                grid-template-columns: 30px repeat(4, 45px);
+                grid-template-rows: 30px repeat(4, 45px);
+                max-width: 300px;
+            }
+
+            .karnaugh-cell {
+                font-size: 1rem;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<div class="university-info">
+<div class="university-logo">⚡</div>
+<div class="course-info">
+<h1>SISTEMAS DIGITALES</h1>
+<p>Universidad del SABES | Semana 4 de 12 | 07 de junio 2025</p>
+<p>Prof. Fausto Noé Jiménez | fausto.noej@sabes.edu.mx</p>
+</div>
+</div>
+</div>
+<div class="header-center">
+<button class="nav-btn-header" id="prevBtn">
+                    ⬅️ Anterior
+                </button>
+<div class="slide-counter">
+<div>Diapositiva</div>
+<div><span id="currentSlide">1</span> / <span id="totalSlides">15</span></div>
+</div>
+<button class="nav-btn-header" id="nextBtn">
+                    Siguiente ➡️
+                </button>
+</div>
+<div class="header-right">
+<div class="session-timer">
+<div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">40:00</span>
+</div>
+<div class="timer-controls">
+<button class="timer-btn" id="startBtn">▶️</button>
+<button class="timer-btn" id="pauseBtn">⏸️</button>
+<button class="timer-btn" id="resetBtn">🔄</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="progress-indicator">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Slides -->
+<div class="slide-container">
+<!-- Slide 1: Título -->
+<div class="slide active intro-slide">
+<h1>🔍 ANÁLISIS Y SIMPLIFICACIÓN DE CIRCUITOS</h1>
+<div style="font-size: 8rem; margin: 30px 0;">🧮📊⚡</div>
+<h3>Semana 4: Análisis Sistemático y Tablas de Verdad</h3>
+<p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+<p><strong>Duración:</strong> 40 minutos + LAB5 Karnaugh</p>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h3>🎯 Temas Principales:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li><strong>2.4.</strong> Análisis de circuitos lógicos</li>
+<li><strong>2.4.1.</strong> Metodología de simplificación</li>
+<li><strong>2.4.2.</strong> Construcción de tablas de verdad</li>
+<li><strong>2.5.</strong> Mapas de Karnaugh avanzados</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h3>🔬 LAB5 Incluido:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li>Mapa de Karnaugh interactivo</li>
+<li>Simplificación de 4 variables</li>
+<li>Verificación con tablas</li>
+<li>Ejercicios prácticos</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Slide 2: Objetivos y Metodología -->
+<div class="slide">
+<h2>🎯 OBJETIVOS Y METODOLOGÍA</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Clippy Tip: Análisis vs Diseño</div>
+<div class="clippy-content">
+<p><strong>ANÁLISIS:</strong> Circuito existente → Función lógica</p>
+<p><strong>DISEÑO:</strong> Especificación → Circuito óptimo</p>
+<p>En análisis partimos del hardware hacia la función. En diseño hacemos el camino inverso.</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📋 Objetivos de Aprendizaje</h4>
+<ul>
+<li><strong>Analizar</strong> circuitos existentes sistemáticamente</li>
+<li><strong>Construir</strong> tablas de verdad completas</li>
+<li><strong>Aplicar</strong> simplificación algebraica</li>
+<li><strong>Utilizar</strong> mapas de Karnaugh para 3-4 variables</li>
+<li><strong>Verificar</strong> resultados con múltiples métodos</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚡ Metodología de Trabajo</h4>
+<div class="steps-container">
+<div class="step">
+<strong>1. Identificación:</strong> Entradas, salidas y compuertas
+                            </div>
+<div class="step">
+<strong>2. Análisis:</strong> Expresión booleana paso a paso
+                            </div>
+<div class="step">
+<strong>3. Verificación:</strong> Tabla de verdad completa
+                            </div>
+<div class="step">
+<strong>4. Optimización:</strong> Simplificación y Karnaugh
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 3: Proceso de Análisis Detallado -->
+<div class="slide">
+<h2>🔍 PROCESO DE ANÁLISIS SISTEMÁTICO</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    📊 Metodología Paso a Paso <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>PASO 1 - Inventario:</strong> Listar todas las entradas (A, B, C...) y identificar la salida (Y, F...)
+                        </div>
+<div class="step">
+<strong>PASO 2 - Trazado:</strong> Seguir el flujo desde entradas hasta salida, anotando cada operación
+                        </div>
+<div class="step">
+<strong>PASO 3 - Expresión:</strong> Escribir la función booleana completa F = ...
+                        </div>
+<div class="step">
+<strong>PASO 4 - Tabla:</strong> Evaluar todas las combinaciones posibles (2ⁿ filas)
+                        </div>
+<div class="step">
+<strong>PASO 5 - Verificación:</strong> Comprobar casos críticos manualmente
+                        </div>
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Clippy Tip: Estrategia de Simplificación</div>
+<div class="clippy-content">
+<p><strong>Orden recomendado:</strong></p>
+<p>1. Leyes básicas (identidad, complemento)</p>
+<p>2. Factorización y distributividad</p>
+<p>3. Absorción y redundancia</p>
+<p>4. De Morgan si hay negaciones complejas</p>
+<p><strong>Siempre verifica:</strong> ¿El resultado es más simple que el original?</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚠️ Errores Comunes</h4>
+<ul>
+<li>No identificar todas las variables</li>
+<li>Confundir precedencia de operadores</li>
+<li>Olvidar paréntesis en expresiones</li>
+<li>No verificar con tabla de verdad</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>✅ Buenas Prácticas</h4>
+<ul>
+<li>Usar nombres consistentes para variables</li>
+<li>Documentar cada paso de simplificación</li>
+<li>Verificar con al menos 2 métodos</li>
+<li>Comprobar casos límite (000, 111)</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Slide 4: Ejemplo DEMO Completo -->
+<div class="slide">
+<h2>🛠️ DEMO COMPLETO: ANÁLISIS SISTEMÁTICO</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🔧 Circuito a Analizar: (A + B) · C̄ + A · B̄ <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>IDENTIFICACIÓN:</strong> Variables A, B, C | Salida F
+                        </div>
+<div class="step">
+<strong>EXPRESIÓN ORIGINAL:</strong> F = (A + B) · C̄ + A · B̄
+                        </div>
+<div class="step">
+<strong>ANÁLISIS POR PARTES:</strong>
+<br/>• Término 1: (A + B) · C̄ - activó cuando (A OR B) AND NOT C
+                            <br/>• Término 2: A · B̄ - activo cuando A AND NOT B
+                        </div>
+</div>
+</div>
+<div class="truth-table">
+<h4>📊 Tabla de Verdad Completa</h4>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>A+B</th>
+<th>C̄</th>
+<th>(A+B)·C̄</th>
+<th>B̄</th>
+<th>A·B̄</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+<strong>MINTÉRMINOS:</strong> F = Σ(2, 4, 5, 6) = m₂ + m₄ + m₅ + m₆
+                </div>
+</div>
+<!-- Slide 5: Construcción de Tablas de Verdad -->
+<div class="slide">
+<h2>📊 CONSTRUCCIÓN DE TABLAS DE VERDAD</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">📋 Clippy Tip: Reglas Prácticas para Tablas</div>
+<div class="clippy-content">
+<p><strong>Orden binario:</strong> 000, 001, 010, 011, 100, 101, 110, 111</p>
+<p><strong>Patrón fijo:</strong> Primera columna alterna cada 1, segunda cada 2, tercera cada 4...</p>
+<p><strong>Verificación:</strong> Para n variables necesitas 2ⁿ filas exactamente</p>
+<p><strong>Tip:</strong> Completa primero todas las columnas de entrada, luego evalúa paso a paso</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🎯 Metodología Sistemática</h4>
+<div class="steps-container">
+<div class="step">
+<strong>1. Dimensionar:</strong> n variables → 2ⁿ filas
+                            </div>
+<div class="step">
+<strong>2. Entradas:</strong> Llenar sistemáticamente en binario
+                            </div>
+<div class="step">
+<strong>3. Columnas auxiliares:</strong> Evaluar sub-expresiones
+                            </div>
+<div class="step">
+<strong>4. Salida final:</strong> Combinar resultados
+                            </div>
+<div class="step">
+<strong>5. Verificar:</strong> Casos especiales y patrones
+                            </div>
+</div>
+</div>
+<div class="comparison-card">
+<h4>⚡ Optimización del Proceso</h4>
+<ul>
+<li><strong>Uso de software:</strong> Logisim, CircuitVerse</li>
+<li><strong>Calculadoras booleanas:</strong> Verificación rápida</li>
+<li><strong>Patrones reconocibles:</strong> AND, OR, XOR</li>
+<li><strong>Simetría:</strong> Buscar regularidades</li>
+</ul>
+<div class="expression-display">
+                            Ejemplo: A ⊕ B = AB̄ + ĀB
+                        </div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio para Clase 1</h4>
+<p><strong>Construir tabla de verdad para:</strong> F = A̅BC + AB̅C + ABC̅ + ABC</p>
+<p><strong>Pregunta:</strong> ¿Cuántos mintérminos tiene esta función?</p>
+<p><strong>Tiempo:</strong> 8 minutos</p>
+</div>
+</div>
+<!-- Slide 6: Simplificación Algebraica Avanzada -->
+<div class="slide">
+<h2>⚡ SIMPLIFICACIÓN ALGEBRAICA AVANZADA</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🔧 Ejemplo Paso a Paso: AB + A̅B + AB̅ <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Expresión original:</strong> F = AB + A̅B + AB̅
+                        </div>
+<div class="step">
+<strong>Agrupación por factores:</strong> F = B(A + A̅) + AB̅
+                        </div>
+<div class="step">
+<strong>Ley del complemento:</strong> F = B(1) + AB̅ = B + AB̅
+                        </div>
+<div class="step">
+<strong>Ley de absorción:</strong> F = B + AB̅ = B + AB̅
+                        </div>
+<div class="step">
+<strong>Distributividad:</strong> F = B + A(B̅) = A + B
+</div>
+<div class="step">
+<strong>Resultado final:</strong> F = A + B (¡Mucho más simple!)
+                        </div>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🎯 Estrategias de Simplificación</h4>
+<ul>
+<li><strong>Factorización:</strong> Buscar términos comunes</li>
+<li><strong>Absorción:</strong> A + AB = A</li>
+<li><strong>Consenso:</strong> AB + A̅C + BC = AB + A̅C</li>
+<li><strong>Adyacencia:</strong> AB + AB̅ = A</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚠️ Verificación Obligatoria</h4>
+<div class="expression-display">
+                            Original: 3 términos, 6 literales<br/>
+                            Simplificado: 2 términos, 2 literales<br/>
+                            Ahorro: 67% menos compuertas
+                        </div>
+<p><strong>Siempre verificar con tabla de verdad que ambas expresiones son equivalentes</strong></p>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio para Clase 2</h4>
+<p><strong>Simplificar:</strong> F = A̅BC̅ + A̅BC + AB̅C + ABC</p>
+<p><strong>Estrategia sugerida:</strong> Factorizar por pares adyacentes</p>
+<p><strong>Tiempo:</strong> 10 minutos</p>
+</div>
+</div>
+<!-- Slide 7: Mapas de Karnaugh - 3 Variables -->
+<div class="slide">
+<h2>🗺️ MAPAS DE KARNAUGH - 3 VARIABLES</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📋 Estructura y Orden</h4>
+<div class="karnaugh-map" style="grid-template-columns: 40px repeat(4, 50px); grid-template-rows: 40px repeat(2, 50px); max-width: 300px;">
+<div></div>
+<div class="karnaugh-label">BC̅</div>
+<div class="karnaugh-label">BC</div>
+<div class="karnaugh-label">BC</div>
+<div class="karnaugh-label">BC̅</div>
+<div class="karnaugh-label">A̅</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">0</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">1</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">3</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">2</div>
+<div class="karnaugh-label">A</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">4</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">5</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">7</div>
+<div class="karnaugh-cell" style="font-size: 0.8rem;">6</div>
+</div>
+<div class="expression-display">
+                            Orden Gray: 00, 01, 11, 10
+                        </div>
+</div>
+<div class="comparison-card">
+<h4>🎯 Reglas de Agrupación</h4>
+<ul>
+<li><strong>Tamaños válidos:</strong> 1, 2, 4, 8 celdas</li>
+<li><strong>Forma:</strong> Rectángulos o cuadrados únicamente</li>
+<li><strong>Adyacencia:</strong> Incluye bordes "envolventes"</li>
+<li><strong>Objetivo:</strong> Grupos más grandes posibles</li>
+<li><strong>Cobertura:</strong> Todos los 1s deben estar cubiertos</li>
+</ul>
+</div>
+</div>
+<div class="steps-container">
+<h4>📝 Proceso de Minimización:</h4>
+<div class="step">
+<strong>1. Llenar el mapa:</strong> Ubicar 1s según mintérminos de la función
+                    </div>
+<div class="step">
+<strong>2. Identificar grupos:</strong> Formar rectángulos de tamaño potencia de 2
+                    </div>
+<div class="step">
+<strong>3. Escribir términos:</strong> Para cada grupo, eliminar variables que cambian
+                    </div>
+<div class="step">
+<strong>4. Función final:</strong> Sumar todos los términos de grupo (OR)
+                    </div>
+</div>
+</div>
+<!-- Slide 8: Mapa Interactivo de Karnaugh -->
+<div class="slide">
+<h2>🖱️ MAPA DE KARNAUGH INTERACTIVO</h2>
+<div class="karnaugh-map" id="karnaughMap">
+<!-- Headers -->
+<div></div>
+<div class="karnaugh-label">CD̅</div>
+<div class="karnaugh-label">CD</div>
+<div class="karnaugh-label">CD</div>
+<div class="karnaugh-label">CD̅</div>
+<!-- Row 1: AB̅ -->
+<div class="karnaugh-label">AB̅</div>
+<div class="karnaugh-cell" data-index="0">0</div>
+<div class="karnaugh-cell" data-index="1">0</div>
+<div class="karnaugh-cell" data-index="3">0</div>
+<div class="karnaugh-cell" data-index="2">0</div>
+<!-- Row 2: AB -->
+<div class="karnaugh-label">AB</div>
+<div class="karnaugh-cell" data-index="4">0</div>
+<div class="karnaugh-cell" data-index="5">0</div>
+<div class="karnaugh-cell" data-index="7">0</div>
+<div class="karnaugh-cell" data-index="6">0</div>
+<!-- Row 3: AB -->
+<div class="karnaugh-label">AB</div>
+<div class="karnaugh-cell" data-index="12">0</div>
+<div class="karnaugh-cell" data-index="13">0</div>
+<div class="karnaugh-cell" data-index="15">0</div>
+<div class="karnaugh-cell" data-index="14">0</div>
+<!-- Row 4: AB̅ -->
+<div class="karnaugh-label">AB̅</div>
+<div class="karnaugh-cell" data-index="8">0</div>
+<div class="karnaugh-cell" data-index="9">0</div>
+<div class="karnaugh-cell" data-index="11">0</div>
+<div class="karnaugh-cell" data-index="10">0</div>
+</div>
+<div class="karnaugh-controls">
+<button class="karnaugh-btn" onclick="clearMap()">🔄 Limpiar</button>
+<button class="karnaugh-btn" onclick="loadExample()">📝 Ejemplo</button>
+<button class="karnaugh-btn" onclick="findGroups()">🔍 Agrupar</button>
+<button class="karnaugh-btn" onclick="showExpression()">📋 Expresión</button>
+</div>
+<div class="expression-display" id="karnaughExpression">
+                    Haz clic en las celdas para marcar 1s, luego usa "Agrupar" para ver la simplificación
+                </div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🎮 Instrucciones de Uso</h4>
+<ul>
+<li><strong>Clic:</strong> Alternar entre 0 y 1</li>
+<li><strong>Ejemplo:</strong> Cargar función predefinida</li>
+<li><strong>Agrupar:</strong> Detectar grupos óptimos</li>
+<li><strong>Expresión:</strong> Mostrar resultado simplificado</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🎯 Objetivo del Ejercicio</h4>
+<p>Practicar con diferentes configuraciones de 1s y observar cómo el agrupamiento afecta la expresión final.</p>
+<p><strong>Reto:</strong> ¿Puedes crear una función que se simplifique a solo 2 términos?</p>
+</div>
+</div>
+</div>
+<!-- Slide 9: Mapas de 4 Variables -->
+<div class="slide">
+<h2>🗺️ MAPAS DE KARNAUGH - 4 VARIABLES</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Estructura 4x4</h4>
+<p>Para 4 variables (A, B, C, D) necesitamos un mapa 4x4 con 16 celdas.</p>
+<div class="expression-display">
+                            Variables: AB (filas) × CD (columnas)<br/>
+                            Orden Gray en ambas dimensiones
+                        </div>
+<ul>
+<li><strong>Filas:</strong> AB̅, AB, AB, AB̅</li>
+<li><strong>Columnas:</strong> CD̅, CD, CD, CD̅</li>
+<li><strong>Envolvente:</strong> Bordes superior-inferior y izquierdo-derecho conectados</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🎯 Grupos Especiales en 4 Variables</h4>
+<ul>
+<li><strong>Grupo de 1:</strong> 4 literales (ej: ABCD)</li>
+<li><strong>Grupo de 2:</strong> 3 literales (ej: ABC)</li>
+<li><strong>Grupo de 4:</strong> 2 literales (ej: AB)</li>
+<li><strong>Grupo de 8:</strong> 1 literal (ej: A)</li>
+<li><strong>Grupo de 16:</strong> Función = 1 siempre</li>
+</ul>
+<div class="expression-display">
+                            Regla: Eliminar variables que cambian dentro del grupo
+                        </div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🎯 Ejemplo Completo: F = Σ(0,1,2,5,8,9,10) <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Ubicación de 1s:</strong> Mintérminos 0,1,2,5,8,9,10 en el mapa 4x4
+                        </div>
+<div class="step">
+<strong>Grupo 1:</strong> Celdas 0,1,8,9 → Eliminamos variables B y C → AD̅
+                        </div>
+<div class="step">
+<strong>Grupo 2:</strong> Celdas 0,2 → Eliminamos variables A y D → B̅C̅
+                        </div>
+<div class="step">
+<strong>Grupo 3:</strong> Celda 5 individual → AB̅CD
+                        </div>
+<div class="step">
+<strong>Resultado:</strong> F = AD̅ + B̅C̅ + AB̅CD
+                        </div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio Práctico</h4>
+<p><strong>Minimizar usando mapa de Karnaugh:</strong></p>
+<p>F(A,B,C,D) = Σ(1,3,7,11,15)</p>
+<p><strong>Pregunta adicional:</strong> ¿Esta función tiene algún patrón especial?</p>
+</div>
+</div>
+<!-- Slide 10: Casos Especiales y Don't Care -->
+<div class="slide">
+<h2>⚠️ CASOS ESPECIALES Y CONDICIONES DON'T CARE</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>❌ Condiciones Don't Care (X)</h4>
+<p>Combinaciones de entrada que <strong>nunca ocurren</strong> en el sistema real.</p>
+<div class="expression-display">
+                            F(A,B,C) = Σ(0,2,6) + d(1,3,5)
+                        </div>
+<ul>
+<li><strong>Ventaja:</strong> Mayor flexibilidad de agrupamiento</li>
+<li><strong>Uso:</strong> Pueden ser 0 o 1 según convenga</li>
+<li><strong>Representación:</strong> X o d en el mapa</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🔄 Funciones Incompletamente Especificadas</h4>
+<ul>
+<li><strong>BCD natural:</strong> Solo códigos 0-9 válidos</li>
+<li><strong>Control de displays:</strong> Algunas combinaciones prohibidas</li>
+<li><strong>Sistemas de seguridad:</strong> Estados imposibles</li>
+</ul>
+<div class="expression-display">
+                            Las X pueden convertirse en 0 o 1<br/>
+                            según generen grupos más grandes
+                        </div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    📝 Ejemplo con Don't Care: Display de 7 Segmentos <span>▼</span>
+</button>
+<div class="content">
+<div class="truth-table">
+<h4>Dígito BCD a Segmento 'a'</h4>
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>C</th><th>D</th><th>Dígito</th><th>Segmento a</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>1</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>3</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>4</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>5</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>6</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>7</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>8</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>9</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>-</td><td>X</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>-</td><td>X</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>-</td><td>X</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>-</td><td>X</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>0</td><td>-</td><td>X</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>X</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+                        F = Σ(0,2,3,5,6,7,8,9) + d(10,11,12,13,14,15)
+                    </div>
+</div>
+</div>
+<!-- Slide 11: Herramientas y Software -->
+<div class="slide">
+<h2>💻 HERRAMIENTAS Y SOFTWARE PARA ANÁLISIS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🛠️ Software Recomendado</h4>
+<ul>
+<li><strong>Logisim Evolution:</strong> Simulación de circuitos</li>
+<li><strong>CircuitVerse:</strong> Simulador web gratuito</li>
+<li><strong>Quartus Prime:</strong> Herramientas profesionales Intel</li>
+<li><strong>Digital:</strong> Simulador alemán muy completo</li>
+<li><strong>KarnaughMap.com:</strong> Mapas online</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🌐 Recursos Online</h4>
+<ul>
+<li><strong>Boolean Algebra Calculator</strong> (dcode.fr)</li>
+<li><strong>Karnaugh Map Solver</strong> (32x8.com)</li>
+<li><strong>Truth Table Generator</strong> (matematica.pt)</li>
+<li><strong>Circuit Simulator</strong> (falstad.com)</li>
+</ul>
+<div class="expression-display">
+                            Siempre verificar resultados<br/>
+                            con al menos 2 métodos diferentes
+                        </div>
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Clippy Tip: Flujo de Trabajo Eficiente</div>
+<div class="clippy-content">
+<p><strong>1. Análisis manual:</strong> Entender el problema completamente</p>
+<p><strong>2. Software:</strong> Verificar y explorar alternativas</p>
+<p><strong>3. Simulación:</strong> Comprobar funcionamiento real</p>
+<p><strong>4. Optimización:</strong> Considerar restricciones físicas</p>
+<p><strong>No dependas solo del software - entiende el proceso!</strong></p>
+</div>
+</div>
+<div class="steps-container">
+<h4>📋 Proceso de Validación:</h4>
+<div class="step">
+<strong>Paso 1:</strong> Resolver manualmente con álgebra booleana
+                    </div>
+<div class="step">
+<strong>Paso 2:</strong> Verificar con mapa de Karnaugh
+                    </div>
+<div class="step">
+<strong>Paso 3:</strong> Comprobar con tabla de verdad
+                    </div>
+<div class="step">
+<strong>Paso 4:</strong> Simular en software especializado
+                    </div>
+<div class="step">
+<strong>Paso 5:</strong> Implementar físicamente si es necesario
+                    </div>
+</div>
+</div>
+<!-- Slide 12: LAB5 - Práctica con Karnaugh -->
+<div class="slide">
+<h2>🔬 LAB5: PRÁCTICA CON MAPAS DE KARNAUGH</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🎯 Objetivos del Laboratorio</h4>
+<ul>
+<li>Dominar mapas de 3 y 4 variables</li>
+<li>Identificar grupos óptimos</li>
+<li>Manejar condiciones don't care</li>
+<li>Verificar con simulación</li>
+<li>Comparar métodos de simplificación</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚡ Ejercicios Prácticos</h4>
+<ul>
+<li><strong>Ejercicio 1:</strong> F = Σ(1,3,5,7,9,11,13,15)</li>
+<li><strong>Ejercicio 2:</strong> F = Σ(0,4,8,12,1,5,9,13)</li>
+<li><strong>Ejercicio 3:</strong> F = Σ(2,6,8,9,10,11,14,15)</li>
+<li><strong>Con don't care:</strong> F = Σ(1,3,5) + d(0,2,7)</li>
+</ul>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎮 Actividad Interactiva</h4>
+<p><strong>Usando el mapa interactivo de la diapositiva anterior:</strong></p>
+<ol style="text-align: left; margin-left: 20px;">
+<li>Implementar F = Σ(0,2,5,7,8,10,13,15)</li>
+<li>Encontrar la agrupación óptima</li>
+<li>Escribir la expresión simplificada</li>
+<li>Verificar reducción en número de compuertas</li>
+</ol>
+<p><strong>Tiempo estimado:</strong> 15 minutos</p>
+</div>
+<div class="steps-container">
+<h4>📝 Entregables del LAB5:</h4>
+<div class="step">
+<strong>1. Mapas resueltos:</strong> Todos los ejercicios con agrupaciones marcadas
+                    </div>
+<div class="step">
+<strong>2. Expresiones simplificadas:</strong> Resultado final de cada función
+                    </div>
+<div class="step">
+<strong>3. Verificación:</strong> Tabla de ver</div></div></div></div></div><script src="controles.js"></script></body></html>
