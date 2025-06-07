@@ -574,7 +574,7 @@
 <div class="course-info">
 <h1>SISTEMAS DIGITALES</h1>
 <p>Universidad del SABES | Semana 4 de 12 | 07 de junio 2025</p>
-<p>Prof. Fausto Noé Jiménez | fausto.noej@sabes.edu.mx</p>
+<p>Prof. Fausto Noé Jiménez | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef898e9a9c9b80c181808a85af9c8e8d8a9cc18a8b9ac18297">[email&#160;protected]</a></p>
 </div>
 </div>
 </div>
@@ -1238,7 +1238,218 @@
 <div class="step">
 <strong>3. Verificación:</strong> Tabla de ver</div></div></div></div></div>
        
-       <script src="controles.js"></script>
+       <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+       <script>
+        // Esperar a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado, inicializando controles...');
+            
+            // Navegación entre diapositivas
+            let currentSlide = 1;
+            const totalSlides = 15; // Ajusta según el número total de diapositivas
+            
+            // Función para actualizar la visualización de diapositivas
+            function updateSlideDisplay() {
+                const currentSlideElement = document.getElementById("currentSlide");
+                const totalSlidesElement = document.getElementById("totalSlides");
+                const progressBar = document.getElementById("progressBar");
+                
+                if (currentSlideElement) {
+                    currentSlideElement.textContent = currentSlide;
+                    console.log('Diapositiva actual actualizada a:', currentSlide);
+                }
+                
+                if (totalSlidesElement) {
+                    totalSlidesElement.textContent = totalSlides;
+                }
+                
+                // Actualizar barra de progreso
+                if (progressBar) {
+                    const progress = (currentSlide / totalSlides) * 100;
+                    progressBar.style.width = progress + '%';
+                }
+                
+                // Habilitar/deshabilitar botones según la posición
+                const prevBtn = document.getElementById("prevBtn");
+                const nextBtn = document.getElementById("nextBtn");
+                
+                if (prevBtn) {
+                    prevBtn.style.opacity = currentSlide > 1 ? '1' : '0.5';
+                    prevBtn.disabled = currentSlide <= 1;
+                }
+                
+                if (nextBtn) {
+                    nextBtn.style.opacity = currentSlide < totalSlides ? '1' : '0.5';
+                    nextBtn.disabled = currentSlide >= totalSlides;
+                }
+            }
+            
+            // Event listeners para navegación
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.addEventListener("click", function() {
+                    console.log('Botón anterior clickeado');
+                    if (currentSlide > 1) {
+                        currentSlide--;
+                        updateSlideDisplay();
+                        console.log('Navegando a diapositiva:', currentSlide);
+                    }
+                });
+                console.log('Event listener agregado al botón anterior');
+            } else {
+                console.error('Botón prevBtn no encontrado');
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener("click", function() {
+                    console.log('Botón siguiente clickeado');
+                    if (currentSlide < totalSlides) {
+                        currentSlide++;
+                        updateSlideDisplay();
+                        console.log('Navegando a diapositiva:', currentSlide);
+                    }
+                });
+                console.log('Event listener agregado al botón siguiente');
+            } else {
+                console.error('Botón nextBtn no encontrado');
+            }
+            
+            // Temporizador
+            let timer = 2400; // 40 minutos en segundos
+            let timerInterval = null;
+            const timerDisplay = document.getElementById("timeRemaining");
+            
+            function formatTime(seconds) {
+                const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                return `${mins}:${secs}`;
+            }
+            
+            function updateTimer() {
+                if (timer > 0) {
+                    timer--;
+                    if (timerDisplay) {
+                        timerDisplay.textContent = formatTime(timer);
+                    }
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    console.log('Tiempo agotado');
+                }
+            }
+            
+            // Event listeners para temporizador
+            const startBtn = document.getElementById("startBtn");
+            const pauseBtn = document.getElementById("pauseBtn");
+            const resetBtn = document.getElementById("resetBtn");
+            
+            if (startBtn) {
+                startBtn.addEventListener("click", function() {
+                    console.log('Temporizador iniciado');
+                    if (!timerInterval) {
+                        timerInterval = setInterval(updateTimer, 1000);
+                    }
+                });
+            }
+            
+            if (pauseBtn) {
+                pauseBtn.addEventListener("click", function() {
+                    console.log('Temporizador pausado');
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                });
+            }
+            
+            if (resetBtn) {
+                resetBtn.addEventListener("click", function() {
+                    console.log('Temporizador reiniciado');
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    timer = 2400;
+                    if (timerDisplay) {
+                        timerDisplay.textContent = formatTime(timer);
+                    }
+                });
+            }
+            
+            // Inicializar visualización
+            updateSlideDisplay();
+            if (timerDisplay) {
+                timerDisplay.textContent = formatTime(timer);
+            }
+            
+            console.log('Controles inicializados correctamente');
+            
+            // Agregar navegación con teclado
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        if (currentSlide > 1) {
+                            currentSlide--;
+                            updateSlideDisplay();
+                        }
+                        break;
+                    case 'ArrowRight':
+                        if (currentSlide < totalSlides) {
+                            currentSlide++;
+                            updateSlideDisplay();
+                        }
+                        break;
+                    case ' ': // Espaciador
+                        event.preventDefault();
+                        if (currentSlide < totalSlides) {
+                            currentSlide++;
+                            updateSlideDisplay();
+                        }
+                        break;
+                }
+            });
+            
+        });
+
+        // Funciones adicionales que pueden ser llamadas desde otros elementos
+        function toggleClippy(element) {
+            const tip = element.querySelector('.tip-content') || element.nextElementSibling;
+            if (tip) {
+                tip.style.display = tip.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function toggleCollapsible(button) {
+            const content = button.nextElementSibling;
+            if (content) {
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                button.textContent = content.style.display === 'none' ? '▼ Mostrar' : '▲ Ocultar';
+            }
+        }
+
+        // Funciones para el mapa de Karnaugh (si existen)
+        function clearMap() {
+            console.log('Limpiando mapa de Karnaugh');
+            // Implementar lógica para limpiar el mapa
+        }
+
+        function loadExample() {
+            console.log('Cargando ejemplo en mapa de Karnaugh');
+            // Implementar lógica para cargar ejemplo
+        }
+
+        function findGroups() {
+            console.log('Encontrando grupos en mapa de Karnaugh');
+            // Implementar lógica para encontrar grupos
+        }
+
+        function showExpression() {
+            console.log('Mostrando expresión del mapa de Karnaugh');
+            // Implementar lógica para mostrar expresión
+        }
+        </script>
 
 
 </body></html>
