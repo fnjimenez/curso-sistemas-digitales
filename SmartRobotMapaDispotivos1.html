@@ -125,9 +125,9 @@
             
             <div class="control-group">
                 <label>Sensores Infrarrojos:</label>
-                <button class="toggle-btn active" id="btn-ir-line">Line Tracking</button>
-                <button class="toggle-btn active" id="btn-ir-side">IR Lateral</button>
-                <button class="toggle-btn active" id="btn-ir-down">IR Inferior</button>
+                <button class="toggle-btn active" id="btn-ir1">IR1 Frontal</button>
+                <button class="toggle-btn active" id="btn-ir2">IR2 Lateral</button>
+                <button class="toggle-btn active" id="btn-ir3">IR3 Inferior</button>
             </div>
             
             <div class="control-group">
@@ -152,15 +152,15 @@
         
         <div id="info">
             <h4>Robot LAFVIN SmartBot Challenge</h4>
-            <p>Configuración optimizada para recolección de cubos</p>
+            <p>Configuración de 5 sensores estratégicos para recolección de cubos</p>
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color" style="background: #3498db;"></div>
-                    <span>Ultrasónicos</span>
+                    <span>US1/US2 Ultrasónicos</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #e74c3c;"></div>
-                    <span>Infrarrojos</span>
+                    <span>IR1/IR2/IR3 Infrarrojos</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #f39c12;"></div>
@@ -168,7 +168,11 @@
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #27ae60;"></div>
-                    <span>Rayos de detección</span>
+                    <span>Rayos horizontales</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff6b6b;"></div>
+                    <span>Rayos IR (rojo=vertical)</span>
                 </div>
             </div>
         </div>
@@ -210,7 +214,8 @@
             // Crear robot
             createRobot();
             
-            // Configurar controles
+            // Crear etiquetas
+            createLabels();
             setupControls();
             
             // Crear suelo
@@ -332,112 +337,106 @@
         }
         
         function createSensors() {
-            // Sensor ultrasónico frontal
+            // CONFIGURACIÓN SMARTBOT CHALLENGE - 5 SENSORES ESTRATÉGICOS
+            
+            // US1 - SENSOR ULTRASÓNICO FRONTAL
             components.usFront = new THREE.Group();
             const usGeo = new THREE.BoxGeometry(0.18, 0.08, 0.06);
             const usMat = new THREE.MeshLambertMaterial({ color: 0x3498db });
-            const usSensor = new THREE.Mesh(usGeo, usMat);
-            usSensor.position.set(0, 0.25, 1.62);
-            usSensor.castShadow = true;
-            components.usFront.add(usSensor);
+            const us1Sensor = new THREE.Mesh(usGeo, usMat);
+            us1Sensor.position.set(0, 0.35, 1.62); // Altura 4-6cm, centrado frontal
+            us1Sensor.castShadow = true;
+            components.usFront.add(us1Sensor);
             
-            // Rayo ultrasónico frontal
-            const rayGeo = new THREE.CylinderGeometry(0.01, 0.01, 2.0, 8);
+            // Rayo US1 - Horizontal hacia adelante (0°)
+            const rayGeo = new THREE.CylinderGeometry(0.015, 0.015, 2.0, 8);
             const rayMat = new THREE.MeshBasicMaterial({ 
                 color: 0x27ae60, 
                 transparent: true, 
                 opacity: 0.6 
             });
-            const ray = new THREE.Mesh(rayGeo, rayMat);
-            ray.position.set(0, 0.25, 2.62);
-            ray.rotation.x = Math.PI / 2;
-            components.usFront.add(ray);
+            const ray1 = new THREE.Mesh(rayGeo, rayMat);
+            ray1.position.set(0, 0.35, 2.62);
+            ray1.rotation.x = Math.PI / 2;
+            components.usFront.add(ray1);
             robot.add(components.usFront);
             
-            // Sensor ultrasónico lateral
+            // US2 - SENSOR ULTRASÓNICO LATERAL DERECHO
             components.usSide = new THREE.Group();
-            const usSide = new THREE.Mesh(usGeo, usMat);
-            usSide.position.set(1.12, 0.25, 0);
-            usSide.rotation.y = Math.PI / 2;
-            usSide.castShadow = true;
-            components.usSide.add(usSide);
+            const us2Sensor = new THREE.Mesh(usGeo, usMat);
+            us2Sensor.position.set(1.12, 0.4, 0); // Altura 8-10cm, lado derecho
+            us2Sensor.rotation.y = Math.PI / 2;
+            us2Sensor.castShadow = true;
+            components.usSide.add(us2Sensor);
             
-            const raySide = new THREE.Mesh(rayGeo, rayMat);
-            raySide.position.set(2.12, 0.25, 0);
-            raySide.rotation.z = Math.PI / 2;
-            components.usSide.add(raySide);
+            // Rayo US2 - Horizontal hacia la derecha (90°)
+            const ray2 = new THREE.Mesh(rayGeo, rayMat);
+            ray2.position.set(2.12, 0.4, 0);
+            ray2.rotation.z = Math.PI / 2;
+            components.usSide.add(ray2);
             robot.add(components.usSide);
             
-            // Line tracking module
-            components.irLine = new THREE.Group();
-            const lineGeo = new THREE.BoxGeometry(0.15, 0.05, 0.12);
-            const lineMat = new THREE.MeshLambertMaterial({ color: 0x2c3e50 });
-            const lineModule = new THREE.Mesh(lineGeo, lineMat);
-            lineModule.position.set(0, 0.05, 1.4);
-            lineModule.castShadow = true;
-            components.irLine.add(lineModule);
-            
-            // Sensores IR del line tracking
-            const irGeo = new THREE.CylinderGeometry(0.025, 0.025, 0.04, 8);
+            // IR1 - SENSOR INFRARROJO FRONTAL (debajo del US1)
+            components.ir1 = new THREE.Group();
+            const irGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.06, 8);
             const irMat = new THREE.MeshLambertMaterial({ color: 0xe74c3c });
+            const ir1Sensor = new THREE.Mesh(irGeo, irMat);
+            ir1Sensor.position.set(0, 0.18, 1.62); // Altura 2-3cm, debajo de US1
+            ir1Sensor.rotation.x = Math.PI / 2;
+            ir1Sensor.castShadow = true;
+            components.ir1.add(ir1Sensor);
             
-            // Geometría para rayos IR
-            const irRayGeo = new THREE.CylinderGeometry(0.005, 0.005, 0.5, 8);
+            // Rayo IR1 - Horizontal hacia adelante (0°)
+            const irRayGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.8, 8);
             const irRayMat = new THREE.MeshBasicMaterial({ 
                 color: 0xff6b6b, 
                 transparent: true, 
                 opacity: 0.7 
             });
+            const irRay1 = new THREE.Mesh(irRayGeo, irRayMat);
+            irRay1.position.set(0, 0.18, 2.02);
+            irRay1.rotation.x = Math.PI / 2;
+            components.ir1.add(irRay1);
+            robot.add(components.ir1);
             
-            for (let i = -1; i <= 1; i++) {
-                const irSensor = new THREE.Mesh(irGeo, irMat);
-                irSensor.position.set(i * 0.05, 0.02, 1.45);
-                irSensor.castShadow = true;
-                components.irLine.add(irSensor);
-                
-                // Rayo IR hacia abajo
-                const irRay = new THREE.Mesh(irRayGeo, irRayMat);
-                irRay.position.set(i * 0.05, -0.23, 1.45);
-                components.irLine.add(irRay);
-            }
-            robot.add(components.irLine);
+            // IR2 - SENSOR INFRARROJO LATERAL (junto al US2)
+            components.ir2 = new THREE.Group();
+            const ir2Sensor = new THREE.Mesh(irGeo, irMat);
+            ir2Sensor.position.set(1.12, 0.25, 0); // Altura 8-10cm, junto a US2
+            ir2Sensor.rotation.z = Math.PI / 2;
+            ir2Sensor.castShadow = true;
+            components.ir2.add(ir2Sensor);
             
-            // IR lateral
-            components.irSide = new THREE.Group();
-            const irSideSensor = new THREE.Mesh(irGeo, irMat);
-            irSideSensor.position.set(1.12, 0.18, 0);
-            irSideSensor.rotation.z = Math.PI / 2;
-            irSideSensor.castShadow = true;
-            components.irSide.add(irSideSensor);
+            // Rayo IR2 - Horizontal hacia la derecha (90°)
+            const irRay2 = new THREE.Mesh(irRayGeo, irRayMat);
+            irRay2.position.set(1.52, 0.25, 0);
+            irRay2.rotation.z = Math.PI / 2;
+            components.ir2.add(irRay2);
+            robot.add(components.ir2);
             
-            const irSideRay = new THREE.Mesh(irRayGeo, irRayMat);
-            irSideRay.position.set(1.37, 0.18, 0);
-            irSideRay.rotation.z = Math.PI / 2;
-            components.irSide.add(irSideRay);
-            robot.add(components.irSide);
+            // IR3 - SENSOR INFRARROJO INFERIOR (centro-trasero)
+            components.ir3 = new THREE.Group();
+            const ir3Sensor = new THREE.Mesh(irGeo, irMat);
+            ir3Sensor.position.set(0, 0.05, -1.0); // Altura 1-2cm, centro-trasero
+            ir3Sensor.castShadow = true;
+            components.ir3.add(ir3Sensor);
             
-            // IR inferior
-            components.irDown = new THREE.Group();
-            const irDownSensor = new THREE.Mesh(irGeo, irMat);
-            irDownSensor.position.set(0, 0.05, -1.0);
-            irDownSensor.castShadow = true;
-            components.irDown.add(irDownSensor);
+            // Rayo IR3 - VERTICAL hacia abajo (-90°) - EL ÚNICO HACIA ABAJO
+            const irRay3 = new THREE.Mesh(irRayGeo, irRayMat);
+            irRay3.position.set(0, -0.35, -1.0);
+            components.ir3.add(irRay3);
+            robot.add(components.ir3);
             
-            const irDownRay = new THREE.Mesh(irRayGeo, irRayMat);
-            irDownRay.position.set(0, -0.23, -1.0);
-            components.irDown.add(irDownRay);
-            robot.add(components.irDown);
-            
-            // Cámara
+            // CÁMARA - Para visión general
             components.camera = new THREE.Group();
             const camGeo = new THREE.BoxGeometry(0.15, 0.1, 0.08);
             const camMat = new THREE.MeshLambertMaterial({ color: 0x1a1a1a });
             const camSensor = new THREE.Mesh(camGeo, camMat);
-            camSensor.position.set(0, 0.6, 1.6);
+            camSensor.position.set(0, 0.6, 1.6); // Elevada para mejor vista
             camSensor.castShadow = true;
             components.camera.add(camSensor);
             
-            // Campo de visión
+            // Campo de visión de la cámara
             const camRayGeo = new THREE.ConeGeometry(0.3, 1.5, 8);
             const camRayMat = new THREE.MeshBasicMaterial({ 
                 color: 0xffff00, 
@@ -450,14 +449,67 @@
             camRay.rotation.x = Math.PI / 2;
             components.camera.add(camRay);
             robot.add(components.camera);
+        }
+        
+        function createLabels() {
+            const createLabel = (text, position, color = '#ffffff') => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = 128;
+                canvas.height = 64;
+                
+                context.fillStyle = color;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = '#000000';
+                context.font = '12px Arial';
+                context.textAlign = 'center';
+                context.fillText(text, 64, 35);
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+                const sprite = new THREE.Sprite(spriteMaterial);
+                sprite.position.copy(position);
+                sprite.scale.set(0.6, 0.3, 1);
+                
+                return sprite;
+            };
             
-            // Rayos (grupo para toggle)
-            components.rays = new THREE.Group();
-            components.usFront.children.forEach(child => {
-                if (child.material && child.material.transparent) {
-                    components.rays.add(child);
-                }
-            });
+            // Crear todas las etiquetas
+            components.labels = new THREE.Group();
+            
+            // Etiquetas de sensores
+            const labelUS1 = createLabel('US1 Frontal', new THREE.Vector3(0, 0.6, 1.8), '#3498db');
+            components.labels.add(labelUS1);
+            
+            const labelUS2 = createLabel('US2 Lateral', new THREE.Vector3(1.5, 0.6, 0), '#3498db');
+            components.labels.add(labelUS2);
+            
+            const labelIR1 = createLabel('IR1 Frontal', new THREE.Vector3(0, 0.4, 2.0), '#e74c3c');
+            components.labels.add(labelIR1);
+            
+            const labelIR2 = createLabel('IR2 Lateral', new THREE.Vector3(1.5, 0.5, 0.4), '#e74c3c');
+            components.labels.add(labelIR2);
+            
+            const labelIR3 = createLabel('IR3 Inferior', new THREE.Vector3(0, 0.3, -1.4), '#e74c3c');
+            components.labels.add(labelIR3);
+            
+            const labelCamera = createLabel('Camara', new THREE.Vector3(0, 0.9, 1.8), '#ffff00');
+            components.labels.add(labelCamera);
+            
+            // Etiquetas de componentes
+            const labelServo1 = createLabel('Servo 1 Base', new THREE.Vector3(0.4, 0.7, 1.2), '#f39c12');
+            components.labels.add(labelServo1);
+            
+            const labelServo2 = createLabel('Servo 2 Codo', new THREE.Vector3(0.4, 0.8, 2.2), '#f39c12');
+            components.labels.add(labelServo2);
+            
+            const labelServo3 = createLabel('Servo 3 Pinza', new THREE.Vector3(0.4, 1.6, 2.2), '#f39c12');
+            components.labels.add(labelServo3);
+            
+            const labelArduino = createLabel('Arduino UNO', new THREE.Vector3(0.4, 0.65, 0.3), '#4a90e2');
+            components.labels.add(labelArduino);
+            
+            robot.add(components.labels);
         }
         
         function createGround() {
@@ -488,9 +540,9 @@
             // Button controls
             document.getElementById('btn-us-front').addEventListener('click', () => toggleComponent('usFront'));
             document.getElementById('btn-us-side').addEventListener('click', () => toggleComponent('usSide'));
-            document.getElementById('btn-ir-line').addEventListener('click', () => toggleComponent('irLine'));
-            document.getElementById('btn-ir-side').addEventListener('click', () => toggleComponent('irSide'));
-            document.getElementById('btn-ir-down').addEventListener('click', () => toggleComponent('irDown'));
+            document.getElementById('btn-ir1').addEventListener('click', () => toggleComponent('ir1'));
+            document.getElementById('btn-ir2').addEventListener('click', () => toggleComponent('ir2'));
+            document.getElementById('btn-ir3').addEventListener('click', () => toggleComponent('ir3'));
             document.getElementById('btn-servos').addEventListener('click', () => toggleComponent('servos'));
             document.getElementById('btn-motors').addEventListener('click', () => toggleComponent('motors'));
             document.getElementById('btn-camera').addEventListener('click', () => toggleComponent('camera'));
@@ -539,7 +591,7 @@
         
         function toggleRays() {
             const button = document.getElementById('btn-rays');
-            const rayComponents = [components.usFront, components.usSide, components.irLine, components.irSide, components.irDown];
+            const rayComponents = [components.usFront, components.usSide, components.ir1, components.ir2, components.ir3, components.camera];
             
             rayComponents.forEach(comp => {
                 if (comp && comp.children) {
@@ -556,6 +608,12 @@
         
         function toggleLabels() {
             const button = document.getElementById('btn-labels');
+            const labelsGroup = components.labels;
+            
+            if (labelsGroup) {
+                labelsGroup.visible = !labelsGroup.visible;
+            }
+            
             button.classList.toggle('active');
         }
         
