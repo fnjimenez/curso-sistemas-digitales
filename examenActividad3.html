@@ -796,7 +796,103 @@
 
                 <div class="exercise-part">
                     <h4 style="color: #1e3c72;">Expresión simplificada (1.5 puntos)</h4>
-                    <input type="text" id="ex3_simplified" placeholder="Expresión booleana simplificada">
+                    
+                    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 15px 0; border-left: 5px solid #28a745;">
+                        <h5 style="color: #1b5e20; margin-bottom: 15px;">📚 Cómo Crear la Expresión Simplificada:</h5>
+                        
+                        <div style="color: #1b5e20; font-size: 14px;">
+                            <h6 style="color: #2e7d32; margin: 15px 0 10px 0;"><strong>Paso 1: Identificar los Mintérminos</strong></h6>
+                            <p>Busque en su tabla de verdad todas las filas donde la <strong>Salida Y = 1</strong>. Cada una de estas filas representa un <em>mintérmino</em>.</p>
+                            
+                            <h6 style="color: #2e7d32; margin: 15px 0 10px 0;"><strong>Paso 2: Escribir cada Mintérmino</strong></h6>
+                            <p>Para cada fila con salida = 1, escriba el producto de las variables siguiendo esta regla:</p>
+                            <ul style="margin-left: 20px;">
+                                <li>Si la variable es <strong>0</strong> → use la variable <strong>negada</strong> (A', B', C')</li>
+                                <li>Si la variable es <strong>1</strong> → use la variable <strong>normal</strong> (A, B, C)</li>
+                            </ul>
+                            
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                                <h6 style="color: #856404; margin-bottom: 10px;"><strong>💡 Ejemplo para Circuito de Mayoría:</strong></h6>
+                                <table style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                                    <tr style="background: #f8f9fa;">
+                                        <th style="padding: 5px; border: 1px solid #ddd;">Fila</th>
+                                        <th style="padding: 5px; border: 1px solid #ddd;">A</th>
+                                        <th style="padding: 5px; border: 1px solid #ddd;">B</th>
+                                        <th style="padding: 5px; border: 1px solid #ddd;">C</th>
+                                        <th style="padding: 5px; border: 1px solid #ddd;">Salida</th>
+                                        <th style="padding: 5px; border: 1px solid #ddd;">Mintérmino</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">4</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">0</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd; background: #d4edda;"><strong>1</strong></td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;"><code>A'BC</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">6</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">0</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd; background: #d4edda;"><strong>1</strong></td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;"><code>AB'C</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">7</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">0</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd; background: #d4edda;"><strong>1</strong></td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;"><code>ABC'</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">8</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;">1</td>
+                                        <td style="padding: 5px; border: 1px solid #ddd; background: #d4edda;"><strong>1</strong></td>
+                                        <td style="padding: 5px; border: 1px solid #ddd;"><code>ABC</code></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <h6 style="color: #2e7d32; margin: 15px 0 10px 0;"><strong>Paso 3: Sumar todos los Mintérminos</strong></h6>
+                            <p>Combine todos los mintérminos con el operador OR (+):</p>
+                            <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; margin: 10px 0;">
+                                <strong>Función inicial:</strong> Y = A'BC + AB'C + ABC' + ABC
+                            </div>
+                            
+                            <h6 style="color: #2e7d32; margin: 15px 0 10px 0;"><strong>Paso 4: Simplificar usando Álgebra Booleana</strong></h6>
+                            <p>Aplique las leyes de simplificación para reducir la expresión:</p>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; margin: 10px 0; line-height: 1.6;">
+                                Y = A'BC + AB'C + ABC' + ABC<br>
+                                Y = A'BC + AB'C + ABC' + ABC<br>
+                                Y = BC(A' + A) + AB'C + ABC'&nbsp;&nbsp;&nbsp;<em>[Factorizar BC]</em><br>
+                                Y = BC(1) + AB'C + ABC'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[A' + A = 1]</em><br>
+                                Y = BC + AB'C + ABC'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[BC·1 = BC]</em><br>
+                                Y = BC + AC(B' + B')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[Factorizar AC]</em><br>
+                                Y = BC + AC(1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[B' + B = 1]</em><br>
+                                Y = BC + AC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[AC·1 = AC]</em><br>
+                                Y = BC + AC + AB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>[Término faltante]</em>
+                            </div>
+                            
+                            <div style="background: #d1ecf1; padding: 10px; border-radius: 5px; margin: 15px 0;">
+                                <strong style="color: #0c5460;">📋 Resultado Final:</strong><br>
+                                <code style="font-size: 16px; color: #0c5460;">Y = AB + AC + BC</code>
+                            </div>
+                            
+                            <h6 style="color: #2e7d32; margin: 15px 0 10px 0;"><strong>Formatos Aceptados:</strong></h6>
+                            <ul style="margin-left: 20px;">
+                                <li><code>AB + AC + BC</code></li>
+                                <li><code>AB + BC + AC</code></li>
+                                <li><code>BC + AB + AC</code></li>
+                                <li>Cualquier orden de los términos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <input type="text" id="ex3_simplified" placeholder="Escriba la expresión booleana simplificada aquí">
                     <button class="btn" onclick="checkAnswer('3simplified')">Validar</button>
                     <div class="attempts-counter">Intentos restantes: <span id="attempts3simplified">5</span></div>
                     <div id="feedback3simplified"></div>
@@ -1499,23 +1595,25 @@
         function selectCircuitOption(exercise, option) {
             circuitAnswers[exercise] = option;
             
-            // Actualizar feedback visual inmediato
-            const isCorrect = correctCircuitAnswers[exercise] === option;
+            // Actualizar feedback visual NEUTRAL (sin mostrar respuestas correctas)
             const allRadios = document.querySelectorAll(`input[name="circuit${exercise}"]`);
             
             allRadios.forEach(radio => {
                 const label = radio.nextElementSibling;
                 if (radio.value === option) {
-                    if (isCorrect) {
-                        label.style.color = '#28a745';
-                        label.style.fontWeight = 'bold';
-                    } else {
-                        label.style.color = '#dc3545';
-                        label.style.fontWeight = 'bold';
-                    }
+                    // Resaltar la opción seleccionada en azul (neutral)
+                    label.style.color = '#1e3c72';
+                    label.style.fontWeight = 'bold';
+                    label.style.backgroundColor = '#e3f2fd';
+                    label.style.padding = '5px';
+                    label.style.borderRadius = '5px';
                 } else {
+                    // Restaurar estilo normal para opciones no seleccionadas
                     label.style.color = '#495057';
                     label.style.fontWeight = 'normal';
+                    label.style.backgroundColor = 'transparent';
+                    label.style.padding = '0';
+                    label.style.borderRadius = '0';
                 }
             });
         }
