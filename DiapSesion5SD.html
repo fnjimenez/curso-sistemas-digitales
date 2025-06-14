@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sistemas Digitales - Semana 5 | Universidad del SABES</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .university-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .university-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .course-info h1 {
+            font-size: 1.3rem;
+            color: #f093fb;
+            margin-bottom: 2px;
+        }
+
+        .course-info p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer-display {
+            background: rgba(240, 147, 251, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(240, 147, 251, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #f093fb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(245, 87, 108, 0.3);
+            border-color: #f5576c;
+            color: #f5576c;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-header:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-btn-header:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #f093fb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e8f4fd;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "🔗";
+            position: absolute;
+            left: -30px;
+        }
+
+        .clippy-tip {
+            background: rgba(240, 147, 251, 0.2);
+            border: 2px solid rgba(240, 147, 251, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clippy-tip:hover {
+            background: rgba(240, 147, 251, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .clippy-tip::before {
+            content: "💡";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #667eea;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .clippy-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .clippy-content.active {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        .clippy-header {
+            color: #f093fb;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .collapsible {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .collapsible.active {
+            background: rgba(240, 147, 251, 0.2);
+            border: 2px solid rgba(240, 147, 251, 0.5);
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0 20px;
+        }
+
+        .content.active {
+            max-height: 1000px;
+            padding: 20px;
+        }
+
+        .multiplexer-demo {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .inputs-section, .outputs-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-wire, .output-wire {
+            background: rgba(240, 147, 251, 0.3);
+            border: 2px solid rgba(240, 147, 251, 0.5);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-wire.active, .output-wire.active {
+            background: rgba(245, 87, 108, 0.5);
+            border-color: #f5576c;
+            color: #000;
+        }
+
+        .mux-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .expression-display {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #f093fb;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #f093fb;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #f093fb;
+        }
+
+        .truth-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .truth-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background: rgba(240, 147, 251, 0.3);
+            color: #f093fb;
+            font-weight: bold;
+        }
+
+        .truth-table td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .steps-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #f093fb;
+        }
+
+        .step strong {
+            color: #f093fb;
+        }
+
+        .exercise-box {
+            background: rgba(245, 87, 108, 0.2);
+            border: 2px solid rgba(245, 87, 108, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .exercise-box h4 {
+            color: #f5576c;
+            margin-bottom: 15px;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            transition: width 0.3s ease;
+        }
+
+        .intro-slide {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .circuit-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            font-size: 1.5rem;
+            border: 2px dashed rgba(240, 147, 251, 0.5);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
+            }
+            
+            .slide {
+                padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .multiplexer-demo {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<div class="university-info">
+<div class="university-logo">🔗</div>
+<div class="course-info">
+<h1>SISTEMAS DIGITALES</h1>
+<p>Universidad del SABES | Semana 5 de 12 | 10 - 16 de junio 2025</p>
+<p>Prof. Fausto Noé Jiménez | fausto.jimenez@sabes.edu.mx</p>
+</div>
+</div>
+</div>
+<div class="header-center">
+<button class="nav-btn-header" id="prevBtn">
+                    ⬅️ Anterior
+                </button>
+<div class="slide-counter">
+<div>Diapositiva</div>
+<div><span id="currentSlide">1</span> / <span id="totalSlides">18</span></div>
+</div>
+<button class="nav-btn-header" id="nextBtn">
+                    Siguiente ➡️
+                </button>
+</div>
+<div class="header-right">
+<div class="session-timer">
+<div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">50:00</span>
+</div>
+<div class="timer-controls">
+<button class="timer-btn" id="startBtn">▶️</button>
+<button class="timer-btn" id="pauseBtn">⏸️</button>
+<button class="timer-btn" id="resetBtn">🔄</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="progress-indicator">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Slides -->
+<div class="slide-container">
+
+<!-- Slide 1: Título -->
+<div class="slide active intro-slide">
+<h1>🔗 CIRCUITOS COMBINACIONALES</h1>
+<div style="font-size: 8rem; margin: 30px 0;">🎛️📡⚙️</div>
+<h3>Semana 5: Diseño y Análisis de Circuitos Combinacionales</h3>
+<p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+<p><strong>Duración:</strong> 50 minutos + Actividad 4</p>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h3>🎯 Temas Principales:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li><strong>3.1.</strong> Análisis de circuitos combinacionales</li>
+<li><strong>3.2.</strong> Diseño de circuitos combinacionales</li>
+<li><strong>3.2.1.</strong> Construcción desde expresiones booleanas</li>
+<li><strong>3.2.2.</strong> Diseño sin tablas de verdad</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h3>🎮 Actividad 4:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li>Implementación de multiplexor</li>
+<li>Diseño práctico de circuitos</li>
+<li>Simulación y verificación</li>
+<li>Optimización de diseños</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Slide 2: ¿Qué son los Circuitos Combinacionales? -->
+<div class="slide">
+<h2>🤔 ¿QUÉ SON LOS CIRCUITOS COMBINACIONALES?</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Definición Fundamental</div>
+<div class="clippy-content">
+<p><strong>Circuito Combinacional:</strong> Sistema digital donde las salidas dependen ÚNICAMENTE de las entradas actuales</p>
+<p><strong>No hay memoria:</strong> Sin elementos de almacenamiento</p>
+<p><strong>Respuesta inmediata:</strong> Cambio en entrada → cambio inmediato en salida</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Características Principales</h4>
+<ul>
+<li><strong>Sin memoria:</strong> No almacenan estados previos</li>
+<li><strong>Respuesta inmediata:</strong> Salida cambia con la entrada</li>
+<li><strong>Función pura:</strong> Misma entrada = misma salida</li>
+<li><strong>Sin retroalimentación:</strong> Flujo unidireccional</li>
+<li><strong>Determinísticos:</strong> Comportamiento predecible</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🔗 Ejemplos Comunes</h4>
+<ul>
+<li><strong>Sumadores:</strong> Suma aritmética binaria</li>
+<li><strong>Multiplexores:</strong> Selección de datos</li>
+<li><strong>Demultiplexores:</strong> Distribución de datos</li>
+<li><strong>Codificadores:</strong> Compresión de información</li>
+<li><strong>Decodificadores:</strong> Expansión de información</li>
+<li><strong>Comparadores:</strong> Comparación de magnitudes</li>
+</ul>
+</div>
+</div>
+<div class="expression-display">
+<strong>Ecuación general:</strong> Y₁, Y₂, ..., Yₘ = f(X₁, X₂, ..., Xₙ)
+</div>
+</div>
+
+<!-- Slide 3: Análisis vs Síntesis -->
+<div class="slide">
+<h2>🔍 ANÁLISIS vs SÍNTESIS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔍 ANÁLISIS</h4>
+<p><strong>Dato:</strong> Circuito existente</p>
+<p><strong>Objetivo:</strong> Determinar comportamiento</p>
+<div class="steps-container">
+<div class="step">
+<strong>1.</strong> Identificar entradas y salidas
+                        </div>
+<div class="step">
+<strong>2.</strong> Obtener expresión booleana
+                        </div>
+<div class="step">
+<strong>3.</strong> Construir tabla de verdad
+                        </div>
+<div class="step">
+<strong>4.</strong> Interpretar función
+                        </div>
+</div>
+</div>
+<div class="comparison-card">
+<h4>⚙️ SÍNTESIS (DISEÑO)</h4>
+<p><strong>Dato:</strong> Especificación del problema</p>
+<p><strong>Objetivo:</strong> Crear circuito óptimo</p>
+<div class="steps-container">
+<div class="step">
+<strong>1.</strong> Definir problema claramente
+                        </div>
+<div class="step">
+<strong>2.</strong> Crear tabla de verdad
+                        </div>
+<div class="step">
+<strong>3.</strong> Obtener expresión booleana
+                        </div>
+<div class="step">
+<strong>4.</strong> Simplificar expresión
+                        </div>
+<div class="step">
+<strong>5.</strong> Implementar circuito
+                        </div>
+</div>
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Estrategia de Trabajo</div>
+<div class="clippy-content">
+<p><strong>Análisis:</strong> "Tengo un circuito, ¿qué hace?"</p>
+<p><strong>Síntesis:</strong> "Necesito que haga esto, ¿cómo lo construyo?"</p>
+<p><strong>En la práctica:</strong> Ambos procesos se complementan y validan mutuamente</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 4: Proceso de Análisis Paso a Paso -->
+<div class="slide">
+<h2>🔬 PROCESO DE ANÁLISIS DETALLADO</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    📋 Metodología Sistemática de Análisis <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>PASO 1 - Inventario del Circuito:</strong>
+<br/>• Identificar todas las entradas (variables independientes)
+<br/>• Identificar todas las salidas (variables dependientes)
+<br/>• Contar y clasificar las compuertas lógicas
+                        </div>
+<div class="step">
+<strong>PASO 2 - Trazado de Señales:</strong>
+<br/>• Seguir el flujo desde entradas hacia salidas
+<br/>• Etiquetar nodos intermedios (T₁, T₂, T₃...)
+<br/>• Anotar la operación de cada compuerta
+                        </div>
+<div class="step">
+<strong>PASO 3 - Expresión Booleana:</strong>
+<br/>• Escribir expresiones para nodos intermedios
+<br/>• Combinar hasta llegar a la salida final
+<br/>• Verificar precedencia de operadores
+                        </div>
+<div class="step">
+<strong>PASO 4 - Tabla de Verdad:</strong>
+<br/>• Evaluar todas las combinaciones de entrada (2ⁿ)
+<br/>• Calcular valores intermedios paso a paso
+<br/>• Determinar salidas finales
+                        </div>
+<div class="step">
+<strong>PASO 5 - Interpretación:</strong>
+<br/>• ¿Qué función realiza el circuito?
+<br/>• ¿Es óptimo o se puede simplificar?
+<br/>• ¿Cuáles son sus aplicaciones prácticas?
+                        </div>
+</div>
+</div>
+<div class="circuit-diagram">
+                    🔗 Ejemplo: A ──┐<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ──┐<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B ──┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ OR ── Y<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C ─────────────────┘
+                </div>
+<div class="expression-display">
+<strong>Expresión resultante:</strong> Y = (A · B) + C
+</div>
+</div>
+
+<!-- Slide 5: Ejemplo Completo de Análisis -->
+<div class="slide">
+<h2>🛠️ EJEMPLO COMPLETO: ANÁLISIS DE CIRCUITO</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🔧 Circuito: Detector de Mayoría (3 entradas) <span>▼</span>
+</button>
+<div class="content">
+<div class="circuit-diagram">
+                    A ──┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌─ OR ──┐<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ─ T₁ ─┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    B ──┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─────┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ Y<br/>
+                    A ──┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ─ T₂ ─┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    C ──┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    B ──┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ─ T₃ ─┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┘<br/>
+                    C ──┘
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>ANÁLISIS:</strong>
+<br/>• T₁ = A · B (primer término AND)
+<br/>• T₂ = A · C (segundo término AND)  
+<br/>• T₃ = B · C (tercer término AND)
+<br/>• Y = T₁ + T₂ + T₃ = A·B + A·C + B·C
+                        </div>
+</div>
+</div>
+<div class="truth-table">
+<h4>📊 Tabla de Verdad - Detector de Mayoría</h4>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>A·B</th>
+<th>A·C</th>
+<th>B·C</th>
+<th>Y</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Minoría (0/3)</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Minoría (1/3)</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Minoría (1/3)</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>Mayoría (2/3)</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Minoría (1/3)</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>Mayoría (2/3)</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>Mayoría (2/3)</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>Mayoría (3/3)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+<strong>FUNCIÓN:</strong> Detector de Mayoría - La salida es 1 cuando al menos 2 de las 3 entradas son 1
+</div>
+</div>
+
+<!-- Slide 6: Proceso de Síntesis (Diseño) -->
+<div class="slide">
+<h2>⚙️ PROCESO DE SÍNTESIS (DISEÑO)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Del Problema al Circuito</div>
+<div class="clippy-content">
+<p><strong>Síntesis:</strong> Arte de convertir especificaciones en hardware funcional</p>
+<p><strong>Clave:</strong> Entender perfectamente QUÉ debe hacer antes de pensar en CÓMO hacerlo</p>
+<p><strong>Objetivo:</strong> Circuito que cumpla especificaciones con mínimo costo y máxima eficiencia</p>
+</div>
+</div>
+<div class="steps-container">
+<h4>📋 Metodología de Diseño:</h4>
+<div class="step">
+<strong>1. ESPECIFICACIÓN DEL PROBLEMA:</strong>
+<br/>• Definir claramente qué debe hacer el circuito
+<br/>• Identificar entradas y salidas necesarias
+<br/>• Establecer restricciones (velocidad, potencia, costo)
+                    </div>
+<div class="step">
+<strong>2. TABLA DE VERDAD:</strong>
+<br/>• Enumerar todas las combinaciones de entrada posibles
+<br/>• Determinar la salida deseada para cada combinación
+<br/>• Verificar que cubra todos los casos
+                    </div>
+<div class="step">
+<strong>3. EXPRESIÓN BOOLEANA:</strong>
+<br/>• Obtener función a partir de mintérminos o maxtérminos
+<br/>• Elegir representación más conveniente
+                    </div>
+<div class="step">
+<strong>4. SIMPLIFICACIÓN:</strong>
+<br/>• Usar álgebra booleana o mapas de Karnaugh
+<br/>• Minimizar número de compuertas y conexiones
+                    </div>
+<div class="step">
+<strong>5. IMPLEMENTACIÓN:</strong>
+<br/>• Dibujar esquema del circuito
+<br/>• Verificar funcionamiento mediante simulación
+<br/>• Optimizar para cumplir restricciones
+                    </div>
+</div>
+</div>
+
+<!-- Slide 7: Ejemplo de Síntesis - Sistema de Alarma -->
+<div class="slide">
+<h2>🚨 EJEMPLO DE SÍNTESIS: SISTEMA DE ALARMA</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🎯 Problema: Sistema de Seguridad para Oficina <span>▼</span>
+</button>
+<div class="content">
+<div class="exercise-box">
+<h4>📋 Especificación del Problema</h4>
+<p><strong>Entradas:</strong></p>
+<ul>
+<li><strong>M:</strong> Sensor de movimiento (1 = detecta movimiento)</li>
+<li><strong>P:</strong> Sensor de puerta (1 = puerta abierta)</li>
+<li><strong>H:</strong> Horario (1 = horario laboral, 0 = fuera de horario)</li>
+</ul>
+<p><strong>Salida:</strong></p>
+<ul>
+<li><strong>A:</strong> Alarma (1 = activar alarma)</li>
+</ul>
+<p><strong>Lógica:</strong> La alarma debe sonar cuando se detecte movimiento O la puerta esté abierta, pero SOLO fuera del horario laboral.</p>
+</div>
+</div>
+<div class="truth-table">
+<h4>📊 Tabla de Verdad del Sistema</h4>
+<table>
+<thead>
+<tr>
+<th>M</th>
+<th>P</th>
+<th>H</th>
+<th>Descripción</th>
+<th>A</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>Sin actividad, fuera de horario</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>Sin actividad, horario laboral</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>Puerta abierta, fuera de horario</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>Puerta abierta, horario laboral</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>Movimiento, fuera de horario</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>Movimiento, horario laboral</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>Ambos sensores, fuera de horario</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>Ambos sensores, horario laboral</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>OBTENCIÓN DE LA FUNCIÓN:</strong>
+<br/>A = Σ(2,4,6) = M̄PH̄ + MP̄H̄ + MPH̄
+                        </div>
+<div class="step">
+<strong>SIMPLIFICACIÓN:</strong>
+<br/>A = H̄(M̄P + MP̄ + MP) = H̄(M̄P + M(P̄ + P)) = H̄(M̄P + M) = H̄(M + P)
+                        </div>
+</div>
+<div class="expression-display">
+<strong>FUNCIÓN FINAL:</strong> A = H̄ · (M + P)
+<br/><strong>INTERPRETACIÓN:</strong> Alarma = NOT(Horario) AND (Movimiento OR Puerta)
+</div>
+</div>
+
+<!-- Slide 8: Construcción desde Expresiones Booleanas -->
+<div class="slide">
+<h2>🔧 CONSTRUCCIÓN DESDE EXPRESIONES BOOLEANAS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📐 Proceso Directo</h4>
+<ol style="text-align: left;">
+<li><strong>Analizar la expresión:</strong> Identificar operadores principales</li>
+<li><strong>Determinar niveles:</strong> Precedencia de operaciones</li>
+<li><strong>Asignar compuertas:</strong> Cada operador → compuerta específica</li>
+<li><strong>Conectar señales:</strong> Respetar flujo de datos</li>
+<li><strong>Verificar:</strong> Simular comportamiento</li>
+</ol>
+</div>
+<div class="comparison-card">
+<h4>⚡ Reglas de Implementación</h4>
+<ul>
+<li><strong>AND (·):</strong> Compuerta AND</li>
+<li><strong>OR (+):</strong> Compuerta OR</li>
+<li><strong>NOT (̄):</strong> Compuerta NOT/Inversor</li>
+<li><strong>Paréntesis:</strong> Determinan precedencia</li>
+<li><strong>Niveles:</strong> NOT → AND → OR</li>
+</ul>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🛠️ Ejemplo: F = A·B̄ + C·(D + Ē) <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>NIVEL 1 - Inversores:</strong> B̄ y Ē
+                        </div>
+<div class="step">
+<strong>NIVEL 2 - AND intermedios:</strong> A·B̄ y primera parte
+                        </div>
+<div class="step">
+<strong>NIVEL 3 - OR intermedio:</strong> (D + Ē)
+                        </div>
+<div class="step">
+<strong>NIVEL 4 - AND final:</strong> C·(D + Ē)
+                        </div>
+<div class="step">
+<strong>NIVEL 5 - OR final:</strong> A·B̄ + C·(D + Ē)
+                        </div>
+</div>
+<div class="circuit-diagram">
+                        A ──┐<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ──┐<br/>
+                        B ──○───┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ OR ── F<br/>
+                        C ──┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ AND ──┘<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;┌─ OR ──┘<br/>
+                        D ──┤<br/>
+                        E ──○──┘
+                    </div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio Práctico</h4>
+<p><strong>Implementar:</strong> G = (A + B̄)·(C̄ + D)·Ē</p>
+<p><strong>Tiempo:</strong> 10 minutos</p>
+<p><strong>Entregar:</strong> Diagrama del circuito con niveles marcados</p>
+</div>
+</div>
+
+<!-- Slide 9: Diseño sin Tablas de Verdad -->
+<div class="slide">
+<h2>🚀 DISEÑO SIN TABLAS DE VERDAD</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Cuándo NO usar tablas de verdad</div>
+<div class="clippy-content">
+<p><strong>Muchas variables:</strong> Para n>4, tablas muy grandes (2ⁿ filas)</p>
+<p><strong>Lógica evidente:</strong> Cuando la función es intuitiva</p>
+<p><strong>Especificación directa:</strong> Problema ya expresado en términos lógicos</p>
+<p><strong>Restricciones de tiempo:</strong> Diseño rápido requerido</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🎯 Métodos Alternativos</h4>
+<ul>
+<li><strong>Análisis del problema:</strong> Traducción directa de requisitos</li>
+<li><strong>Descomposición:</strong> Dividir en sub-problemas</li>
+<li><strong>Patrones conocidos:</strong> Usar bloques estándar</li>
+<li><strong>Intuición lógica:</strong> Razonamiento directo</li>
+<li><strong>Iteración:</strong> Refinamiento progresivo</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚡ Ventajas del Método</h4>
+<ul>
+<li><strong>Rapidez:</strong> Diseño más ágil</li>
+<li><strong>Escalabilidad:</strong> Funciona con muchas variables</li>
+<li><strong>Comprensión:</strong> Mantiene contexto del problema</li>
+<li><strong>Flexibilidad:</strong> Fácil modificación</li>
+<li><strong>Modularidad:</strong> Diseño por bloques</li>
+</ul>
+</div>
+</div>
+<div class="steps-container">
+<h4>📋 Metodología Directa:</h4>
+<div class="step">
+<strong>1. COMPRENSIÓN:</strong> Entender perfectamente el problema en lenguaje natural
+                    </div>
+<div class="step">
+<strong>2. TRADUCCIÓN:</strong> Convertir requisitos a expresiones lógicas directamente
+                    </div>
+<div class="step">
+<strong>3. COMBINACIÓN:</strong> Unir expresiones usando operadores lógicos
+                    </div>
+<div class="step">
+<strong>4. SIMPLIFICACIÓN:</strong> Aplicar leyes booleanas para optimizar
+                    </div>
+<div class="step">
+<strong>5. VERIFICACIÓN:</strong> Probar con casos clave (no todos)
+                    </div>
+</div>
+</div>
+
+<!-- Slide 10: Ejemplo de Diseño Directo -->
+<div class="slide">
+<h2>💡 EJEMPLO: CONTROL DE ACCESO INTELIGENTE</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🔐 Problema: Sistema de Acceso Multi-Factor <span>▼</span>
+</button>
+<div class="content">
+<div class="exercise-box">
+<h4>📋 Especificaciones del Sistema</h4>
+<p><strong>El acceso se permite cuando:</strong></p>
+<ul>
+<li>Tarjeta válida AND (huella digital correcta OR código PIN correcto)</li>
+<li>O cuando es el administrador con su tarjeta especial</li>
+<li>Pero NUNCA durante modo de emergencia</li>
+</ul>
+<p><strong>Variables:</strong></p>
+<ul>
+<li><strong>T:</strong> Tarjeta válida | <strong>H:</strong> Huella correcta | <strong>P:</strong> PIN correcto</li>
+<li><strong>A:</strong> Tarjeta admin | <strong>E:</strong> Modo emergencia</li>
+</ul>
+</div>
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>ANÁLISIS DIRECTO:</strong>
+<br/>• Acceso normal: T AND (H OR P)
+<br/>• Acceso admin: A (tarjeta admin siempre permite)
+<br/>• Restricción: NOT E (nunca durante emergencia)
+                        </div>
+<div class="step">
+<strong>TRADUCCIÓN A LÓGICA:</strong>
+<br/>Acceso = [T·(H + P) + A] · Ē
+                        </div>
+<div class="step">
+<strong>VERIFICACIÓN CON CASOS CLAVE:</strong>
+<br/>• Usuario normal con tarjeta y PIN → Acceso ✓
+<br/>• Admin en emergencia → No acceso ✓
+<br/>• Usuario sin tarjeta pero con huella → No acceso ✓
+                        </div>
+</div>
+<div class="expression-display">
+<strong>FUNCIÓN FINAL:</strong> ACCESO = [T·(H + P) + A] · Ē
+<br/><strong>IMPLEMENTACIÓN:</strong> 6 compuertas (vs 32 filas en tabla de verdad)
+</div>
+</div>
+
+<!-- Slide 11: Introducción a Multiplexores -->
+<div class="slide">
+<h2>🎛️ MULTIPLEXORES (MUX)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 ¿Qué es un Multiplexor?</div>
+<div class="clippy-content">
+<p><strong>Función:</strong> Selector de datos - "interruptor digital"</p>
+<p><strong>Analogía:</strong> Como un conmutador rotativo que conecta una de varias entradas a la salida</p>
+<p><strong>Control:</strong> Líneas de selección determinan cuál entrada pasa a la salida</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Características Principales</h4>
+<ul>
+<li><strong>n entradas de datos:</strong> I₀, I₁, I₂, ..., I_{n-1}</li>
+<li><strong>k líneas de selección:</strong> S₀, S₁, ..., S_{k-1} donde 2^k = n</li>
+<li><strong>1 salida:</strong> Y</li>
+<li><strong>Función:</strong> Y = I_j donde j es el valor binario de las líneas S</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🔢 Tipos Comunes</h4>
+<ul>
+<li><strong>2:1 MUX:</strong> 2 entradas, 1 línea selección</li>
+<li><strong>4:1 MUX:</strong> 4 entradas, 2 líneas selección</li>
+<li><strong>8:1 MUX:</strong> 8 entradas, 3 líneas selección</li>
+<li><strong>16:1 MUX:</strong> 16 entradas, 4 líneas selección</li>
+</ul>
+</div>
+</div>
+<div class="multiplexer-demo" id="muxDemo">
+<div class="inputs-section">
+<div class="input-wire" onclick="toggleInput(0)">I₀: <span id="input0">0</span></div>
+<div class="input-wire" onclick="toggleInput(1)">I₁: <span id="input1">0</span></div>
+<div class="input-wire" onclick="toggleInput(2)">I₂: <span id="input2">0</span></div>
+<div class="input-wire" onclick="toggleInput(3)">I₃: <span id="input3">0</span></div>
+<div style="margin-top: 10px;">
+<div class="input-wire" onclick="toggleSelect(0)">S₀: <span id="select0">0</span></div>
+<div class="input-wire" onclick="toggleSelect(1)">S₁: <span id="select1">0</span></div>
+</div>
+</div>
+<div class="mux-symbol">
+MUX<br/>4:1
+                </div>
+<div class="outputs-section">
+<div class="output-wire" id="output">Y: <span id="outputValue">0</span></div>
+<div style="margin-top: 20px; font-size: 0.9rem;">
+<div>Selección: <span id="selection">0</span></div>
+<div>Entrada activa: I<span id="activeInput">0</span></div>
+</div>
+</div>
+</div>
+<div class="expression-display" id="muxExpression">
+<strong>Función MUX 4:1:</strong> Y = S̄₁S̄₀I₀ + S̄₁S₀I₁ + S₁S̄₀I₂ + S₁S₀I₃
+</div>
+</div>
+
+<!-- Slide 12: Diseño de Multiplexor 4:1 -->
+<div class="slide">
+<h2>🛠️ DISEÑO COMPLETO: MULTIPLEXOR 4:1</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    📐 Análisis y Construcción del MUX 4:1 <span>▼</span>
+</button>
+<div class="content">
+<div class="truth-table">
+<h4>📊 Tabla de Verdad MUX 4:1</h4>
+<table>
+<thead>
+<tr>
+<th>S₁</th>
+<th>S₀</th>
+<th>Entrada Seleccionada</th>
+<th>Y</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>I₀</td><td>I₀</td></tr>
+<tr><td>0</td><td>1</td><td>I₁</td><td>I₁</td></tr>
+<tr><td>1</td><td>0</td><td>I₂</td><td>I₂</td></tr>
+<tr><td>1</td><td>1</td><td>I₃</td><td>I₃</td></tr>
+</tbody>
+</table>
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>FUNCIÓN BOOLEANA:</strong>
+<br/>Y = S̄₁S̄₀I₀ + S̄₁S₀I₁ + S₁S̄₀I₂ + S₁S₀I₃
+                        </div>
+<div class="step">
+<strong>IMPLEMENTACIÓN:</strong>
+<br/>• 4 compuertas AND de 3 entradas (para cada término)
+<br/>• 1 compuerta OR de 4 entradas (suma final)
+<br/>• 2 inversores (para S̄₁ y S̄₀)
+                        </div>
+<div class="step">
+<strong>VERIFICACIÓN:</strong>
+<br/>• S₁S₀ = 00 → Y = I₀ ✓
+<br/>• S₁S₀ = 01 → Y = I₁ ✓
+<br/>• S₁S₀ = 10 → Y = I₂ ✓
+<br/>• S₁S₀ = 11 → Y = I₃ ✓
+                        </div>
+</div>
+</div>
+<div class="circuit-diagram">
+                    I₀ ──┬─ AND ──┐<br/>
+                    S̄₁ ──┼──┬─────┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌─ OR ── Y<br/>
+                    S̄₀ ──┼──┼─────┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    I₁ ──┼─ │ AND ──┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─┼─────┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    S₀ ────┼─────┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    I₂ ──┬─ │ AND ──┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    S₁ ──┼─┼─┬─────┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─┼─┼─────┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    I₃ ────┼─┼ AND ─┤&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─────┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┘
+                </div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio: Aplicación Práctica</h4>
+<p><strong>Diseñar:</strong> Sistema selector de 4 sensores de temperatura</p>
+<p><strong>Entradas:</strong> T₀, T₁, T₂, T₃ (lecturas de sensores)</p>
+<p><strong>Control:</strong> S₁S₀ selecciona qué sensor mostrar</p>
+<p><strong>Tiempo:</strong> 15 minutos</p>
+</div>
+</div>
+
+<!-- Slide 13: Demultiplexores -->
+<div class="slide">
+<h2>🌟 DEMULTIPLEXORES (DEMUX)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🔄 Función Inversa al MUX</div>
+<div class="clippy-content">
+<p><strong>DEMUX:</strong> Distribuye una entrada a múltiples salidas</p>
+<p><strong>Analogía:</strong> Como un conmutador que dirige agua de una tubería a varios destinos</p>
+<p><strong>Relación:</strong> DEMUX es la función inversa del MUX</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Características DEMUX</h4>
+<ul>
+<li><strong>1 entrada de datos:</strong> D</li>
+<li><strong>n salidas:</strong> Y₀, Y₁, Y₂, ..., Y_{n-1}</li>
+<li><strong>k líneas de selección:</strong> S₀, S₁, ..., S_{k-1}</li>
+<li><strong>Función:</strong> Y_j = D, todas las demás = 0</li>
+<li><strong>Control:</strong> j = valor binario de líneas S</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🎯 Aplicaciones Principales</h4>
+<ul>
+<li><strong>Distribución de datos:</strong> Enviar datos a destinos específicos</li>
+<li><strong>Decodificación:</strong> Activar dispositivos individuales</li>
+<li><strong>Ruteo:</strong> Direccionar señales en sistemas</li>
+<li><strong>Control:</strong> Habilitar componentes selectivamente</li>
+</ul>
+</div>
+</div>
+<div class="truth-table">
+<h4>📊 Tabla de Verdad DEMUX 1:4</h4>
+<table>
+<thead>
+<tr>
+<th>S₁</th>
+<th>S₀</th>
+<th>D</th>
+<th>Y₀</th>
+<th>Y₁</th>
+<th>Y₂</th>
+<th>Y₃</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+<strong>Funciones DEMUX 1:4:</strong><br/>
+Y₀ = S̄₁S̄₀D &nbsp;&nbsp;|&nbsp;&nbsp; Y₁ = S̄₁S₀D &nbsp;&nbsp;|&nbsp;&nbsp; Y₂ = S₁S̄₀D &nbsp;&nbsp;|&nbsp;&nbsp; Y₃ = S₁S₀D
+</div>
+</div>
+
+<!-- Slide 14: Codificadores y Decodificadores -->
+<div class="slide">
+<h2>🔢 CODIFICADORES Y DECODIFICADORES</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📥 CODIFICADORES</h4>
+<p><strong>Función:</strong> Comprimir información</p>
+<p><strong>n entradas → k salidas</strong> donde 2^k ≥ n</p>
+<ul>
+<li><strong>Entrada:</strong> Solo una línea activa a la vez</li>
+<li><strong>Salida:</strong> Código binario de la posición</li>
+<li><strong>Ejemplo:</strong> Codificador 8:3 (8 entradas → 3 bits)</li>
+</ul>
+<div class="expression-display" style="font-size: 1rem;">
+Codificador 4:2<br/>
+I₂ activa → Y₁Y₀ = 10<br/>
+I₃ activa → Y₁Y₀ = 11
+</div>
+</div>
+<div class="comparison-card">
+<h4>📤 DECODIFICADORES</h4>
+<p><strong>Función:</strong> Expandir información</p>
+<p><strong>k entradas → n salidas</strong> donde n ≤ 2^k</p>
+<ul>
+<li><strong>Entrada:</strong> Código binario</li>
+<li><strong>Salida:</strong> Una línea activa correspondiente</li>
+<li><strong>Ejemplo:</strong> Decodificador 3:8 (3 bits → 8 salidas)</li>
+</ul>
+<div class="expression-display" style="font-size: 1rem;">
+Decodificador 2:4<br/>
+A₁A₀ = 01 → Y₁ = 1<br/>
+A₁A₀ = 10 → Y₂ = 1
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🎯 Ejemplo: Decodificador 2:4 con Enable <span>▼</span>
+</button>
+<div class="content">
+<div class="truth-table">
+<h4>📊 Decodificador 2:4 con Enable</h4>
+<table>
+<thead>
+<tr>
+<th>EN</th>
+<th>A₁</th>
+<th>A₀</th>
+<th>Y₀</th>
+<th>Y₁</th>
+<th>Y₂</th>
+<th>Y₃</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>X</td><td>X</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>ECUACIONES:</strong>
+<br/>Y₀ = EN · Ā₁ · Ā₀ &nbsp;&nbsp;|&nbsp;&nbsp; Y₁ = EN · Ā₁ · A₀
+<br/>Y₂ = EN · A₁ · Ā₀ &nbsp;&nbsp;|&nbsp;&nbsp; Y₃ = EN · A₁ · A₀
+                        </div>
+<div class="step">
+<strong>APLICACIÓN:</strong> Control de 4 LEDs usando 2 interruptores
+                        </div>
+</div>
+</div>
+</div>
+
+<!-- Slide 15: Actividad 4 - Implementación de Multiplexor -->
+<div class="slide">
+<h2>🎮 ACTIVIDAD 4: IMPLEMENTACIÓN DE MULTIPLEXOR</h2>
+<div class="exercise-box">
+<h4>🎯 Objetivo Principal</h4>
+<p><strong>Diseñar e implementar un sistema multiplexor práctico</strong></p>
+<p>Aplicar conceptos de circuitos combinacionales en un proyecto real</p>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📋 Especificaciones</h4>
+<ul>
+<li><strong>Tipo:</strong> Multiplexor 8:1</li>
+<li><strong>Entradas:</strong> 8 sensores digitales</li>
+<li><strong>Control:</strong> 3 líneas de selección</li>
+<li><strong>Salida:</strong> Sensor seleccionado</li>
+<li><strong>Extra:</strong> LED indicador de selección</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🛠️ Entregables</h4>
+<ul>
+<li><strong>Análisis:</strong> Tabla de verdad completa</li>
+<li><strong>Diseño:</strong> Expresión booleana simplificada</li>
+<li><strong>Implementación:</strong> Diagrama esquemático</li>
+<li><strong>Simulación:</strong> Verificación de funcionamiento</li>
+<li><strong>Reporte:</strong> Análisis de resultados</li>
+</ul>
+</div>
+</div>
+<div class="steps-container">
+<h4>📝 Proceso de Trabajo:</h4>
+<div class="step">
+<strong>FASE 1 - Análisis (20 min):</strong> Entender el problema y crear tabla de verdad
+                    </div>
+<div class="step">
+<strong>FASE 2 - Diseño (25 min):</strong> Obtener y simplificar expresiones booleanas
+                    </div>
+<div class="step">
+<strong>FASE 3 - Implementación (30 min):</strong> Dibujar circuito y verificar conexiones
+                    </div>
+<div class="step">
+<strong>FASE 4 - Simulación (20 min):</strong> Probar funcionamiento en software
+                    </div>
+<div class="step">
+<strong>FASE 5 - Documentación (15 min):</strong> Completar reporte con análisis
+                    </div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Tips para el Éxito</div>
+<div class="clippy-content">
+<p><strong>Organización:</strong> Trabaja metódicamente, paso a paso</p>
+<p><strong>Verificación:</strong> Comprueba cada etapa antes de continuar</p>
+<p><strong>Software:</strong> Usa Logisim o CircuitVerse para simular</p>
+<p><strong>Documentación:</strong> Explica tu razonamiento en cada paso</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 16: Comparadores -->
+<div class="slide">
+<h2>⚖️ COMPARADORES DIGITALES</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 ¿Qué hace un Comparador?</div>
+<div class="clippy-content">
+<p><strong>Función:</strong> Compara dos números binarios</p>
+<p><strong>Salidas:</strong> A>B, A=B, A&lt;B</p>
+<p><strong>Aplicación:</strong> Control, decisiones, ordenamiento</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔢 Comparador de 1 Bit</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>A&gt;B</th><th>A=B</th><th>A&lt;B</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display" style="font-size: 1rem;">
+A&gt;B = A·B̄<br/>
+A=B = A·B + Ā·B̄<br/>
+A&lt;B = Ā·B
+</div>
+</div>
+<div class="comparison-card">
+<h4>🚀 Comparador de 2 Bits</h4>
+<p><strong>Entradas:</strong> A₁A₀ y B₁B₀</p>
+<p><strong>Método:</strong> Comparación por precedencia</p>
+<div class="steps-container">
+<div class="step">
+<strong>1.</strong> Comparar bits más significativos
+                        </div>
+<div class="step">
+<strong>2.</strong> Si iguales, comparar siguientes
+                        </div>
+<div class="step">
+<strong>3.</strong> Combinar resultados
+                        </div>
+</div>
+<div class="expression-display" style="font-size: 0.9rem;">
+A&gt;B = A₁B̄₁ + (A₁⊙B₁)A₀B̄₀<br/>
+A=B = (A₁⊙B₁)(A₀⊙B₀)
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Diseño Práctico</h4>
+<p><strong>Problema:</strong> Comparador de temperatura con histéresis</p>
+<p><strong>Entradas:</strong> Temperatura actual vs. referencia (4 bits cada una)</p>
+<p><strong>Salidas:</strong> Calentar, OK, Enfriar</p>
+</div>
+</div>
+
+<!-- Slide 17: Sumadores Binarios -->
+<div class="slide">
+<h2>➕ SUMADORES BINARIOS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔢 Medio Sumador (Half Adder)</h4>
+<p><strong>Entradas:</strong> A, B</p>
+<p><strong>Salidas:</strong> Suma (S), Acarreo (C)</p>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>S</th><th>C</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display" style="font-size: 1rem;">
+S = A ⊕ B<br/>
+C = A · B
+</div>
+</div>
+<div class="comparison-card">
+<h4>🔢 Sumador Completo (Full Adder)</h4>
+<p><strong>Entradas:</strong> A, B, Cᵢₙ</p>
+<p><strong>Salidas:</strong> Suma (S), Acarreo (Cₒᵤₜ)</p>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>Cᵢₙ</th><th>S</th><th>Cₒᵤₜ</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display" style="font-size: 0.9rem;">
+S = A ⊕ B ⊕ Cᵢₙ<br/>
+Cₒᵤₜ = AB + ACᵢₙ + BCᵢₙ
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+                    🏗️ Construcción de Sumador de 4 Bits <span>▼</span>
+</button>
+<div class="content">
+<div class="circuit-diagram">
+                    A₃B₃ ─→ FA ─→ S₃    C₃ ←─┐<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    A₂B₂ ─→ FA ─→ S₂    C₂ ←─┤<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    A₁B₁ ─→ FA ─→ S₁    C₁ ←─┤<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br/>
+                    A₀B₀ ─→ FA ─→ S₀    C₀ ←─┘<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+                </div>
+<p><strong>Características:</strong> Sumador en cascada (Ripple Carry)</p>
+<p><strong>Ventaja:</strong> Simple y regular</p>
+<p><strong>Desventaja:</strong> Propagación lenta del acarreo</p>
+</div>
+</div>
+
+<!-- Slide 18: Resumen y Próximos Pasos -->
+<div class="slide">
+<h2>📚 RESUMEN Y PRÓXIMOS PASOS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Lo que Hemos Aprendido</h4>
+<ul>
+<li><strong>Análisis:</strong> De circuito a función</li>
+<li><strong>Síntesis:</strong> De problema a circuito</li>
+<li><strong>Multiplexores:</strong> Selección de datos</li>
+<li><strong>Demultiplexores:</strong> Distribución de datos</li>
+<li><strong>Codificadores/Decodificadores:</strong> Compresión/expansión</li>
+<li><strong>Comparadores:</strong> Decisiones lógicas</li>
+<li><strong>Sumadores:</strong> Aritmética binaria</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🎯 Próxima Semana: Circuitos Secuenciales</h4>
+<ul>
+<li><strong>Flip-flops:</strong> Elementos de memoria</li>
+<li><strong>Contadores:</strong> Secuencias numéricas</li>
+<li><strong>Registros:</strong> Almacenamiento de datos</li>
+<li><strong>Máquinas de estado:</strong> Control secuencial</li>
+<li><strong>Relojes:</strong> Sincronización temporal</li>
+</ul>
+</div>
+</div>
+<div class="exercise-box">
+<h4>📝 Tareas para Casa</h4>
+<ol style="text-align: left;">
+<li><strong>Completar Actividad 4:</strong> Entregar reporte del multiplexor</li>
+<li><strong>Práctica:</strong> Diseñar decodificador 3:8 con enable</li>
+<li><strong>Investigación:</strong> Aplicaciones de sumadores en ALU</li>
+<li><strong>Lectura:</strong> Capítulo 6 del libro de texto</li>
+</ol>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Consejos para el Éxito</div>
+<div class="clippy-content">
+<p><strong>Práctica constante:</strong> Los circuitos se dominan diseñando</p>
+<p><strong>Herramientas:</strong> Familiarízate con simuladores</p>
+<p><strong>Conceptos base:</strong> Domina compuertas antes de avanzar</p>
+<p><strong>Aplicaciones:</strong> Piensa en usos reales de cada circuito</p>
+</div>
+</div>
+<div class="expression-display">
+<strong>¡Gracias por su atención!</strong><br/>
+Dudas: fausto.jimenez@sabes.edu.mx | Próxima clase: Lunes 17 de junio
+</div>
+</div>
+
+</div>
+
+<script>
+        // Navegación y controles - Variables globales
+        let currentSlideIndex = 0;
+        let slides = [];
+        let totalSlides = 0;
+        let timer = 3000; // 50 minutos en segundos
+        let timerInterval = null;
+
+        // Inicialización al cargar el DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando presentación de Semana 5...');
+            
+            // Obtener elementos
+            slides = document.querySelectorAll('.slide');
+            totalSlides = slides.length;
+            
+            console.log(`Total de diapositivas: ${totalSlides}`);
+            
+            // Configurar navegación
+            setupNavigation();
+            
+            // Configurar temporizador
+            setupTimer();
+            
+            // Configurar MUX interactivo
+            setupMuxDemo();
+            
+            // Inicializar visualización
+            updateSlideDisplay();
+            
+            console.log('Presentación inicializada correctamente');
+        });
+
+        // Configuración de navegación
+        function setupNavigation() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.addEventListener("click", () => changeSlide(-1));
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener("click", () => changeSlide(1));
+            }
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        changeSlide(-1);
+                        break;
+                    case 'ArrowRight':
+                        changeSlide(1);
+                        break;
+                    case ' ': // Espaciador
+                        event.preventDefault();
+                        changeSlide(1);
+                        break;
+                }
+            });
+        }
+
+        // Cambio de diapositivas
+        function changeSlide(direction) {
+            slides[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex >= totalSlides) {
+                currentSlideIndex = totalSlides - 1;
+            }
+            
+            slides[currentSlideIndex].classList.add('active');
+            updateSlideDisplay();
+            
+            console.log(`Navegando a diapositiva: ${currentSlideIndex + 1}/${totalSlides}`);
+        }
+
+        // Actualización de la visualización
+        function updateSlideDisplay() {
+            const currentSlideElement = document.getElementById("currentSlide");
+            const totalSlidesElement = document.getElementById("totalSlides");
+            const progressBar = document.getElementById("progressBar");
+            
+            if (currentSlideElement) {
+                currentSlideElement.textContent = currentSlideIndex + 1;
+            }
+            
+            if (totalSlidesElement) {
+                totalSlidesElement.textContent = totalSlides;
+            }
+            
+            if (progressBar) {
+                const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+            }
+            
+            // Habilitar/deshabilitar botones
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.style.opacity = currentSlideIndex > 0 ? '1' : '0.5';
+                prevBtn.disabled = currentSlideIndex <= 0;
+            }
+            
+            if (nextBtn) {
+                nextBtn.style.opacity = currentSlideIndex < totalSlides - 1 ? '1' : '0.5';
+                nextBtn.disabled = currentSlideIndex >= totalSlides - 1;
+            }
+        }
+
+        // Configuración del temporizador
+        function setupTimer() {
+            const startBtn = document.getElementById("startBtn");
+            const pauseBtn = document.getElementById("pauseBtn");
+            const resetBtn = document.getElementById("resetBtn");
+            const timerDisplay = document.getElementById("sessionTimer");
+            
+            function formatTime(seconds) {
+                const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                return `${mins}:${secs}`;
+            }
+            
+            function updateTimer() {
+                if (timer > 0) {
+                    timer--;
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    
+                    // Advertencia en los últimos 5 minutos
+                    if (timer <= 300 && timerDisplay) {
+                        timerDisplay.classList.add('warning');
+                    }
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    console.log('Tiempo agotado');
+                    alert('⏰ ¡Tiempo de clase terminado!');
+                }
+            }
+            
+            if (startBtn) {
+                startBtn.addEventListener("click", function() {
+                    if (!timerInterval) {
+                        timerInterval = setInterval(updateTimer, 1000);
+                        console.log('Temporizador iniciado');
+                    }
+                });
+            }
+            
+            if (pauseBtn) {
+                pauseBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        console.log('Temporizador pausado');
+                    }
+                });
+            }
+            
+            if (resetBtn) {
+                resetBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    timer = 3000; // 50 minutos
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    if (timerDisplay) {
+                        timerDisplay.classList.remove('warning');
+                    }
+                    console.log('Temporizador reiniciado');
+                });
+            }
+            
+            // Inicializar visualización del timer
+            const timeRemaining = document.getElementById("timeRemaining");
+            if (timeRemaining) {
+                timeRemaining.textContent = formatTime(timer);
+            }
+        }
+
+        // Configuración del MUX interactivo
+        function setupMuxDemo() {
+            // Inicializar estado del MUX
+            const muxState = {
+                inputs: [0, 0, 0, 0],
+                selects: [0, 0],
+                output: 0
+            };
+            
+            function updateMuxOutput() {
+                const selection = muxState.selects[1] * 2 + muxState.selects[0];
+                muxState.output = muxState.inputs[selection];
+                
+                // Actualizar visualización
+                const outputElement = document.getElementById("outputValue");
+                const selectionElement = document.getElementById("selection");
+                const activeInputElement = document.getElementById("activeInput");
+                
+                if (outputElement) outputElement.textContent = muxState.output;
+                if (selectionElement) selectionElement.textContent = selection;
+                if (activeInputElement) activeInputElement.textContent = selection;
+                
+                // Actualizar colores
+                const outputWire = document.getElementById("output");
+                if (outputWire) {
+                    outputWire.className = muxState.output ? "output-wire active" : "output-wire";
+                }
+                
+                console.log(`MUX: Selección ${selection}, Salida ${muxState.output}`);
+            }
+            
+            // Función global para alternar entradas
+            window.toggleInput = function(index) {
+                muxState.inputs[index] = muxState.inputs[index] ? 0 : 1;
+                const inputElement = document.getElementById(`input${index}`);
+                if (inputElement) {
+                    inputElement.textContent = muxState.inputs[index];
+                    inputElement.parentElement.className = muxState.inputs[index] ? "input-wire active" : "input-wire";
+                }
+                updateMuxOutput();
+            };
+            
+            // Función global para alternar selección
+            window.toggleSelect = function(index) {
+                muxState.selects[index] = muxState.selects[index] ? 0 : 1;
+                const selectElement = document.getElementById(`select${index}`);
+                if (selectElement) {
+                    selectElement.textContent = muxState.selects[index];
+                    selectElement.parentElement.className = muxState.selects[index] ? "input-wire active" : "input-wire";
+                }
+                updateMuxOutput();
+            };
+            
+            // Inicializar visualización
+            updateMuxOutput();
+        }
+
+        // Funciones para elementos interactivos
+        function toggleClippy(element) {
+            const content = element.querySelector('.clippy-content');
+            if (content) {
+                content.classList.toggle('active');
+                console.log('Clippy tip toggled');
+            }
+        }
+
+        function toggleCollapsible(button) {
+            const content = button.nextElementSibling;
+            const arrow = button.querySelector('span');
+            
+            if (content && arrow) {
+                const isActive = content.classList.contains('active');
+                
+                content.classList.toggle('active');
+                button.classList.toggle('active');
+                arrow.textContent = isActive ? '▼' : '▲';
+                
+                console.log(`Sección collapsible ${isActive ? 'cerrada' : 'abierta'}`);
+            }
+        }
+
+        // Funciones adicionales para la presentación
+        function highlightCurrentTopic() {
+            // Destacar el tema actual basado en la diapositiva
+            const topicMap = {
+                0: "Introducción",
+                1: "Definición de Circuitos Combinacionales", 
+                2: "Análisis vs Síntesis",
+                3: "Proceso de Análisis",
+                4: "Ejemplo de Análisis",
+                5: "Construcción de Tablas",
+                6: "Proceso de Síntesis",
+                7: "Ejemplo de Síntesis",
+                8: "Construcción desde Expresiones",
+                9: "Diseño sin Tablas",
+                10: "Ejemplo de Diseño Directo",
+                11: "Multiplexores",
+                12: "Diseño de MUX 4:1",
+                13: "Demultiplexores",
+                14: "Codificadores y Decodificadores",
+                15: "Actividad 4",
+                16: "Comparadores",
+                17: "Sumadores",
+                18: "Resumen"
+            };
+            
+            const currentTopic = topicMap[currentSlideIndex] || "Tema desconocido";
+            console.log(`Tema actual: ${currentTopic}`);
+        }
+
+        // Event listeners adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar efectos visuales
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                slide.addEventListener('animationend', function() {
+                    console.log(`Animación completada para diapositiva ${index + 1}`);
+                });
+            });
+            
+            // Configurar atajos de teclado adicionales
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'Home':
+                        // Ir a primera diapositiva
+                        currentSlideIndex = 0;
+                        slides.forEach(slide => slide.classList.remove('active'));
+                        slides[0].classList.add('active');
+                        updateSlideDisplay();
+                        break;
+                    case 'End':
+                        // Ir a última diapositiva
+                        currentSlideIndex = totalSlides - 1;
+                        slides.forEach(slide => slide.classList.remove('active'));
+                        slides[currentSlideIndex].classList.add('active');
+                        updateSlideDisplay();
+                        break;
+                    case 'F11':
+                        // Alternar pantalla completa
+                        event.preventDefault();
+                        if (!document.fullscreenElement) {
+                            document.documentElement.requestFullscreen();
+                        } else {
+                            document.exitFullscreen();
+                        }
+                        break;
+                }
+            });
+            
+            console.log('Configuración adicional completada');
+        });
+
+        // Función para exportar notas (bonus feature)
+        function exportNotes() {
+            const notes = [];
+            slides.forEach((slide, index) => {
+                const title = slide.querySelector('h1, h2')?.textContent || `Diapositiva ${index + 1}`;
+                const content = slide.textContent.slice(0, 200) + '...';
+                notes.push(`${title}\n${content}\n${'='.repeat(50)}\n`);
+            });
+            
+            const blob = new Blob([notes.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'notas_semana5_circuitos_combinacionales.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            console.log('Notas exportadas');
+        }
+
+        // Hacer funciones disponibles globalmente
+        window.changeSlide = changeSlide;
+        window.toggleClippy = toggleClippy;
+        window.toggleCollapsible = toggleCollapsible;
+        window.exportNotes = exportNotes;
+        
+        console.log('Script de Semana 5 cargado completamente');
+    </script>
+
+</body>
+</html>&
