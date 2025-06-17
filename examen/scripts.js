@@ -1,5 +1,4 @@
-
-        // ===== VARIABLES GLOBALES =====
+// ===== VARIABLES GLOBALES =====
         const studentsDatabase = {
             "U2303057N0071": { name: "GONZALEZ LARA MARTHA ESMERALDA", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
             "U2303057N0141": { name: "JARAMILLO ROMERO IVAN", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
@@ -399,12 +398,18 @@
         }
 
         function checkAnswer(exercise) {
+            console.log(`🔍 Verificando respuesta para ejercicio: ${exercise}`);
+            
             if (exercise === '3table') {
                 checkTruthTable3();
             } else if (exercise === '4karnaugh') {
                 checkKarnaughMap();
             } else if (exercise === '4table') {
                 checkTruthTable4();
+            } else if (exercise === '3simplified') {
+                checkExercise3Simplified();
+            } else if (exercise === '4simplified') {
+                checkExercise4Simplified();
             } else {
                 checkRegularAnswer(exercise);
             }
@@ -446,6 +451,104 @@
             }
         }
 
+        function checkExercise3Simplified() {
+            console.log('🔍 Verificando ejercicio 3 simplificado...');
+            
+            const inputElement = document.getElementById('ex3_simplified');
+            const feedbackElement = document.getElementById('feedback3simplified');
+            const attemptsElement = document.getElementById('attempts3simplified');
+            
+            if (!inputElement) {
+                console.error('❌ No se encontró el campo de entrada ex3_simplified');
+                return;
+            }
+            
+            const userAnswer = inputElement.value.trim().toLowerCase();
+            console.log(`📝 Respuesta del usuario: "${userAnswer}"`);
+            
+            const correctOptions = correctAnswers['3simplified'];
+            console.log(`✅ Respuestas correctas: `, correctOptions);
+            
+            let isCorrect = false;
+            if (correctOptions) {
+                isCorrect = correctOptions.some(answer => {
+                    const normalized = userAnswer.replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
+                    const correctNormalized = answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
+                    return normalized === correctNormalized;
+                });
+            }
+            
+            console.log(`🎯 ¿Es correcta? ${isCorrect}`);
+            
+            if (isCorrect) {
+                feedbackElement.innerHTML = '<div class="feedback correct">✅ ¡Correcto! Excelente trabajo.</div>';
+                inputElement.style.borderColor = '#28a745';
+            } else {
+                if (attempts['3simplified']) {
+                    attempts['3simplified']--;
+                    if (attemptsElement) attemptsElement.textContent = attempts['3simplified'];
+                }
+                
+                if (!attempts['3simplified'] || attempts['3simplified'] <= 0) {
+                    feedbackElement.innerHTML = `<div class="feedback incorrect">❌ Sin intentos restantes.<br>
+                        <strong>Expresión correcta:</strong> ${correctOptions[0]}</div>`;
+                    inputElement.disabled = true;
+                } else {
+                    feedbackElement.innerHTML = '<div class="feedback incorrect">❌ Incorrecto. Intente nuevamente.</div>';
+                }
+                inputElement.style.borderColor = '#dc3545';
+            }
+        }
+
+        function checkExercise4Simplified() {
+            console.log('🔍 Verificando ejercicio 4 simplificado...');
+            
+            const inputElement = document.getElementById('ex4_simplified');
+            const feedbackElement = document.getElementById('feedback4simplified');
+            const attemptsElement = document.getElementById('attempts4simplified');
+            
+            if (!inputElement) {
+                console.error('❌ No se encontró el campo de entrada ex4_simplified');
+                return;
+            }
+            
+            const userAnswer = inputElement.value.trim().toLowerCase();
+            console.log(`📝 Respuesta del usuario: "${userAnswer}"`);
+            
+            const correctOptions = correctAnswers['4simplified'];
+            console.log(`✅ Respuestas correctas: `, correctOptions);
+            
+            let isCorrect = false;
+            if (correctOptions) {
+                isCorrect = correctOptions.some(answer => {
+                    const normalized = userAnswer.replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
+                    const correctNormalized = answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
+                    return normalized === correctNormalized;
+                });
+            }
+            
+            console.log(`🎯 ¿Es correcta? ${isCorrect}`);
+            
+            if (isCorrect) {
+                feedbackElement.innerHTML = '<div class="feedback correct">✅ ¡Correcto! Excelente trabajo.</div>';
+                inputElement.style.borderColor = '#28a745';
+            } else {
+                if (attempts['4simplified']) {
+                    attempts['4simplified']--;
+                    if (attemptsElement) attemptsElement.textContent = attempts['4simplified'];
+                }
+                
+                if (!attempts['4simplified'] || attempts['4simplified'] <= 0) {
+                    feedbackElement.innerHTML = `<div class="feedback incorrect">❌ Sin intentos restantes.<br>
+                        <strong>Expresión correcta:</strong> ${correctOptions[0]}</div>`;
+                    inputElement.disabled = true;
+                } else {
+                    feedbackElement.innerHTML = '<div class="feedback incorrect">❌ Incorrecto. Intente nuevamente.</div>';
+                }
+                inputElement.style.borderColor = '#dc3545';
+            }
+        }
+
         function checkRegularAnswer(exercise) {
             const inputElement = document.getElementById(`ex${exercise}_simplified`) || 
                                 document.getElementById(`ex${exercise}_expression`);
@@ -474,266 +577,4 @@
                 isCircuitCorrect = circuitAnswers[exercise] === correctCircuitAnswers[exercise];
             }
 
-            const isFullyCorrect = isExpressionCorrect && isCircuitCorrect;
-            
-            if (isFullyCorrect) {
-                feedbackElement.innerHTML = '<div class="feedback correct">✅ ¡Correcto! Excelente trabajo.</div>';
-                inputElement.style.borderColor = '#28a745';
-            } else if (isExpressionCorrect && !isCircuitCorrect) {
-                feedbackElement.innerHTML = '<div class="feedback incorrect">⚠️ Expresión simplificada correcta, pero revise la descripción del circuito.</div>';
-                inputElement.style.borderColor = '#ffc107';
-            } else if (!isExpressionCorrect && isCircuitCorrect) {
-                feedbackElement.innerHTML = '<div class="feedback incorrect">⚠️ Descripción del circuito correcta, pero revise la expresión simplificada.</div>';
-                inputElement.style.borderColor = '#ffc107';
-            } else {
-                if (attempts[exercise]) {
-                    attempts[exercise]--;
-                    if (attemptsElement) attemptsElement.textContent = attempts[exercise];
-                }
-                
-                if (!attempts[exercise] || attempts[exercise] <= 0) {
-                    feedbackElement.innerHTML = `<div class="feedback incorrect">❌ Sin intentos restantes.<br>
-                        <strong>Expresión correcta:</strong> ${correctOptions[0]}<br>
-                        <strong>Descripción correcta:</strong> Opción ${correctCircuitAnswers[exercise] || 'N/A'}</div>`;
-                    inputElement.disabled = true;
-                } else {
-                    feedbackElement.innerHTML = '<div class="feedback incorrect">❌ Incorrecto. Intente nuevamente.</div>';
-                }
-                inputElement.style.borderColor = '#dc3545';
-            }
-        }
-
-        function checkTruthTable3() {
-            const correct = correctTruthTables.ex3;
-            let allCorrect = true;
-            let answeredCount = 0;
-            
-            for (let i = 0; i < 8; i++) {
-                const select = document.getElementById(`tt3_${i}`);
-                if (select) {
-                    const userValue = select.value;
-                    if (userValue === '') {
-                        // No ha seleccionado nada
-                        select.style.borderColor = '#ffc107';
-                        allCorrect = false;
-                    } else {
-                        answeredCount++;
-                        if (parseInt(userValue) !== correct[i]) {
-                            allCorrect = false;
-                            select.style.borderColor = '#dc3545';
-                        } else {
-                            select.style.borderColor = '#28a745';
-                        }
-                    }
-                }
-            }
-            
-            const feedback = document.getElementById('feedback3table');
-            if (answeredCount === 0) {
-                feedback.innerHTML = '<div class="feedback incorrect">⚠️ Por favor complete al menos una respuesta antes de validar.</div>';
-            } else if (answeredCount < 8) {
-                feedback.innerHTML = `<div class="feedback incorrect">⚠️ Complete todas las filas. Faltan ${8 - answeredCount} respuestas.</div>`;
-            } else if (allCorrect) {
-                feedback.innerHTML = '<div class="feedback correct">✅ ¡Excelente! Tabla de verdad completamente correcta!</div>';
-            } else {
-                feedback.innerHTML = '<div class="feedback incorrect">❌ Algunas respuestas son incorrectas. Revise las filas marcadas en rojo.</div>';
-            }
-        }
-
-        function checkKarnaughMap() {
-            const correctMap = correctTruthTables.ex4;
-            const mapOrder = [0,1,3,2,4,5,7,6,12,13,15,14,8,9,11,10];
-            let allCorrect = true;
-            let answeredCount = 0;
-            
-            mapOrder.forEach((truthIndex, mapIndex) => {
-                const select = document.getElementById(`k_${String(mapIndex).padStart(2, '0')}`);
-                if (select) {
-                    const userValue = select.value;
-                    if (userValue === '') {
-                        select.style.borderColor = '#ffc107';
-                        allCorrect = false;
-                    } else {
-                        answeredCount++;
-                        if (parseInt(userValue) !== correctMap[truthIndex]) {
-                            allCorrect = false;
-                            select.style.borderColor = '#dc3545';
-                        } else {
-                            select.style.borderColor = '#28a745';
-                        }
-                    }
-                }
-            });
-            
-            const feedback = document.getElementById('feedback4karnaugh');
-            if (answeredCount === 0) {
-                feedback.innerHTML = '<div class="feedback incorrect">⚠️ Por favor complete al menos una celda antes de validar.</div>';
-            } else if (answeredCount < 16) {
-                feedback.innerHTML = `<div class="feedback incorrect">⚠️ Complete todas las celdas del mapa K. Faltan ${16 - answeredCount} valores.</div>`;
-            } else if (allCorrect) {
-                feedback.innerHTML = '<div class="feedback correct">✅ ¡Excelente! Mapa de Karnaugh completamente correcto!</div>';
-            } else {
-                feedback.innerHTML = '<div class="feedback incorrect">❌ Algunos valores son incorrectos. Revise las celdas marcadas en rojo.</div>';
-            }
-        }
-
-        function finishExam() {
-            if (!currentStudent) {
-                alert('Error: No hay estudiante seleccionado');
-                return;
-            }
-
-            const score = calculateTotalScore();
-            displayResults(score);
-            switchTab('results');
-        }
-
-        function calculateTotalScore() {
-            let score = 0;
-            
-            // Ejercicio 1 (2.5 puntos)
-            if (circuitAnswers['1a'] === correctCircuitAnswers['1a']) score += 0.25;
-            if (checkAnswerCorrect('1a_simplified')) score += 0.25;
-            if (circuitAnswers['1b'] === correctCircuitAnswers['1b']) score += 0.25;
-            if (checkAnswerCorrect('1b_simplified')) score += 0.25;
-            
-            // Ejercicio 2 (2.5 puntos)
-            if (checkAnswerCorrect('2a_expression')) score += 1.0;
-            if (checkAnswerCorrect('2b_simplified')) score += 1.5;
-            
-            // Ejercicio 3 (2.5 puntos)
-            let correctTT3 = 0;
-            for (let i = 0; i < 8; i++) {
-                const select = document.getElementById(`tt3_${i}`);
-                if (select && select.value !== '' && parseInt(select.value) === correctTruthTables.ex3[i]) {
-                    correctTT3++;
-                }
-            }
-            score += (correctTT3 / 8) * 1.0;
-            if (checkAnswerCorrect('3simplified')) score += 1.5;
-            
-            // Ejercicio 4 (2.5 puntos)
-            let correctTT4 = 0;
-            for (let i = 0; i < 16; i++) {
-                const input = document.getElementById(`tt4_${i}`);
-                if (input && input.value !== '' && parseInt(input.value) === correctTruthTables.ex4[i]) {
-                    correctTT4++;
-                }
-            }
-            score += (correctTT4 / 16) * 1.0;
-
-            let correctK = 0;
-            const correctMap = correctTruthTables.ex4;
-            const mapOrder = [0,1,3,2,4,5,7,6,12,13,15,14,8,9,11,10];
-            mapOrder.forEach((truthIndex, mapIndex) => {
-                const input = document.getElementById(`k_${String(mapIndex).padStart(2, '0')}`);
-                if (input && input.value !== '' && parseInt(input.value) === correctMap[truthIndex]) {
-                    correctK++;
-                }
-            });
-            score += (correctK / 16) * 1.0;
-            
-            if (checkAnswerCorrect('4simplified')) score += 0.5;
-            
-            return Math.round(score * 10) / 10;
-        }
-
-        function checkAnswerCorrect(answerKey) {
-            const inputElement = document.getElementById(`ex${answerKey}`) || 
-                                document.getElementById(`ex${answerKey.replace('_', '')}`) ||
-                                document.getElementById(answerKey.replace('_', ''));
-            
-            if (!inputElement) return false;
-            
-            const userAnswer = inputElement.value.trim().toLowerCase();
-            const correctOptions = correctAnswers[answerKey];
-            
-            if (!correctOptions) return false;
-            
-            return correctOptions.some(answer => 
-                userAnswer.replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '') === 
-                answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '')
-            );
-        }
-
-        function displayResults(score) {
-            const percentage = Math.round((score / 10) * 100);
-            let grade = 'F';
-            if (percentage >= 90) grade = 'A';
-            else if (percentage >= 80) grade = 'B';
-            else if (percentage >= 70) grade = 'C';
-            else if (percentage >= 60) grade = 'D';
-
-            const resultsArea = document.getElementById('resultsArea');
-            resultsArea.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
-                        <h2>🎉 Examen Completado</h2>
-                        <div style="font-size: 3em; margin: 20px 0; font-weight: bold;">${score}/10</div>
-                        <p style="font-size: 1.5em;">Calificación: ${percentage}% (${grade})</p>
-                        <p><strong>Estudiante:</strong> ${currentStudent.name}</p>
-                        <p><strong>Matrícula:</strong> ${currentStudent.id}</p>
-                        <p><strong>Fecha:</strong> ${new Date().toLocaleDateString()}</p>
-                    </div>
-
-                    <div style="margin-top: 30px;">
-                        <button class="btn btn-success" onclick="finishExam()">🔄 Finalizar Examen</button>
-                        <button class="btn" onclick="resetExam()">🔄 Nuevo Examen</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function resetExam() {
-            if (confirm('¿Reiniciar el examen? Se perderán todas las respuestas.')) {
-                currentStudent = null;
-                examAnswers = {};
-                circuitAnswers = {};
-                attempts = {
-                    '1a': 5, '1b': 5, '1c': 5, '1d': 5, '1e': 5,
-                    '2a': 5, '2b': 5,
-                    '3simplified': 5,
-                    '4simplified': 5
-                };
-                
-                document.getElementById('studentSelect').value = '';
-                document.getElementById('studentName').value = '';
-                document.getElementById('studentCareer').value = '';
-                document.getElementById('startBtn').disabled = true;
-                
-                document.getElementById('resultsArea').innerHTML = '<div class="loading">Los resultados aparecerán aquí al completar el examen</div>';
-                
-                switchTab('student');
-            }
-        }
-
-        // ===== ASIGNAR FUNCIONES AL SCOPE GLOBAL =====
-        window.updateStudentInfo = updateStudentInfo;
-        window.switchTab = switchTab;
-        window.startExam = startExam;
-        window.selectCircuitOption = selectCircuitOption;
-        window.checkAnswer = checkAnswer;
-        window.finishExam = finishExam;
-        window.resetExam = resetExam;
-
-        // ===== INICIALIZACIÓN =====
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Sistema de Examen Cargado Correctamente');
-            
-            // Verificar que todas las funciones estén definidas
-            const requiredFunctions = [
-                'updateStudentInfo', 'switchTab', 'startExam', 'checkAnswer',
-                'selectCircuitOption', 'finishExam', 'resetExam'
-            ];
-            
-            const missingFunctions = requiredFunctions.filter(funcName => 
-                typeof window[funcName] !== 'function'
-            );
-            
-            if (missingFunctions.length > 0) {
-                console.error('❌ Funciones faltantes:', missingFunctions);
-            } else {
-                console.log('✅ Todas las funciones están correctamente definidas');
-            }
-        });
-    
+            const isFullyCorrect = is
