@@ -34,7 +34,7 @@ body {
 
 .course-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, min极
     gap: 15px;
     margin-top: 20px;
     font-size: 0.9em;
@@ -147,10 +147,23 @@ input[readonly] {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+    opacity: 0.7; /* Añadido para mejor visibilidad */
 }
 
 .btn-success {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+/* Clase adicional para estilo deshabilitado */
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+/* Asegurar que el botón deshabilitado no tenga efectos hover */
+.btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
 }
 
 .exercise-block {
@@ -177,10 +190,35 @@ input[readonly] {
     border-left: 5px solid #1e3c72;
 }
 
+.circuit-diagram {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    margin: 15px 0;
+}
+
+.step-guide {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.step-guide h4 {
+    color: #1976d2;
+    margin-bottom: 10px;
+}
+
+.step-guide ol {
+    margin-left: 20px;
+}
+
 .attempts-counter {
     background: #fff3cd;
     border: 1px solid #ffeaa7;
-    border-radius: 5极
+    border-radius: 5px;
     padding: 8px 12px;
     margin: 10px 0;
     font-weight: bold;
@@ -212,6 +250,38 @@ input[readonly] {
     font-size: 1.1em;
 }
 
+.karnaugh-map, .truth-table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+}
+
+.karnaugh-map th, .karnaugh-map td,
+.truth-table th, .truth-table td {
+    border: 2px solid #1e3c72;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.karnaugh-map th, .truth-table th {
+    background: #1e3c72;
+    color: white;
+}
+
+.karnaugh-map input, .truth-table input {
+    width: 35px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 @media (max-width: 768px) {
     .tabs {
         flex-direction: column;
@@ -219,5 +289,10 @@ input[readonly] {
     
     .student-info {
         grid-template-columns: 1fr;
+    }
+    
+    .circuit-diagram svg {
+        width: 100%;
+        height: auto;
     }
 }
