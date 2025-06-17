@@ -286,7 +286,7 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+</style>
 </head>
 <body>
 <div class="container">
@@ -298,7 +298,97 @@
 <div class="info-card"><strong>Cuatrimestre:</strong> 6° Mayo-Agosto 2025</div>
 <div class="info-card"><strong>Semana:</strong> 04 (03-09 Junio)</div>
 <div class="info-card"><strong>Tiempo:</strong> 2 horas aprox.</div>
-<div class="info-card"><strong>Valor:</strong> 10 puntos
+<div class="info-card"><strong>Valor:</strong> 10 puntos</div>
+</div>
+</div>
+<div class="tabs">
+<button class="tab active" onclick="switchTab('student')">👤 Estudiante</button>
+<button class="tab" onclick="switchTab('ex1')">📝 Ejercicio 1</button>
+<button class="tab" onclick="switchTab('ex2')">⚡ Ejercicio 2</button>
+<button class="tab" onclick="switchTab('ex3')">💡 Ejercicio 3</button>
+<button class="tab" onclick="switchTab('ex4')">🗺️ Ejercicio 4</button>
+<button class="tab" onclick="switchTab('results')">📊 Resultados</button>
+</div>
+<!-- Datos del Estudiante -->
+<div class="tab-content active" id="student">
+<h2 style="margin-bottom: 20px; color: #1e3c72;">Información del Estudiante</h2>
+<div class="student-info">
+<div class="form-group">
+<label>Seleccionar Matrícula:</label>
+<select id="studentSelect" onchange="updateStudentInfo()">
+<option value="">-- Selecciona tu matrícula --</option>
+<optgroup label="Ingeniería en Tecnologías de Información">
+<option value="U2303057N0071">U2303057N0071 - GONZALEZ LARA MARTHA ESMERALDA</option>
+<option value="U2303057N0141">U2303057N0141 - JARAMILLO ROMERO IVAN</option>
+<option value="U2303057N0111">U2303057N0111 - JUAREZ JACINTO MARIO ADAN</option>
+<option value="U2303057N0105">U2303057N0105 - MERINO ZAPIAIN ANA MAGDALA</option>
+<option value="U2303057N0068">U2303057N0068 - PEREZ TAVERA GUADALUPE BERENICE</option>
+<option value="U2303057N0116">U2303057N0116 - RANGEL AGUAYO ANGEL</option>
+</optgroup>
+<optgroup label="Ingeniería Industrial">
+<option value="U2303057N0155">U2303057N0155 - DE HARO SEGURA DENIEL</option>
+<option value="U2303057N0020">U2303057N0020 - GARCIA ROMERO CENOBIO</option>
+<option value="U2303057N0049">U2303057N0049 - GUTIERREZ GUTIERREZ DANNA LIZBETH</option>
+<option value="U2303057N0080">U2303057N0080 - HERNANDEZ VILLEGAS FATIMA</option>
+<option value="U2303057N0070">U2303057N0070 - LUCIO RODRIGUEZ EYMI JOSELIN</option>
+<option value="U2303057N0012">U2303057N0012 - MACHUCA HERNANDEZ JUAN SOLEDAD</option>
+<option value="U2303057N0021">U2303057N0021 - MEDELLIN MARQUEZ MAYRA JAZMIN</option>
+<option value="U2303057N0046">U2303057N0046 - MEJIA BANDA LUIS ERNESTO</option>
+<option value="U2303057N0086">U2303057N0086 - MEJIA CANO PERLA DEL CARMEN</option>
+<option value="U2303057N0064">U2303057N0064 - MENDOZA FLORES SANDY</option>
+<option value="U2303057N0108">U2303057N0108 - MORUA ZUÑIGA PATRICIA BIRIDIANA</option>
+<option value="U2203057N0070">U2203057N0070 - ORTIZ CHAVEZ JOSE MANUEL</option>
+<option value="U2303057N0001">U2303057N0001 - ORTIZ ORTIZ LUIS ALEJANDRO</option>
+<option value="U2303057N0110">U2303057N0110 - PEREZ RANGEL JORGE ARMANDO</option>
+<option value="U2303057N0039">U2303057N0039 - ROCHA SALGADO JHONATAN ISAAC</option>
+<option value="U2303057N0066">U2303057N0066 - RODRIGUEZ GARCIA DAISA GUADALUPE</option>
+<option value="U2303057N0092">U2303057N0092 - RODRIGUEZ GARCIA MANUEL EDUARDO</option>
+<option value="U2303057N0014">U2303057N0014 - RODRIGUEZ PADILLA JORGE ALBERTO</option>
+<option value="U2303057N0041">U2303057N0041 - ROSALES MARQUEZ EDGAR</option>
+<option value="U2303057N0077">U2303057N0077 - VEGA CORREA ROSA ISELA</option>
+<option value="U2303057N0152">U2303057N0152 - YAÑEZ BERNAL GEMMA</option>
+</optgroup>
+</select>
+</div>
+<div class="form-group">
+<label>Nombre Completo:</label>
+<input id="studentName" readonly="" type="text"/>
+</div>
+<div class="form-group">
+<label>Carrera:</label>
+<input id="studentCareer" readonly="" type="text"/>
+</div>
+<div class="form-group">
+<label>Grupo:</label>
+<input id="studentGroup" readonly="" type="text" value="5A"/>
+</div>
+</div>
+<div style="text-align: center;">
+<button class="btn btn-success" disabled="" id="startBtn" onclick="startExam()">🚀 Comenzar Examen</button>
+</div>
+</div>
+<!-- Ejercicio 1: Dibujar y Simplificar -->
+<div class="tab-content" id="ex1">
+<div class="exercise-block">
+<div class="exercise-header">
+<h3 style="margin: 0; font-size: 1.5em;">📝 Ejercicio 1: Dibujar Circuitos y Simplificar (2.5 puntos)</h3>
+<p style="margin: 5px 0 0 0;">Dibuje el circuito lógico y simplifique las expresiones</p>
+</div>
+<div class="step-guide">
+<h4>📋 Instrucciones:</h4>
+<ul>
+<li>Use notación estándar: AND (·), OR (+), NOT (')</li>
+<li><strong>Ejemplo:</strong> A·B' + C o simplemente AB' + C</li>
+<li>Tiene <strong>5 intentos</strong> por pregunta</li>
+</ul>
+</div>
+<h4 style="color: #1e3c72;">b) Expresión simplificada (1.5 puntos)</h4>
+<input id="ex2b_simplified" placeholder="Ejemplo: A' o B'C + D (use apostrofe para NOT)" type="text"/>
+<button class="btn" onclick="checkAnswer('2b')">Validar</button>
+<div class="attempts-counter">Intentos restantes: <span id="attempts2b">5</span></div>
+<div id="feedback2b"></div>
+</div>
+</div>
 </div>
 <!-- Ejercicio 3: Circuito de Mayoría -->
 <div class="tab-content" id="ex3">
@@ -444,8 +534,8 @@
 <div class="exercise-part">
 <h4 style="color: #1e3c72;">Expresión a simplificar:</h4>
 <div style="text-align: center; font-size: 1.2em; font-weight: bold; margin: 20px 0; padding: 15px; background: #fff3cd; border-radius: 8px;">
-                        Y = C̅(AB̅D̅ + D) + A̅BC + D̅
-                    </div>
+Y = C̅(AB̅D̅ + D) + A̅BC + D̅
+</div>
 </div>
 <div class="exercise-part">
 <h4 style="color: #1e3c72;">Paso 1: Tabla de Verdad (1 punto)</h4>
@@ -742,11 +832,14 @@
 </div>
 </div>
 </div>
+
+<!-- CARGAR JAVASCRIPT EXTERNO -->
 <script src="scripts.js"></script>
+
+<!-- VERIFICACIÓN DE CARGA -->
 <script>
-// Verificar que las funciones estén cargadas antes de usar
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔍 Verificando funciones disponibles...');
+    console.log('🔍 Verificando funciones JavaScript...');
     
     const requiredFunctions = [
         'updateStudentInfo', 'switchTab', 'startExam', 'checkAnswer',
@@ -758,98 +851,18 @@ document.addEventListener('DOMContentLoaded', function() {
     );
     
     if (missingFunctions.length > 0) {
-        console.error('❌ Funciones faltantes:', missingFunctions);
-        console.error('🚨 Asegúrate de que scripts.js esté en la misma carpeta y se cargue correctamente');
+        console.error('❌ ERROR: Funciones JavaScript faltantes:', missingFunctions);
+        console.error('🚨 Solución: Asegúrate de que scripts.js esté en la misma carpeta');
+        alert('⚠️ ERROR: No se pudo cargar scripts.js\n\nAsegúrate de que el archivo scripts.js esté en la misma carpeta que este HTML.');
     } else {
-        console.log('✅ Todas las funciones JavaScript están disponibles');
+        console.log('✅ JavaScript cargado correctamente');
+        console.log('🎯 Sistema listo para usar');
     }
 });
 </script>
+
 </body>
 </html>
-</div>
-<div class="tabs">
-<button class="tab active" onclick="switchTab('student')">👤 Estudiante</button>
-<button class="tab" onclick="switchTab('ex1')">📝 Ejercicio 1</button>
-<button class="tab" onclick="switchTab('ex2')">⚡ Ejercicio 2</button>
-<button class="tab" onclick="switchTab('ex3')">💡 Ejercicio 3</button>
-<button class="tab" onclick="switchTab('ex4')">🗺️ Ejercicio 4</button>
-<button class="tab" onclick="switchTab('results')">📊 Resultados</button>
-</div>
-<!-- Datos del Estudiante -->
-<div class="tab-content active" id="student">
-<h2 style="margin-bottom: 20px; color: #1e3c72;">Información del Estudiante</h2>
-<div class="student-info">
-<div class="form-group">
-<label>Seleccionar Matrícula:</label>
-<select id="studentSelect" onchange="updateStudentInfo()">
-<option value="">-- Selecciona tu matrícula --</option>
-<optgroup label="Ingeniería en Tecnologías de Información">
-<option value="U2303057N0071">U2303057N0071 - GONZALEZ LARA MARTHA ESMERALDA</option>
-<option value="U2303057N0141">U2303057N0141 - JARAMILLO ROMERO IVAN</option>
-<option value="U2303057N0111">U2303057N0111 - JUAREZ JACINTO MARIO ADAN</option>
-<option value="U2303057N0105">U2303057N0105 - MERINO ZAPIAIN ANA MAGDALA</option>
-<option value="U2303057N0068">U2303057N0068 - PEREZ TAVERA GUADALUPE BERENICE</option>
-<option value="U2303057N0116">U2303057N0116 - RANGEL AGUAYO ANGEL</option>
-</optgroup>
-<optgroup label="Ingeniería Industrial">
-<option value="U2303057N0155">U2303057N0155 - DE HARO SEGURA DENIEL</option>
-<option value="U2303057N0020">U2303057N0020 - GARCIA ROMERO CENOBIO</option>
-<option value="U2303057N0049">U2303057N0049 - GUTIERREZ GUTIERREZ DANNA LIZBETH</option>
-<option value="U2303057N0080">U2303057N0080 - HERNANDEZ VILLEGAS FATIMA</option>
-<option value="U2303057N0070">U2303057N0070 - LUCIO RODRIGUEZ EYMI JOSELIN</option>
-<option value="U2303057N0012">U2303057N0012 - MACHUCA HERNANDEZ JUAN SOLEDAD</option>
-<option value="U2303057N0021">U2303057N0021 - MEDELLIN MARQUEZ MAYRA JAZMIN</option>
-<option value="U2303057N0046">U2303057N0046 - MEJIA BANDA LUIS ERNESTO</option>
-<option value="U2303057N0086">U2303057N0086 - MEJIA CANO PERLA DEL CARMEN</option>
-<option value="U2303057N0064">U2303057N0064 - MENDOZA FLORES SANDY</option>
-<option value="U2303057N0108">U2303057N0108 - MORUA ZUÑIGA PATRICIA BIRIDIANA</option>
-<option value="U2203057N0070">U2203057N0070 - ORTIZ CHAVEZ JOSE MANUEL</option>
-<option value="U2303057N0001">U2303057N0001 - ORTIZ ORTIZ LUIS ALEJANDRO</option>
-<option value="U2303057N0110">U2303057N0110 - PEREZ RANGEL JORGE ARMANDO</option>
-<option value="U2303057N0039">U2303057N0039 - ROCHA SALGADO JHONATAN ISAAC</option>
-<option value="U2303057N0066">U2303057N0066 - RODRIGUEZ GARCIA DAISA GUADALUPE</option>
-<option value="U2303057N0092">U2303057N0092 - RODRIGUEZ GARCIA MANUEL EDUARDO</option>
-<option value="U2303057N0014">U2303057N0014 - RODRIGUEZ PADILLA JORGE ALBERTO</option>
-<option value="U2303057N0041">U2303057N0041 - ROSALES MARQUEZ EDGAR</option>
-<option value="U2303057N0077">U2303057N0077 - VEGA CORREA ROSA ISELA</option>
-<option value="U2303057N0152">U2303057N0152 - YAÑEZ BERNAL GEMMA</option>
-</optgroup>
-</select>
-</div>
-<div class="form-group">
-<label>Nombre Completo:</label>
-<input id="studentName" readonly="" type="text"/>
-</div>
-<div class="form-group">
-<label>Carrera:</label>
-<input id="studentCareer" readonly="" type="text"/>
-</div>
-<div class="form-group">
-<label>Grupo:</label>
-<input id="studentGroup" readonly="" type="text" value="5A"/>
-</div>
-</div>
-<div style="text-align: center;">
-<button class="btn btn-success" disabled="" id="startBtn" onclick="startExam()">🚀 Comenzar Examen</button>
-</div>
-</div>
-<!-- Ejercicio 1: Dibujar y Simplificar -->
-<div class="tab-content" id="ex1">
-<div class="exercise-block">
-<div class="exercise-header">
-<h3 style="margin: 0; font-size: 1.5em;">📝 Ejercicio 1: Dibujar Circuitos y Simplificar (2.5 puntos)</h3>
-<p style="margin: 5px 0 0 0;">Dibuje el circuito lógico y simplifique las expresiones</p>
-</div>
-<div class="step-guide">
-<h4>📋 Instrucciones:</h4>
-<ul>
-<li>Use notación estándar: AND (·), OR (+), NOT (')</li>
-<li><strong>Ejemplo:</strong> A·B' + C o simplemente AB' + C</li>
-<li>Tiene <strong>5 intentos</strong> por pregunta</li>
-</ul>
-</div>
-<div class="exercise-part">
 <h4 style="color: #1e3c72;">a) A̅B̅ + A̅B (0.5 puntos)</h4>
 <p><strong>Descripción del circuito:</strong></p>
 <div style="margin: 15px 0;">
@@ -1005,10 +1018,3 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="feedback2a"></div>
 </div>
 <div class="exercise-part">
-<h4 style="color: #1e3c72;">b) Expresión simplificada (1.5 puntos)</h4>
-<input id="ex2b_simplified" placeholder="Ejemplo: A' o B'C + D (use apostrofe para NOT)" type="text"/>
-<button class="btn" onclick="checkAnswer('2b')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts2b">5</span></div>
-<div id="feedback2b"></div>
-</div>
-</div>
