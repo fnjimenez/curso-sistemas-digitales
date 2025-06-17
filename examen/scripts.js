@@ -1,280 +1,142 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// ===== VARIABLES GLOBALES =====
+const studentsDatabase = {
+    "U2303057N0071": { name: "GONZALEZ LARA MARTHA ESMERALDA", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0141": { name: "JARAMILLO ROMERO IVAN", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0111": { name: "JUAREZ JACINTO MARIO ADAN", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0105": { name: "MERINO ZAPIAIN ANA MAGDALA", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0068": { name: "PEREZ TAVERA GUADALUPE BERENICE", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0116": { name: "RANGEL AGUAYO ANGEL", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
+    "U2303057N0155": { name: "DE HARO SEGURA DENIEL", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0020": { name: "GARCIA ROMERO CENOBIO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0049": { name: "GUTIERREZ GUTIERREZ DANNA LIZBETH", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0080": { name: "HERNANDEZ VILLEGAS FATIMA", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0070": { name: "LUCIO RODRIGUEZ EYMI JOSELIN", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0012": { name: "MACHUCA HERNANDEZ JUAN SOLEDAD", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0021": { name: "MEDELLIN MARQUEZ MAYRA JAZMIN", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0046": { name: "MEJIA BANDA LUIS ERNESTO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0086":极
+    "U2303057N0064": { name: "MENDOZA FLORES SANDY", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0108": { name: "MORUA ZUÑIGA PATRICIA BIRIDIANA", career: "Licenciatura en Ingeniería Industrial" },
+    "U2203057N0070": { name: "ORTIZ CHAVEZ JOSE MANUEL", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0001": { name: "ORTIZ ORTIZ LUIS ALEJANDRO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0110": { name: "PEREZ RANGEL JORGE ARMANDO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0039": { name: "ROCHA SALGADO JHONATAN ISAAC", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0066": { name: "RODRIGUEZ GARCIA DAISA GUADALUPE", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0092": { name: "RODRIGUEZ GARCIA MANUEL EDUARDO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0014": { name: "RODRIGUEZ PADILLA JORGE ALBERTO", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0041": { name: "ROSALES MARQUEZ EDGAR", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0077": { name: "VEGA CORREA ROSA ISELA", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0152": { name: "YAÑEZ BERNAL GEMMA", career: "Licenciatura en Ingeniería Industrial" }
+};
+
+let currentStudent = null;
+let circuitAnswers = {};
+let attempts = {
+    '1a': 5, '1b': 5, '2a': 5, '2b': 5,
+    '3simplified': 5, '3table': 5, 
+    '4simplified': 5, '4table': 5, '4karnaugh': 5
+};
+
+// ===== VARIACIONES DE EJERCICIOS =====
+const exerciseVariants = {
+    ex1a: [
+        {
+            expression: "A̅B̅ + A̅B",
+            answer: ["A'", "A̅", "~A"],
+            circuit_correct: "B"
+        },
+        {
+            expression: "XȲ + XY", 
+            answer: ["X", "X"],
+            circuit_correct: "A"
+        },
+        {
+            expression: "P̅Q̅ + P̅Q",
+            answer: ["P'", "P̅", "~P"],
+            circuit_correct: "B"
+        },
+        {
+            expression: "M̅N + MN",
+            answer: ["N", "N"],
+            circuit_correct: "A"
+        },
+        {
+            expression: "AB̅ + AB",
+            answer: ["A", "A"],
+            circuit_correct: "B"
+        }
+    ],
+
+    ex1b: [
+        {
+            expression: "AB + A̅B + A̅BC",
+            answer: ["A + B", "B + A"],
+            circuit_correct: "A"
+        },
+        {
+            expression: "XY + X̅Y + XYZ",
+            answer: ["Y", "Y"],
+            circuit_correct: "B"
+        },
+        {
+            expression: "PQ + P̅Q + PQR",
+            answer: ["Q", "Q"],
+            circuit_correct: "A"
+        },
+        {
+            expression: "MN + M̅N + M̅NO",
+            answer: ["N", "N"],
+            circuit_correct: "B"
+        },
+        {
+            expression: "ST + S̅T + S̅TU",
+            answer: ["T", "T"],
+            circuit_correct: "A"
+        }
+    ]
+};
+
+// ===== FUNCIÓN PARA GENERAR VERSIÓN ÚNICA =====
+function generateStudentVersion(studentId) {
+    const numericPart = studentId.replace(/\D/g, '');
+    const hash = parseInt(numericPart.slice(-3)) || 0;
+    return hash % 5;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-}
-
-.header {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.header h1 {
-    font-size: 2.2em;
-    margin-bottom: 10px;
-}
-
-.course-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-    font-size: 0.9em;
-}
-
-.info-card {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 10px;
-    border-radius: 8px;
-}
-
-.tabs {
-    display: flex;
-    background: #f8f9fa;
-}
-
-.tab {
-    flex: 1;
-    padding: 15px;
-    text-align: center;
-    background: #e9ecef;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #495057;
-    border-right: 1px solid #dee2e6;
-}
-
-.tab:last-child {
-    border-right: none;
-}
-
-.tab.active {
-    background: white;
-    color: #1e3c72;
-    border-bottom: 3px solid #1e3c72;
-}
-
-.tab-content {
-    display: none;
-    padding: 30px;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.student-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 10px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #495057;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 16px;
-    background: #f8f9fa;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #1e3c72;
-    background: white;
-}
-
-input[readonly] {
-    background: #e9ecef;
-    color: #6c757d;
-}
-
-.btn {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 5px;
-    transition: all 0.3s ease;
-}
-
-.btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
-}
-
-.btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.btn-success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-}
-
-.exercise-block {
-    background: white;
-    border: 3px solid #1e3c72;
-    border-radius: 10px;
-    margin: 20px 0;
-    padding: 25px;
-}
-
-.exercise-header {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    padding: 20px;
-    margin: -25px -25px 25px -25px;
-    border-radius: 7px 7px 0 0;
-}
-
-.exercise-part {
-    margin: 20px 0;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 5px solid #1e3c72;
-}
-
-.circuit-diagram {
-    text-align: center;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border: 2px solid #e9ecef;
-    margin: 15px 0;
-}
-
-.step-guide {
-    background: #e3f2fd;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-}
-
-.step-guide h4 {
-    color: #1976d2;
-    margin-bottom: 10px;
-}
-
-.step-guide ol {
-    margin-left: 20px;
-}
-
-.attempts-counter {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    border-radius: 5px;
-    padding: 8px 12px;
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.feedback {
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.feedback.correct {
-    background: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-
-.feedback.incorrect {
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-}
-
-.loading {
-    text-align: center;
-    padding: 40px;
-    color: #6c757d;
-    font-size: 1.1em;
-}
-
-.karnaugh-map, .truth-table {
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: white;
-}
-
-.karnaugh-map th, .karnaugh-map td,
-.truth-table th, .truth-table td {
-    border: 2px solid #1e3c72;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    font-weight: bold;
-    padding: 10px;
-}
-
-.karnaugh-map th, .truth-table th {
-    background: #1e3c72;
-    color: white;
-}
-
-.karnaugh-map input, .truth-table input {
-    width: 35px;
-    height: 30px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    .tabs {
-        flex-direction: column;
-    }
-    
-    .student-info {
-        grid-template-columns: 1fr;
+// ===== FUNCIÓN PARA CARGAR EJERCICIOS POR VERSIÓN =====
+function loadStudentExercises(version) {
+    try {
+        console.log(`🔄 Cargando ejercicios para versión ${version}...`);
+        loadExercise1(version);
+        console.log('🎉 Ejercicios cargados correctamente');
+    } catch (error) {
+        console.error('❌ Error al cargar ejercicios:', error);
     }
 }
+
+function loadExercise1(version) {
+    const ex1a = exerciseVariants.ex1a[version];
+    const ex1aTitle = document.querySelector('#ex1 .exercise-part h4');
+    if (ex1aTitle) ex1aTitle.innerHTML = `a) ${ex1a.expression} (0.5 puntos)`;
+
+    const ex1b = exerciseVariants.ex1b[version];
+    const ex1bTitle = document.querySelectorAll('#ex1 .exercise-part h4')[1];
+    if (ex1bTitle) ex1bTitle.innerHTML = `b) ${ex1b.expression} (0.5 puntos)`;
+}
+
+// ===== FUNCIONES PRINCIPALES =====
+function updateStudentInfo() {
+    const selectedId = document.getElementById('studentSelect').value;
+    const nameField = document.getElementById('studentName');
+    const careerField = document.getElementById('studentCareer');
+    const startBtn = document.getElementById('startBtn');
+
+    if (selectedId && studentsDatabase[selectedId]) {
+        const student = studentsDatabase[selectedId];
+        nameField.value = student.name;
+        careerField.value = student.career;
+        startBtn.disabled = false;
+    } else {
+        nameField.value = '';
+        careerField.value = '';
+        startBtn.disabled = true
