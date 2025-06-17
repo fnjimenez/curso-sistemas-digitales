@@ -14,8 +14,8 @@ const studentsDatabase = {
     "U2303057N0012": { name: "MACHUCA HERNANDEZ JUAN SOLEDAD", career: "Licenciatura en Ingeniería Industrial" },
     "U2303057N0021": { name: "MEDELLIN MARQUEZ MAYRA JAZMIN", career: "Licenciatura en Ingeniería Industrial" },
     "U2303057N0046": { name: "MEJIA BANDA LUIS ERNESTO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0086":极
-    "U2303057N0064": { name: "MENDOZA FLORES SANDY", career: "Licenciatura en Ingeniería Industrial" },
+    "U2303057N0086": { name: "MEJIA CANO PERLA DEL CARMEN", career: "Licenciatura en Ingeniería Industrial" },
+    "U230极
     "U2303057N0108": { name: "MORUA ZUÑIGA PATRICIA BIRIDIANA", career: "Licenciatura en Ingeniería Industrial" },
     "U2203057N0070": { name: "ORTIZ CHAVEZ JOSE MANUEL", career: "Licenciatura en Ingeniería Industrial" },
     "U2303057N0001": { name: "ORTIZ ORTIZ LUIS ALEJANDRO", career: "Licenciatura en Ingeniería Industrial" },
@@ -30,99 +30,6 @@ const studentsDatabase = {
 };
 
 let currentStudent = null;
-let circuitAnswers = {};
-let attempts = {
-    '1a': 5, '1b': 5, '2a': 5, '2b': 5,
-    '3simplified': 5, '3table': 5, 
-    '4simplified': 5, '4table': 5, '4karnaugh': 5
-};
-
-// ===== VARIACIONES DE EJERCICIOS =====
-const exerciseVariants = {
-    ex1a: [
-        {
-            expression: "A̅B̅ + A̅B",
-            answer: ["A'", "A̅", "~A"],
-            circuit_correct: "B"
-        },
-        {
-            expression: "XȲ + XY", 
-            answer: ["X", "X"],
-            circuit_correct: "A"
-        },
-        {
-            expression: "P̅Q̅ + P̅Q",
-            answer: ["P'", "P̅", "~P"],
-            circuit_correct: "B"
-        },
-        {
-            expression: "M̅N + MN",
-            answer: ["N", "N"],
-            circuit_correct: "A"
-        },
-        {
-            expression: "AB̅ + AB",
-            answer: ["A", "A"],
-            circuit_correct: "B"
-        }
-    ],
-
-    ex1b: [
-        {
-            expression: "AB + A̅B + A̅BC",
-            answer: ["A + B", "B + A"],
-            circuit_correct: "A"
-        },
-        {
-            expression: "XY + X̅Y + XYZ",
-            answer: ["Y", "Y"],
-            circuit_correct: "B"
-        },
-        {
-            expression: "PQ + P̅Q + PQR",
-            answer: ["Q", "Q"],
-            circuit_correct: "A"
-        },
-        {
-            expression: "MN + M̅N + M̅NO",
-            answer: ["N", "N"],
-            circuit_correct: "B"
-        },
-        {
-            expression: "ST + S̅T + S̅TU",
-            answer: ["T", "T"],
-            circuit_correct: "A"
-        }
-    ]
-};
-
-// ===== FUNCIÓN PARA GENERAR VERSIÓN ÚNICA =====
-function generateStudentVersion(studentId) {
-    const numericPart = studentId.replace(/\D/g, '');
-    const hash = parseInt(numericPart.slice(-3)) || 0;
-    return hash % 5;
-}
-
-// ===== FUNCIÓN PARA CARGAR EJERCICIOS POR VERSIÓN =====
-function loadStudentExercises(version) {
-    try {
-        console.log(`🔄 Cargando ejercicios para versión ${version}...`);
-        loadExercise1(version);
-        console.log('🎉 Ejercicios cargados correctamente');
-    } catch (error) {
-        console.error('❌ Error al cargar ejercicios:', error);
-    }
-}
-
-function loadExercise1(version) {
-    const ex1a = exerciseVariants.ex1a[version];
-    const ex1aTitle = document.querySelector('#ex1 .exercise-part h4');
-    if (ex1aTitle) ex1aTitle.innerHTML = `a) ${ex1a.expression} (0.5 puntos)`;
-
-    const ex1b = exerciseVariants.ex1b[version];
-    const ex1bTitle = document.querySelectorAll('#ex1 .exercise-part h4')[1];
-    if (ex1bTitle) ex1bTitle.innerHTML = `b) ${ex1b.expression} (0.5 puntos)`;
-}
 
 // ===== FUNCIONES PRINCIPALES =====
 function updateStudentInfo() {
@@ -131,15 +38,19 @@ function updateStudentInfo() {
     const careerField = document.getElementById('studentCareer');
     const startBtn = document.getElementById('startBtn');
 
+    console.log('Selected ID:', selectedId); // Para depuración
+    
     if (selectedId && studentsDatabase[selectedId]) {
         const student = studentsDatabase[selectedId];
         nameField.value = student.name;
         careerField.value = student.career;
         startBtn.disabled = false;
+        startBtn.classList.remove('disabled');
     } else {
         nameField.value = '';
         careerField.value = '';
         startBtn.disabled = true;
+        startBtn.classList.add('disabled');
     }
 }
 
@@ -177,38 +88,26 @@ function startExam() {
         group: "5A"
     };
 
-    const studentVersion = generateStudentVersion(selectedId);
-    currentStudent.version = studentVersion;
-    loadStudentExercises(studentVersion);
-
-    console.log(`Estudiante: ${currentStudent.name} | Versión: ${studentVersion}`);
+    console.log('Examen iniciado para:', currentStudent.name);
     switchTab('ex1');
-}
-
-function selectCircuitOption(exercise, option) {
-    circuitAnswers[exercise] = option;
-    const allRadios = document.querySelectorAll(`input[name="circuit${exercise}"]`);
-    
-    allRadios.forEach(radio => {
-        const label = radio.nextElementSibling;
-        if (radio.value === option) {
-            label.style.color = '#1e3c72';
-            label.style.fontWeight = 'bold';
-            label.style.backgroundColor = '#e3f2fd';
-            label.style.padding = '5px';
-            label.style.borderRadius = '5px';
-        } else {
-            label.style.color = '#495057';
-            label.style.fontWeight = 'normal';
-            label.style.backgroundColor = 'transparent';
-            label.style.padding = '0';
-            label.style.borderRadius = '0';
-        }
-    });
 }
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Sistema de Examen Inicializado');
-    document.getElementById('studentSelect').addEventListener('change', updateStudentInfo);
+    
+    // Registrar el event listener correctamente
+    const studentSelect = document.getElementById('studentSelect');
+    if (studentSelect) {
+        studentSelect.addEventListener('change', updateStudentInfo);
+    } else {
+        console.error('No se encontró el elemento studentSelect');
+    }
+    
+    // Inicializar estado del botón
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+        startBtn.disabled = true;
+        startBtn.classList.add('disabled');
+    }
 });
