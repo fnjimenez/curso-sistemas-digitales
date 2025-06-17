@@ -139,4 +139,76 @@ function updateStudentInfo() {
     } else {
         nameField.value = '';
         careerField.value = '';
-        startBtn.disabled = true
+        startBtn.disabled = true;
+    }
+}
+
+function switchTab(tabName) {
+    const allTabContents = document.querySelectorAll('.tab-content');
+    allTabContents.forEach(tab => tab.classList.remove('active'));
+    
+    const allTabs = document.querySelectorAll('.tab');
+    allTabs.forEach(tab => tab.classList.remove('active'));
+
+    const targetTab = document.getElementById(tabName);
+    if (targetTab) targetTab.classList.add('active');
+    
+    const tabButtons = document.querySelectorAll('.tab');
+    tabButtons.forEach(button => {
+        if (button.getAttribute('onclick').includes(`'${tabName}'`)) {
+            button.classList.add('active');
+        }
+    });
+}
+
+function startExam() {
+    const selectedId = document.getElementById('studentSelect').value;
+    
+    if (!selectedId || !studentsDatabase[selectedId]) {
+        alert('⚠️ Por favor selecciona una matrícula válida');
+        return;
+    }
+
+    const studentData = studentsDatabase[selectedId];
+    currentStudent = {
+        id: selectedId,
+        name: studentData.name,
+        career: studentData.career,
+        group: "5A"
+    };
+
+    const studentVersion = generateStudentVersion(selectedId);
+    currentStudent.version = studentVersion;
+    loadStudentExercises(studentVersion);
+
+    console.log(`Estudiante: ${currentStudent.name} | Versión: ${studentVersion}`);
+    switchTab('ex1');
+}
+
+function selectCircuitOption(exercise, option) {
+    circuitAnswers[exercise] = option;
+    const allRadios = document.querySelectorAll(`input[name="circuit${exercise}"]`);
+    
+    allRadios.forEach(radio => {
+        const label = radio.nextElementSibling;
+        if (radio.value === option) {
+            label.style.color = '#1e3c72';
+            label.style.fontWeight = 'bold';
+            label.style.backgroundColor = '#e3f2fd';
+            label.style.padding = '5px';
+            label.style.borderRadius = '5px';
+        } else {
+            label.style.color = '#495057';
+            label.style.fontWeight = 'normal';
+            label.style.backgroundColor = 'transparent';
+            label.style.padding = '0';
+            label.style.borderRadius = '0';
+        }
+    });
+}
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Sistema de Examen Inicializado');
+    document.getElementById('studentSelect').addEventListener('change', updateStudentInfo);
+});
