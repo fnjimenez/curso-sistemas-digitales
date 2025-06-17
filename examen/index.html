@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Sistemas Digitales - Examen Completo (CORREGIDO)</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Digitales - Examen Completo</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -56,10 +56,12 @@
         .tabs {
             display: flex;
             background: #f8f9fa;
+            overflow-x: auto;
         }
 
         .tab {
             flex: 1;
+            min-width: 120px;
             padding: 15px;
             text-align: center;
             background: #e9ecef;
@@ -69,6 +71,7 @@
             font-weight: 600;
             color: #495057;
             border-right: 1px solid #dee2e6;
+            transition: all 0.3s ease;
         }
 
         .tab:last-child {
@@ -81,13 +84,23 @@
             border-bottom: 3px solid #1e3c72;
         }
 
+        .tab:hover:not(.active) {
+            background: #dee2e6;
+        }
+
         .tab-content {
             display: none;
             padding: 30px;
+            animation: fadeIn 0.3s ease-in;
         }
 
         .tab-content.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .student-info {
@@ -118,12 +131,14 @@
             border-radius: 8px;
             font-size: 16px;
             background: #f8f9fa;
+            transition: all 0.3s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1e3c72;
             background: white;
+            transform: scale(1.02);
         }
 
         input[readonly] {
@@ -166,6 +181,7 @@
             border-radius: 10px;
             margin: 20px 0;
             padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .exercise-header {
@@ -184,31 +200,6 @@
             border-left: 5px solid #1e3c72;
         }
 
-        .circuit-diagram {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            margin: 15px 0;
-        }
-
-        .step-guide {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .step-guide h4 {
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-
-        .step-guide ol {
-            margin-left: 20px;
-        }
-
         .attempts-counter {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
@@ -223,6 +214,12 @@
             border-radius: 5px;
             margin: 10px 0;
             font-weight: bold;
+            animation: slideIn 0.3s ease-in;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .feedback.correct {
@@ -244,36 +241,64 @@
             font-size: 1.1em;
         }
 
-        .karnaugh-map, .truth-table {
+        table {
             margin: 20px auto;
             border-collapse: collapse;
             background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .karnaugh-map th, .karnaugh-map td,
-        .truth-table th, .truth-table td {
+        th, td {
             border: 2px solid #1e3c72;
-            width: 50px;
-            height: 50px;
+            padding: 10px;
             text-align: center;
             vertical-align: middle;
-            font-weight: bold;
-            padding: 10px;
         }
 
-        .karnaugh-map th, .truth-table th {
+        th {
             background: #1e3c72;
             color: white;
+            font-weight: bold;
         }
 
-        .karnaugh-map input, .truth-table input {
-            width: 35px;
-            height: 30px;
-            text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 16px;
-            font-weight: bold;
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            transition: width 0.3s ease;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #1976d2;
+        }
+
+        .alert-success {
+            background: #e8f5e8;
+            border-color: #28a745;
+            color: #1b5e20;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
         }
 
         @media (max-width: 768px) {
@@ -284,1275 +309,307 @@
             .student-info {
                 grid-template-columns: 1fr;
             }
+
+            .tab {
+                min-width: unset;
+                flex: unset;
+            }
+
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+
+        /* Accessibility improvements */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: 3px solid #1e3c72;
+            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
-<h1>🔧 Examen Completo: Sistemas Digitales (CORREGIDO)</h1>
-<div class="course-info">
-<div class="info-card"><strong>Asignatura:</strong> Sistemas Digitales</div>
-<div class="info-card"><strong>Profesor:</strong> Fausto Noé Jiménez</div>
-<div class="info-card"><strong>Cuatrimestre:</strong> 6° Mayo-Agosto 2025</div>
-<div class="info-card"><strong>Semana:</strong> 04 (03-09 Junio)</div>
-<div class="info-card"><strong>Tiempo:</strong> 2 horas aprox.</div>
-<div class="info-card"><strong>Valor:</strong> 10 puntos</div>
-</div>
-</div>
-
-<div class="tabs">
-<button class="tab active" onclick="switchTab('student')">👤 Estudiante</button>
-<button class="tab" onclick="switchTab('ex1')">📝 Ejercicio 1</button>
-<button class="tab" onclick="switchTab('ex2')">⚡ Ejercicio 2</button>
-<button class="tab" onclick="switchTab('ex3')">💡 Ejercicio 3</button>
-<button class="tab" onclick="switchTab('ex4')">🗺️ Ejercicio 4</button>
-<button class="tab" onclick="switchTab('results')">📊 Resultados</button>
-</div>
-
-<!-- Datos del Estudiante -->
-<div class="tab-content active" id="student">
-<h2 style="margin-bottom: 20px; color: #1e3c72;">Información del Estudiante</h2>
-<div class="student-info">
-<div class="form-group">
-<label>Seleccionar Matrícula:</label>
-<select id="studentSelect" onchange="updateStudentInfo()">
-<option value="">-- Selecciona tu matrícula --</option>
-<optgroup label="Ingeniería en Tecnologías de Información">
-<option value="U2303057N0071">U2303057N0071 - GONZALEZ LARA MARTHA ESMERALDA</option>
-<option value="U2303057N0141">U2303057N0141 - JARAMILLO ROMERO IVAN</option>
-<option value="U2303057N0111">U2303057N0111 - JUAREZ JACINTO MARIO ADAN</option>
-<option value="U2303057N0105">U2303057N0105 - MERINO ZAPIAIN ANA MAGDALA</option>
-<option value="U2303057N0068">U2303057N0068 - PEREZ TAVERA GUADALUPE BERENICE</option>
-<option value="U2303057N0116">U2303057N0116 - RANGEL AGUAYO ANGEL</option>
-</optgroup>
-<optgroup label="Ingeniería Industrial">
-<option value="U2303057N0155">U2303057N0155 - DE HARO SEGURA DENIEL</option>
-<option value="U2303057N0020">U2303057N0020 - GARCIA ROMERO CENOBIO</option>
-<option value="U2303057N0049">U2303057N0049 - GUTIERREZ GUTIERREZ DANNA LIZBETH</option>
-<option value="U2303057N0080">U2303057N0080 - HERNANDEZ VILLEGAS FATIMA</option>
-<option value="U2303057N0070">U2303057N0070 - LUCIO RODRIGUEZ EYMI JOSELIN</option>
-<option value="U2303057N0012">U2303057N0012 - MACHUCA HERNANDEZ JUAN SOLEDAD</option>
-<option value="U2303057N0021">U2303057N0021 - MEDELLIN MARQUEZ MAYRA JAZMIN</option>
-<option value="U2303057N0046">U2303057N0046 - MEJIA BANDA LUIS ERNESTO</option>
-<option value="U2303057N0086">U2303057N0086 - MEJIA CANO PERLA DEL CARMEN</option>
-<option value="U2303057N0064">U2303057N0064 - MENDOZA FLORES SANDY</option>
-<option value="U2303057N0108">U2303057N0108 - MORUA ZUÑIGA PATRICIA BIRIDIANA</option>
-<option value="U2203057N0070">U2203057N0070 - ORTIZ CHAVEZ JOSE MANUEL</option>
-<option value="U2303057N0001">U2303057N0001 - ORTIZ ORTIZ LUIS ALEJANDRO</option>
-<option value="U2303057N0110">U2303057N0110 - PEREZ RANGEL JORGE ARMANDO</option>
-<option value="U2303057N0039">U2303057N0039 - ROCHA SALGADO JHONATAN ISAAC</option>
-<option value="U2303057N0066">U2303057N0066 - RODRIGUEZ GARCIA DAISA GUADALUPE</option>
-<option value="U2303057N0092">U2303057N0092 - RODRIGUEZ GARCIA MANUEL EDUARDO</option>
-<option value="U2303057N0014">U2303057N0014 - RODRIGUEZ PADILLA JORGE ALBERTO</option>
-<option value="U2303057N0041">U2303057N0041 - ROSALES MARQUEZ EDGAR</option>
-<option value="U2303057N0077">U2303057N0077 - VEGA CORREA ROSA ISELA</option>
-<option value="U2303057N0152">U2303057N0152 - YAÑEZ BERNAL GEMMA</option>
-</optgroup>
-</select>
-</div>
-<div class="form-group">
-<label>Nombre Completo:</label>
-<input id="studentName" readonly="" type="text"/>
-</div>
-<div class="form-group">
-<label>Carrera:</label>
-<input id="studentCareer" readonly="" type="text"/>
-</div>
-<div class="form-group">
-<label>Grupo:</label>
-<input id="studentGroup" readonly="" type="text" value="5A"/>
-</div>
-</div>
-<div style="text-align: center;">
-<button class="btn btn-success" disabled="" id="startBtn" onclick="startExam()">🚀 Comenzar Examen</button>
-</div>
-</div>
-
-<!-- Ejercicio 1: Dibujar y Simplificar -->
-<div class="tab-content" id="ex1">
-<div class="exercise-block">
-<div class="exercise-header">
-<h3 style="margin: 0; font-size: 1.5em;">📝 Ejercicio 1: Dibujar Circuitos y Simplificar (2.5 puntos)</h3>
-<p style="margin: 5px 0 0 0;">Dibuje el circuito lógico y simplifique las expresiones</p>
-</div>
-<div class="step-guide">
-<h4>📋 Instrucciones:</h4>
-<ul>
-<li>Use notación estándar: AND (·), OR (+), NOT (')</li>
-<li><strong>Ejemplo:</strong> A·B' + C o simplemente AB' + C</li>
-<li>Tiene <strong>5 intentos</strong> por pregunta</li>
-</ul>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">a) A̅B̅ + A̅B (0.5 puntos)</h4>
-<p><strong>Descripción del circuito:</strong></p>
-<div style="margin: 15px 0;">
-<input id="circuit1a_A" name="circuit1a" onchange="selectCircuitOption('1a', 'A')" type="radio" value="A"/>
-<label for="circuit1a_A" style="margin-left: 10px; font-weight: normal;">
-                            A) Las entradas A y B → compuertas NOT → van a una sola compuerta AND → salida
-                        </label>
-</div>
-<div style="margin: 15px 0;">
-<input id="circuit1a_B" name="circuit1a" onchange="selectCircuitOption('1a', 'B')" type="radio" value="B"/>
-<label for="circuit1a_B" style="margin-left: 10px; font-weight: normal;">
-                            B) A y B → compuertas NOT → A̅ y B̅ van a AND, también A̅ y B van a otra AND → ambas salidas a OR
-                        </label>
-</div>
-<div style="margin: 15px 0;">
-<input id="circuit1a_C" name="circuit1a" onchange="selectCircuitOption('1a', 'C')" type="radio" value="C"/>
-<label for="circuit1a_C" style="margin-left: 10px; font-weight: normal;">
-                            C) A y B van directamente a compuertas AND, luego la salida pasa por NOT
-                        </label>
-</div>
-<p><strong>Expresión simplificada:</strong></p>
-<input id="ex1a_simplified" placeholder="Resultado de la simplificación" type="text"/>
-<button class="btn" onclick="checkAnswer('1a')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts1a">5</span></div>
-<div id="feedback1a"></div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">b) AB + A̅B + A̅BC (0.5 puntos)</h4>
-<p><strong>Descripción del circuito:</strong></p>
-<div style="margin: 15px 0;">
-<input id="circuit1b_A" name="circuit1b" onchange="selectCircuitOption('1b', 'A')" type="radio" value="A"/>
-<label for="circuit1b_A" style="margin-left: 10px; font-weight: normal;">
-                            A) A y B → AND, A pasa por NOT → A̅ y B → AND, A̅ y B y C → AND de 3 entradas → todas a OR
-                        </label>
-</div>
-<div style="margin: 15px 0;">
-<input id="circuit1b_B" name="circuit1b" onchange="selectCircuitOption('1b', 'B')" type="radio" value="B"/>
-<label for="circuit1b_B" style="margin-left: 10px; font-weight: normal;">
-                            B) A, B y C van directamente a una compuerta OR de 3 entradas
-                        </label>
-</div>
-<div style="margin: 15px 0;">
-<input id="circuit1b_C" name="circuit1b" onchange="selectCircuitOption('1b', 'C')" type="radio" value="C"/>
-<label for="circuit1b_C" style="margin-left: 10px; font-weight: normal;">
-                            C) Todas las variables pasan por NOT, luego van a compuertas AND
-                        </label>
-</div>
-<p><strong>Expresión simplificada:</strong></p>
-<input id="ex1b_simplified" placeholder="Resultado de la simplificación" type="text"/>
-<button class="btn" onclick="checkAnswer('1b')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts1b">5</span></div>
-<div id="feedback1b"></div>
-</div>
-</div>
-</div>
-
-<!-- Ejercicio 2: Simplificación de Circuito -->
-<div class="tab-content" id="ex2">
-<div class="exercise-block">
-<div class="exercise-header">
-<h3 style="margin: 0; font-size: 1.5em;">⚡ Ejercicio 2: Simplificar Circuito Lógico (2.5 puntos)</h3>
-<p style="margin: 5px 0 0 0;">Analice el circuito mostrado y simplifíquelo</p>
-</div>
-<div class="circuit-diagram">
-<h4>Circuito a Simplificar:</h4>
-<svg height="400" style="background: white; border: 2px solid #e9ecef; border-radius: 8px;" viewbox="0 0 700 400" width="700">
-<defs>
-<pattern height="20" id="grid" patternunits="userSpaceOnUse" width="20">
-<path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="1"></path>
-</pattern>
-<lineargradient id="andGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#ffcc80;stop-opacity:1"></stop>
-<stop offset="100%" style="stop-color:#ff9800;stop-opacity:1"></stop>
-</lineargradient>
-<lineargradient id="orGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#ffab91;stop-opacity:1"></stop>
-<stop offset="100%" style="stop-color:#ff5722;stop-opacity:1"></stop>
-</lineargradient>
-<lineargradient id="notGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#fff59d;stop-opacity:1"></stop>
-<stop offset="100%" style="stop-color:#ffc107;stop-opacity:1"></stop>
-</lineargradient>
-</defs>
-<rect fill="url(#grid)" height="100%" width="100%"></rect>
-<!-- Entradas -->
-<text fill="#1e3c72" font-size="18" font-weight="bold" x="30" y="80">A</text>
-<text fill="#1e3c72" font-size="18" font-weight="bold" x="30" y="200">B</text>
-<text fill="#1e3c72" font-size="18" font-weight="bold" x="30" y="320">C</text>
-<!-- Líneas principales -->
-<line stroke="#2c3e50" stroke-width="3" x1="50" x2="120" y1="75" y2="75"></line>
-<line stroke="#2c3e50" stroke-width="3" x1="50" x2="120" y1="195" y2="195"></line>
-<line stroke="#2c3e50" stroke-width="3" x1="50" x2="120" y1="315" y2="315"></line>
-<!-- Compuerta NOT para A -->
-<g transform="translate(120, 60)">
-<polygon fill="url(#notGradient)" points="0,0 0,30 25,15" stroke="#d84315" stroke-width="2"></polygon>
-<circle cx="30" cy="15" fill="white" r="5" stroke="#d84315" stroke-width="2"></circle>
-<line stroke="#2c3e50" stroke-width="3" x1="35" x2="55" y1="15" y2="15"></line>
-</g>
-<!-- Compuerta NOT para C -->
-<g transform="translate(120, 300)">
-<polygon fill="url(#notGradient)" points="0,0 0,30 25,15" stroke="#d84315" stroke-width="2"></polygon>
-<circle cx="30" cy="15" fill="white" r="5" stroke="#d84315" stroke-width="2"></circle>
-<line stroke="#2c3e50" stroke-width="3" x1="35" x2="55" y1="15" y2="15"></line>
-</g>
-<!-- Conexiones a ANDs -->
-<line stroke="#2c3e50" stroke-width="2" x1="175" x2="220" y1="75" y2="75"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="220" x2="220" y1="75" y2="100"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="220" x2="250" y1="100" y2="100"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="120" x2="200" y1="195" y2="195"></line>
-<circle cx="200" cy="195" fill="#2c3e50" r="3"></circle>
-<line stroke="#2c3e50" stroke-width="2" x1="200" x2="200" y1="195" y2="140"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="200" x2="250" y1="140" y2="140"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="200" x2="200" y1="195" y2="250"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="200" x2="250" y1="250" y2="250"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="175" x2="230" y1="315" y2="315"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="230" x2="230" y1="315" y2="270"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="230" x2="250" y1="270" y2="270"></line>
-<!-- Compuertas AND -->
-<g transform="translate(250, 90)">
-<rect fill="url(#andGradient)" height="60" stroke="#e65100" stroke-width="2" width="50" x="0" y="0"></rect>
-<path d="M 50 0 Q 80 30 50 60" fill="url(#andGradient)" stroke="#e65100" stroke-width="2"></path>
-<text fill="#bf360c" font-size="16" font-weight="bold" text-anchor="middle" x="25" y="38">&amp;</text>
-<line stroke="#2c3e50" stroke-width="3" x1="80" x2="100" y1="30" y2="30"></line>
-</g>
-<g transform="translate(250, 230)">
-<rect fill="url(#andGradient)" height="60" stroke="#e65100" stroke-width="2" width="50" x="0" y="0"></rect>
-<path d="M 50 0 Q 80 30 50 60" fill="url(#andGradient)" stroke="#e65100" stroke-width="2"></path>
-<text fill="#bf360c" font-size="16" font-weight="bold" text-anchor="middle" x="25" y="38">&amp;</text>
-<line stroke="#2c3e50" stroke-width="3" x1="80" x2="100" y1="30" y2="30"></line>
-</g>
-<!-- Conexiones a OR -->
-<line stroke="#2c3e50" stroke-width="3" x1="350" x2="420" y1="120" y2="120"></line>
-<line stroke="#2c3e50" stroke-width="3" x1="350" x2="420" y1="260" y2="260"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="420" x2="420" y1="120" y2="170"></line>
-<line stroke="#2c3e50" stroke-width="2" x1="420" x2="420" y1="260" y2="210"></line>
-<!-- Compuerta OR -->
-<g transform="translate(430, 160)">
-<path d="M 0 0 Q 20 0 40 30 Q 20 60 0 60 Q 15 30 0 0" fill="url(#orGradient)" stroke="#c62828" stroke-width="2"></path>
-<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="20" y="35">≥1</text>
-<line stroke="#2c3e50" stroke-width="4" x1="40" x2="80" y1="30" y2="30"></line>
-</g>
-<text fill="#1e3c72" font-size="18" font-weight="bold" x="530" y="200">Salida</text>
-<text fill="#666" font-size="12" text-anchor="middle" x="175" y="65">A̅</text>
-<text fill="#666" font-size="12" text-anchor="middle" x="175" y="305">C̅</text>
-<text fill="#666" font-size="12" text-anchor="middle" x="355" y="110">A̅B</text>
-<text fill="#666" font-size="12" text-anchor="middle" x="355" y="250">BC̅</text>
-</svg>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">a) Indique la expresión del circuito original (1 punto)</h4>
-<input id="ex2a_expression" placeholder="Ejemplo: A'B + BC' (NOT A AND B OR B AND NOT C)" type="text"/>
-<button class="btn" onclick="checkAnswer('2a')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts2a">5</span></div>
-<div id="feedback2a"></div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">b) Expresión simplificada (1.5 puntos)</h4>
-<input id="ex2b_simplified" placeholder="Ejemplo: A' o B'C + D (use apostrofe para NOT)" type="text"/>
-<button class="btn" onclick="checkAnswer('2b')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts2b">5</span></div>
-<div id="feedback2b"></div>
-</div>
-</div>
-</div>
-
-<!-- Ejercicio 3: Circuito de Mayoría -->
-<div class="tab-content" id="ex3">
-<div class="exercise-block">
-<div class="exercise-header">
-<h3 style="margin: 0; font-size: 1.5em;">💡 Ejercicio 3: Circuito de Mayoría (2.5 puntos)</h3>
-<p style="margin: 5px 0 0 0;">Diseñe un circuito que tenga salida ALTO cuando la mayoría de entradas esté en ALTO</p>
-</div>
-<div class="step-guide">
-<h4>📚 ¿Qué es un Circuito de Mayoría?</h4>
-<p>Un <strong>circuito de mayoría</strong> es un circuito lógico que produce una salida <strong>ALTO (1)</strong> cuando la <em>mayoría</em> de sus entradas están en estado <strong>ALTO</strong>.</p>
-<div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 5px solid #28a745;">
-<h5 style="color: #1b5e20; margin-bottom: 10px;">🎯 Regla del Circuito de Mayoría (3 entradas):</h5>
-<ul style="color: #1b5e20; margin-left: 20px;">
-<li><strong>Salida = 1</strong> cuando <strong>al menos 2 de las 3 entradas</strong> están en <strong>1</strong></li>
-<li><strong>Salida = 0</strong> cuando <strong>menos de 2 entradas</strong> están en <strong>1</strong></li>
-</ul>
-</div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Tabla de Verdad - Circuito de Mayoría (1 punto)</h4>
-<p><strong>Instrucciones:</strong> Complete la tabla aplicando la regla de mayoría. La salida es <strong>1</strong> cuando <em>al menos 2 de las 3 entradas</em> son <strong>1</strong>.</p>
-<table class="truth-table">
-<thead>
-<tr>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>Suma (A+B+C)</th>
-<th>Salida Y</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td><td>0</td><td>0</td>
-<td style="background: #f8f9fa; font-weight: bold;">0</td>
-<td>
-<select id="tt3_0" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>0</td><td>0</td><td>1</td>
-<td style="background: #f8f9fa; font-weight: bold;">1</td>
-<td>
-<select id="tt3_1" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>0</td><td>1</td><td>0</td>
-<td style="background: #f8f9fa; font-weight: bold;">1</td>
-<td>
-<select id="tt3_2" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>0</td><td>1</td><td>1</td>
-<td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">2 ✓</td>
-<td>
-<select id="tt3_3" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>1</td><td>0</td><td>0</td>
-<td style="background: #f8f9fa; font-weight: bold;">1</td>
-<td>
-<select id="tt3_4" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>1</td><td>0</td><td>1</td>
-<td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">2 ✓</td>
-<td>
-<select id="tt3_5" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>1</td><td>1</td><td>0</td>
-<td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">2 ✓</td>
-<td>
-<select id="tt3_6" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>1</td><td>1</td><td>1</td>
-<td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">3 ✓</td>
-<td>
-<select id="tt3_7" style="width: 50px; padding: 5px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-</tbody>
-</table>
-<button class="btn" onclick="checkAnswer('3table')">Validar Tabla</button>
-<div id="feedback3table"></div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Expresión simplificada (1.5 puntos)</h4>
-<div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 15px 0; border-left: 5px solid #28a745;">
-<h5 style="color: #1b5e20; margin-bottom: 15px;">📚 Cómo Crear la Expresión Simplificada:</h5>
-<div style="color: #1b5e20; font-size: 14px;">
-<p>Para las filas donde la salida = 1:</p>
-<ul style="margin-left: 20px;">
-<li>(0,1,1) → A̅BC</li>
-<li>(1,0,1) → AB̅C</li>
-<li>(1,1,0) → ABC̅</li>
-<li>(1,1,1) → ABC</li>
-</ul>
-<p><strong>Expresión inicial:</strong> Y = A̅BC + AB̅C + ABC̅ + ABC</p>
-<p><strong>Simplificación:</strong> Y = AB + AC + BC</p>
-</div>
-</div>
-<input id="ex3_simplified" placeholder="Escriba la expresión booleana simplificada aquí" type="text"/>
-<button class="btn" onclick="checkAnswer('3simplified')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts3simplified">5</span></div>
-<div id="feedback3simplified"></div>
-</div>
-</div>
-</div>
-
-<!-- Ejercicio 4: Mapas de Karnaugh -->
-<div class="tab-content" id="ex4">
-<div class="exercise-block">
-<div class="exercise-header">
-<h3 style="margin: 0; font-size: 1.5em;">🗺️ Ejercicio 4: Mapas de Karnaugh (2.5 puntos)</h3>
-<p style="margin: 5px 0 0 0;">Utilice los mapas de Karnaugh para simplificar la expresión</p>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Expresión a simplificar:</h4>
-<div style="text-align: center; font-size: 1.2em; font-weight: bold; margin: 20px 0; padding: 15px; background: #fff3cd; border-radius: 8px;">
-Y = C̅(AB̅D̅ + D) + A̅BC + D̅
-</div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Paso 1: Tabla de Verdad (1 punto)</h4>
-<p>Complete la tabla de verdad para la expresión dada:</p>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
-<table class="truth-table" style="font-size: 12px;">
-<thead>
-<tr>
-<th>A</th><th>B</th><th>C</th><th>D</th><th>Y</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>
-<select id="tt4_0" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>0</td><td>0</td><td>1</td><td>
-<select id="tt4_1" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>
-<select id="tt4_2" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>
-<select id="tt4_3" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>
-<select id="tt4_4" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>
-<select id="tt4_5" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>
-<select id="tt4_6" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>
-<select id="tt4_7" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-</tbody>
-</table>
-<table class="truth-table" style="font-size: 12px;">
-<thead>
-<tr>
-<th>A</th><th>B</th><th>C</th><th>D</th><th>Y</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>
-<select id="tt4_8" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>
-<select id="tt4_9" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>
-<select id="tt4_10" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>
-<select id="tt4_11" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>
-<select id="tt4_12" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>
-<select id="tt4_13" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>1</td><td>1</td><td>0</td><td>
-<select id="tt4_14" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>
-<select id="tt4_15" style="width: 40px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td></tr>
-</tbody>
-</table>
-</div>
-<div style="margin: 15px 0;">
-<button class="btn" onclick="checkAnswer('4table')">Validar Tabla de Verdad</button>
-<div id="feedback4table"></div>
-</div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Paso 2: Mapa de Karnaugh (1 punto)</h4>
-<p>Transfiera los valores de la tabla de verdad al mapa K:</p>
-<table class="karnaugh-map">
-<thead>
-<tr>
-<th>AB\CD</th><th>00</th><th>01</th><th>11</th><th>10</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="background: #1e3c72; color: white; font-weight: bold;">00</td>
-<td>
-<select id="k_00" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_01" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_03" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_02" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td style="background: #1e3c72; color: white; font-weight: bold;">01</td>
-<td>
-<select id="k_04" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_05" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_07" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_06" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td style="background: #1e3c72; color: white; font-weight: bold;">11</td>
-<td>
-<select id="k_12" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_13" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_15" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_14" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-<tr>
-<td style="background: #1e3c72; color: white; font-weight: bold;">10</td>
-<td>
-<select id="k_08" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_09" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_11" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-<td>
-<select id="k_10" style="width: 45px; padding: 2px; border: 2px solid #e9ecef; border-radius: 4px; text-align: center;">
-<option value="">?</option>
-<option value="0">0</option>
-<option value="1">1</option>
-</select>
-</td>
-</tr>
-</tbody>
-</table>
-<button class="btn" onclick="checkAnswer('4karnaugh')">Validar Mapa K</button>
-<div id="feedback4karnaugh"></div>
-</div>
-<div class="exercise-part">
-<h4 style="color: #1e3c72;">Expresión Simplificada (0.5 puntos)</h4>
-<input id="ex4_simplified" placeholder="Expresión simplificada usando agrupaciones del mapa K" type="text"/>
-<button class="btn" onclick="checkAnswer('4simplified')">Validar</button>
-<div class="attempts-counter">Intentos restantes: <span id="attempts4simplified">5</span></div>
-<div id="feedback4simplified"></div>
-</div>
-</div>
-</div>
-
-<!-- Resultados -->
-<div class="tab-content" id="results">
-<div style="text-align: center; padding: 20px;">
-<button class="btn btn-success" onclick="finishExam()" style="font-size: 18px; padding: 15px 30px;">
-📊 Calcular Calificación Final
-</button>
-<p style="margin-top: 15px; color: #6c757d;">Haga clic para ver sus resultados y calificación</p>
-</div>
-<div id="resultsArea">
-<div class="loading">Los resultados aparecerán aquí al calcular la calificación</div>
-</div>
-</div>
-
-</div>
-
-<script>
-// ===== VARIABLES GLOBALES =====
-const studentsDatabase = {
-    "U2303057N0071": { name: "GONZALEZ LARA MARTHA ESMERALDA", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0141": { name: "JARAMILLO ROMERO IVAN", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0111": { name: "JUAREZ JACINTO MARIO ADAN", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0105": { name: "MERINO ZAPIAIN ANA MAGDALA", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0068": { name: "PEREZ TAVERA GUADALUPE BERENICE", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0116": { name: "RANGEL AGUAYO ANGEL", career: "Licenciatura en Ingeniería en Tecnologías de Información" },
-    "U2303057N0155": { name: "DE HARO SEGURA DENIEL", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0020": { name: "GARCIA ROMERO CENOBIO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0049": { name: "GUTIERREZ GUTIERREZ DANNA LIZBETH", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0080": { name: "HERNANDEZ VILLEGAS FATIMA", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0070": { name: "LUCIO RODRIGUEZ EYMI JOSELIN", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0012": { name: "MACHUCA HERNANDEZ JUAN SOLEDAD", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0021": { name: "MEDELLIN MARQUEZ MAYRA JAZMIN", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0046": { name: "MEJIA BANDA LUIS ERNESTO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0086": { name: "MEJIA CANO PERLA DEL CARMEN", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0064": { name: "MENDOZA FLORES SANDY", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0108": { name: "MORUA ZUÑIGA PATRICIA BIRIDIANA", career: "Licenciatura en Ingeniería Industrial" },
-    "U2203057N0070": { name: "ORTIZ CHAVEZ JOSE MANUEL", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0001": { name: "ORTIZ ORTIZ LUIS ALEJANDRO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0110": { name: "PEREZ RANGEL JORGE ARMANDO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0039": { name: "ROCHA SALGADO JHONATAN ISAAC", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0066": { name: "RODRIGUEZ GARCIA DAISA GUADALUPE", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0092": { name: "RODRIGUEZ GARCIA MANUEL EDUARDO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0014": { name: "RODRIGUEZ PADILLA JORGE ALBERTO", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0041": { name: "ROSALES MARQUEZ EDGAR", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0077": { name: "VEGA CORREA ROSA ISELA", career: "Licenciatura en Ingeniería Industrial" },
-    "U2303057N0152": { name: "YAÑEZ BERNAL GEMMA", career: "Licenciatura en Ingeniería Industrial" }
-};
-
-let currentStudent = null;
-let examAnswers = {};
-let circuitAnswers = {};
-let attempts = {
-    '1a': 5, '1b': 5,
-    '2a': 5, '2b': 5,
-    '3simplified': 5,
-    '4simplified': 5
-};
-
-// ===== RESPUESTAS CORRECTAS CORREGIDAS =====
-const correctAnswers = {
-    '1a_simplified': ['A\'', 'A̅', '~A'],
-    '1b_simplified': ['B + A\'BC', 'B'],
-    '2a_expression': ['A\'B + BC\'', 'A̅B + BC̅', '~AB + BC\''],
-    '2b_simplified': ['B', 'B(A\' + C\')', 'B(A̅ + C̅)'],
-    '3simplified': ['AB + AC + BC', 'AB + BC + AC', 'BC + AB + AC', 'AC + AB + BC', 'AC + BC + AB', 'BC + AC + AB'],
-    '4simplified': ['C̅ + D̅', 'D̅ + C̅', '~C + ~D', '~D + ~C', "C' + D'", "D' + C'"]
-};
-
-const correctCircuitAnswers = {
-    '1a': 'B',
-    '1b': 'A'
-};
-
-let correctTruthTables = {
-    ex3: [0, 0, 0, 1, 0, 1, 1, 1],
-    ex4: [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1]
-};
-
-// ===== FUNCIONES PRINCIPALES CORREGIDAS =====
-function updateStudentInfo() {
-    const selectedId = document.getElementById('studentSelect').value;
-    const nameField = document.getElementById('studentName');
-    const careerField = document.getElementById('studentCareer');
-    const startBtn = document.getElementById('startBtn');
-
-    if (selectedId && studentsDatabase[selectedId]) {
-        const student = studentsDatabase[selectedId];
-        nameField.value = student.name;
-        careerField.value = student.career;
-        startBtn.disabled = false;
-    } else {
-        nameField.value = '';
-        careerField.value = '';
-        startBtn.disabled = true;
-    }
-}
-
-function switchTab(tabName) {
-    // Ocultar todos los contenidos
-    const allTabContents = document.querySelectorAll('.tab-content');
-    allTabContents.forEach(tab => tab.classList.remove('active'));
-    
-    // Remover clase active de todos los tabs
-    const allTabs = document.querySelectorAll('.tab');
-    allTabs.forEach(tab => tab.classList.remove('active'));
-
-    // Mostrar el contenido seleccionado
-    const targetTab = document.getElementById(tabName);
-    if (targetTab) targetTab.classList.add('active');
-    
-    // Activar el tab correspondiente
-    const tabButtons = document.querySelectorAll('.tab');
-    tabButtons.forEach(button => {
-        const onclickAttr = button.getAttribute('onclick');
-        if (onclickAttr && onclickAttr.includes(`'${tabName}'`)) {
-            button.classList.add('active');
-        }
-    });
-}
-
-function startExam() {
-    const selectedId = document.getElementById('studentSelect').value;
-    
-    if (!selectedId || !studentsDatabase[selectedId]) {
-        alert('⚠️ Por favor selecciona una matrícula válida');
-        return;
-    }
-
-    const studentData = studentsDatabase[selectedId];
-    currentStudent = {
-        id: selectedId,
-        name: studentData.name,
-        career: studentData.career,
-        group: "5A"
-    };
-
-    console.log(`Estudiante: ${currentStudent.name}`);
-    console.log(`Matrícula: ${selectedId}`);
-
-    switchTab('ex1');
-}
-
-function selectCircuitOption(exercise, option) {
-    circuitAnswers[exercise] = option;
-    
-    // Actualizar feedback visual NEUTRAL (sin mostrar respuestas correctas)
-    const allRadios = document.querySelectorAll(`input[name="circuit${exercise}"]`);
-    
-    allRadios.forEach(radio => {
-        const label = radio.nextElementSibling;
-        if (radio.value === option) {
-            // Resaltar la opción seleccionada en azul (neutral)
-            label.style.color = '#1e3c72';
-            label.style.fontWeight = 'bold';
-            label.style.backgroundColor = '#e3f2fd';
-            label.style.padding = '5px';
-            label.style.borderRadius = '5px';
-        } else {
-            // Restaurar estilo normal para opciones no seleccionadas
-            label.style.color = '#495057';
-            label.style.fontWeight = 'normal';
-            label.style.backgroundColor = 'transparent';
-            label.style.padding = '0';
-            label.style.borderRadius = '0';
-        }
-    });
-}
-
-// ===== FUNCIÓN CORREGIDA PARA VALIDAR RESPUESTAS =====
-function checkAnswer(exercise) {
-    console.log(`🔧 Validando ejercicio: ${exercise}`);
-    
-    if (exercise === '3table') {
-        checkTruthTable3();
-    } else if (exercise === '4karnaugh') {
-        checkKarnaughMap();
-    } else if (exercise === '4table') {
-        checkTruthTable4();
-    } else {
-        checkRegularAnswer(exercise);
-    }
-}
-
-function checkRegularAnswer(exercise) {
-    console.log(`🔧 Validando ejercicio regular: ${exercise}`);
-    
-    // CORRECCIÓN PRINCIPAL: Resolver IDs correctamente
-    let inputElement;
-    if (exercise.includes('simplified')) {
-        // Para casos como '3simplified', '4simplified'
-        const exerciseNum = exercise.replace('simplified', '');
-        inputElement = document.getElementById(`ex${exerciseNum}_simplified`);
-    } else {
-        // Para casos como '1a', '2a', etc.
-        inputElement = document.getElementById(`ex${exercise}_simplified`) || 
-                     document.getElementById(`ex${exercise}_expression`);
-    }
-    
-    console.log(`Buscando elemento: ex${exercise}_simplified o ex${exercise}_expression`);
-    console.log(`Elemento encontrado:`, !!inputElement);
-    
-    if (!inputElement) {
-        console.error(`❌ No se encontró el elemento de entrada para ${exercise}`);
-        return;
-    }
-    
-    const userAnswer = inputElement.value.trim();
-    const feedbackElement = document.getElementById(`feedback${exercise}`);
-    const attemptsElement = document.getElementById(`attempts${exercise}`);
-    
-    console.log(`Respuesta del usuario: "${userAnswer}"`);
-    
-    if (!userAnswer) {
-        feedbackElement.innerHTML = '<div class="feedback incorrect">⚠️ Por favor ingrese una respuesta antes de validar.</div>';
-        return;
-    }
-    
-    // Verificar expresión simplificada
-    let isExpressionCorrect = false;
-    const correctOptions = correctAnswers[`${exercise}_simplified`] || 
-                         correctAnswers[`${exercise}_expression`] ||
-                         correctAnswers[exercise]; // Para casos como '3simplified'
-    
-    console.log(`Opciones correctas:`, correctOptions);
-    
-    if (correctOptions) {
-        isExpressionCorrect = correctOptions.some(answer => {
-            const normalizedUser = userAnswer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
-            const normalizedAnswer = answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
-            return normalizedUser === normalizedAnswer;
-        });
-    }
-
-    // Verificar descripción del circuito (si aplica)
-    let isCircuitCorrect = true;
-    if (correctCircuitAnswers[exercise]) {
-        isCircuitCorrect = circuitAnswers[exercise] === correctCircuitAnswers[exercise];
-    }
-
-    const isFullyCorrect = isExpressionCorrect && isCircuitCorrect;
-    
-    console.log(`¿Expresión correcta? ${isExpressionCorrect}`);
-    console.log(`¿Circuito correcto? ${isCircuitCorrect}`);
-    console.log(`¿Completamente correcto? ${isFullyCorrect}`);
-    
-    if (isFullyCorrect) {
-        feedbackElement.innerHTML = '<div class="feedback correct">✅ ¡Correcto! Excelente trabajo.</div>';
-        inputElement.style.borderColor = '#28a745';
-    } else if (isExpressionCorrect && !isCircuitCorrect) {
-        feedbackElement.innerHTML = '<div class="feedback incorrect">⚠️ Expresión simplificada correcta, pero revise la descripción del circuito.</div>';
-        inputElement.style.borderColor = '#ffc107';
-    } else if (!isExpressionCorrect && isCircuitCorrect) {
-        feedbackElement.innerHTML = '<div class="feedback incorrect">⚠️ Descripción del circuito correcta, pero revise la expresión simplificada.</div>';
-        inputElement.style.borderColor = '#ffc107';
-    } else {
-        if (attempts[exercise]) {
-            attempts[exercise]--;
-            if (attemptsElement) attemptsElement.textContent = attempts[exercise];
-        }
-        
-        if (!attempts[exercise] || attempts[exercise] <= 0) {
-            feedbackElement.innerHTML = `<div class="feedback incorrect">❌ Sin intentos restantes.<br>
-                <strong>Expresión correcta:</strong> ${correctOptions[0]}<br>
-                <strong>Descripción correcta:</strong> Opción ${correctCircuitAnswers[exercise] || 'N/A'}</div>`;
-            inputElement.disabled = true;
-        } else {
-            feedbackElement.innerHTML = '<div class="feedback incorrect">❌ Incorrecto. Intente nuevamente.</div>';
-        }
-        inputElement.style.borderColor = '#dc3545';
-    }
-}
-
-function checkTruthTable3() {
-    const correct = correctTruthTables.ex3;
-    let allCorrect = true;
-    let answeredCount = 0;
-    
-    for (let i = 0; i < 8; i++) {
-        const select = document.getElementById(`tt3_${i}`);
-        if (select) {
-            const userValue = select.value;
-            if (userValue === '') {
-                select.style.borderColor = '#ffc107';
-                allCorrect = false;
-            } else {
-                answeredCount++;
-                if (parseInt(userValue) !== correct[i]) {
-                    allCorrect = false;
-                    select.style.borderColor = '#dc3545';
-                } else {
-                    select.style.borderColor = '#28a745';
-                }
-            }
-        }
-    }
-    
-    const feedback = document.getElementById('feedback3table');
-    if (answeredCount === 0) {
-        feedback.innerHTML = '<div class="feedback incorrect">⚠️ Por favor complete al menos una respuesta antes de validar.</div>';
-    } else if (answeredCount < 8) {
-        feedback.innerHTML = `<div class="feedback incorrect">⚠️ Complete todas las filas. Faltan ${8 - answeredCount} respuestas.</div>`;
-    } else if (allCorrect) {
-        feedback.innerHTML = '<div class="feedback correct">✅ ¡Excelente! Tabla de verdad completamente correcta!</div>';
-    } else {
-        feedback.innerHTML = '<div class="feedback incorrect">❌ Algunas respuestas son incorrectas. Revise las filas marcadas en rojo.</div>';
-    }
-}
-
-function checkTruthTable4() {
-    const correct = correctTruthTables.ex4;
-    let allCorrect = true;
-    let answeredCount = 0;
-    
-    for (let i = 0; i < 16; i++) {
-        const input = document.getElementById(`tt4_${i}`);
-        if (input) {
-            const userValue = input.value;
-            if (userValue === '') {
-                input.style.borderColor = '#ffc107';
-                allCorrect = false;
-            } else {
-                answeredCount++;
-                if (parseInt(userValue) !== correct[i]) {
-                    allCorrect = false;
-                    input.style.borderColor = '#dc3545';
-                } else {
-                    input.style.borderColor = '#28a745';
-                }
-            }
-        }
-    }
-    
-    const feedback = document.getElementById('feedback4table');
-    if (answeredCount === 0) {
-        feedback.innerHTML = '<div class="feedback incorrect">⚠️ Por favor complete al menos una respuesta antes de validar.</div>';
-    } else if (answeredCount < 16) {
-        feedback.innerHTML = `<div class="feedback incorrect">⚠️ Complete todas las filas. Faltan ${16 - answeredCount} respuestas.</div>`;
-    } else if (allCorrect) {
-        feedback.innerHTML = '<div class="feedback correct">✅ ¡Excelente! Tabla de verdad completamente correcta!</div>';
-    } else {
-        feedback.innerHTML = '<div class="feedback incorrect">❌ Algunas respuestas son incorrectas. Revise las filas marcadas en rojo.</div>';
-    }
-}
-
-function checkKarnaughMap() {
-    const correctMap = correctTruthTables.ex4;
-    const mapOrder = [0,1,3,2,4,5,7,6,12,13,15,14,8,9,11,10];
-    let allCorrect = true;
-    let answeredCount = 0;
-    
-    mapOrder.forEach((truthIndex, mapIndex) => {
-        const select = document.getElementById(`k_${String(mapIndex).padStart(2, '0')}`);
-        if (select) {
-            const userValue = select.value;
-            if (userValue === '') {
-                select.style.borderColor = '#ffc107';
-                allCorrect = false;
-            } else {
-                answeredCount++;
-                if (parseInt(userValue) !== correctMap[truthIndex]) {
-                    allCorrect = false;
-                    select.style.borderColor = '#dc3545';
-                } else {
-                    select.style.borderColor = '#28a745';
-                }
-            }
-        }
-    });
-    
-    const feedback = document.getElementById('feedback4karnaugh');
-    if (answeredCount === 0) {
-        feedback.innerHTML = '<div class="feedback incorrect">⚠️ Por favor complete al menos una celda antes de validar.</div>';
-    } else if (answeredCount < 16) {
-        feedback.innerHTML = `<div class="feedback incorrect">⚠️ Complete todas las celdas del mapa K. Faltan ${16 - answeredCount} valores.</div>`;
-    } else if (allCorrect) {
-        feedback.innerHTML = '<div class="feedback correct">✅ ¡Excelente! Mapa de Karnaugh completamente correcto!</div>';
-    } else {
-        feedback.innerHTML = '<div class="feedback incorrect">❌ Algunos valores son incorrectos. Revise las celdas marcadas en rojo.</div>';
-    }
-}
-
-function finishExam() {
-    if (!currentStudent) {
-        alert('Error: No hay estudiante seleccionado');
-        return;
-    }
-
-    const score = calculateTotalScore();
-    displayResults(score);
-    switchTab('results');
-}
-
-function calculateTotalScore() {
-    let score = 0;
-    
-    // Ejercicio 1 (2.5 puntos total)
-    if (circuitAnswers['1a'] === correctCircuitAnswers['1a']) score += 0.25;
-    if (checkAnswerCorrect('1a_simplified')) score += 0.25;
-    if (circuitAnswers['1b'] === correctCircuitAnswers['1b']) score += 0.25;
-    if (checkAnswerCorrect('1b_simplified')) score += 0.25;
-    
-    // Ejercicio 2 (2.5 puntos total)
-    if (checkAnswerCorrect('2a_expression')) score += 1.0;
-    if (checkAnswerCorrect('2b_simplified')) score += 1.5;
-    
-    // Ejercicio 3 (2.5 puntos total)
-    let correctTT3 = 0;
-    for (let i = 0; i < 8; i++) {
-        const select = document.getElementById(`tt3_${i}`);
-        if (select && select.value !== '' && parseInt(select.value) === correctTruthTables.ex3[i]) {
-            correctTT3++;
-        }
-    }
-    score += (correctTT3 / 8) * 1.0;
-    if (checkAnswerCorrect('3simplified')) score += 1.5;
-    
-    // Ejercicio 4 (2.5 puntos total)
-    let correctTT4 = 0;
-    for (let i = 0; i < 16; i++) {
-        const input = document.getElementById(`tt4_${i}`);
-        if (input && input.value !== '' && parseInt(input.value) === correctTruthTables.ex4[i]) {
-            correctTT4++;
-        }
-    }
-    score += (correctTT4 / 16) * 1.0;
-
-    let correctK = 0;
-    const correctMap = correctTruthTables.ex4;
-    const mapOrder = [0,1,3,2,4,5,7,6,12,13,15,14,8,9,11,10];
-    mapOrder.forEach((truthIndex, mapIndex) => {
-        const input = document.getElementById(`k_${String(mapIndex).padStart(2, '0')}`);
-        if (input && input.value !== '' && parseInt(input.value) === correctMap[truthIndex]) {
-            correctK++;
-        }
-    });
-    score += (correctK / 16) * 1.0;
-    
-    if (checkAnswerCorrect('4simplified')) score += 0.5;
-    
-    return Math.round(score * 10) / 10;
-}
-
-function checkAnswerCorrect(answerKey) {
-    console.log(`🔍 Verificando respuesta para: ${answerKey}`);
-    
-    let inputElement;
-    
-    if (answerKey.includes('simplified')) {
-        const exerciseNum = answerKey.replace('_simplified', '').replace('simplified', '');
-        inputElement = document.getElementById(`ex${exerciseNum}_simplified`);
-        console.log(`Buscando elemento: ex${exerciseNum}_simplified`);
-    } else if (answerKey.includes('expression')) {
-        const exerciseNum = answerKey.replace('_expression', '');
-        inputElement = document.getElementById(`ex${exerciseNum}_expression`);
-        console.log(`Buscando elemento: ex${exerciseNum}_expression`);
-    } else {
-        inputElement = document.getElementById(`ex${answerKey}`) || 
-                     document.getElementById(`ex${answerKey.replace('_', '')}`);
-        console.log(`Buscando elemento: ex${answerKey}`);
-    }
-    
-    if (!inputElement) {
-        console.log(`❌ No se encontró elemento para ${answerKey}`);
-        return false;
-    }
-    
-    const userAnswer = inputElement.value.trim();
-    console.log(`Respuesta del usuario: "${userAnswer}"`);
-    
-    if (!userAnswer) {
-        console.log(`❌ Respuesta vacía`);
-        return false;
-    }
-    
-    const correctOptions = correctAnswers[answerKey] || correctAnswers[answerKey.replace('_', '')];
-    console.log(`Opciones correctas:`, correctOptions);
-    
-    if (!correctOptions) {
-        console.log(`❌ No hay opciones correctas definidas para ${answerKey}`);
-        return false;
-    }
-    
-    const isCorrect = correctOptions.some(answer => {
-        const normalizedUser = userAnswer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
-        const normalizedAnswer = answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
-        return normalizedUser === normalizedAnswer;
-    });
-    
-    console.log(`¿Es correcta? ${isCorrect}`);
-    return isCorrect;
-}
-
-function displayResults(score) {
-    const percentage = Math.round((score / 10) * 100);
-    let grade = 'F';
-    if (percentage >= 90) grade = 'A';
-    else if (percentage >= 80) grade = 'B';
-    else if (percentage >= 70) grade = 'C';
-    else if (percentage >= 60) grade = 'D';
-
-    const resultsArea = document.getElementById('resultsArea');
-    resultsArea.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
-                <h2>🎉 Examen Completado</h2>
-                <div style="font-size: 3em; margin: 20px 0; font-weight: bold;">${score}/10</div>
-                <p style="font-size: 1.5em;">Calificación: ${percentage}% (${grade})</p>
-                <p><strong>Estudiante:</strong> ${currentStudent.name}</p>
-                <p><strong>Matrícula:</strong> ${currentStudent.id}</p>
-                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString()}</p>
-            </div>
-
-            <div style="margin-top: 30px;">
-                <button class="btn btn-success" onclick="finishExam()">📊 Ver Detalle</button>
-                <button class="btn" onclick="resetExam()">🔄 Nuevo Examen</button>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Examen: Sistemas Digitales</h1>
+            <div class="course-info">
+                <div class="info-card"><strong>Asignatura:</strong> Sistemas Digitales</div>
+                <div class="info-card"><strong>Profesor:</strong> Fausto Noé Jiménez</div>
+                <div class="info-card"><strong>Cuatrimestre:</strong> 6° Mayo-Agosto 2025</div>
+                <div class="info-card"><strong>Tiempo:</strong> 2 horas aprox.</div>
+                <div class="info-card"><strong>Valor:</strong> 10 puntos</div>
             </div>
         </div>
-    `;
-}
 
-function resetExam() {
-    if (confirm('¿Reiniciar el examen? Se perderán todas las respuestas.')) {
-        currentStudent = null;
-        examAnswers = {};
-        circuitAnswers = {};
-        attempts = {
-            '1a': 5, '1b': 5,
-            '2a': 5, '2b': 5,
-            '3simplified': 5,
-            '4simplified': 5
-        };
-        
-        document.getElementById('studentSelect').value = '';
-        document.getElementById('studentName').value = '';
-        document.getElementById('studentCareer').value = '';
-        document.getElementById('startBtn').disabled = true;
-        
-        document.getElementById('resultsArea').innerHTML = '<div class="loading">Los resultados aparecerán aquí al completar el examen</div>';
-        
-        switchTab('student');
-    }
-}
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
 
-// ===== INICIALIZACIÓN =====
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Sistema de Examen Completo Cargado Correctamente');
-    console.log('✅ CORRECCIONES APLICADAS:');
-    console.log('  - IDs de elementos corregidos');
-    console.log('  - Función checkAnswer() corregida');
-    console.log('  - Validación de ejercicios 3 y 4 funcionando');
-    console.log('  - Todos los ejercicios incluidos');
-});
-</script>
+        <nav class="tabs" role="tablist">
+            <button class="tab active" onclick="switchTab('student')" role="tab" aria-selected="true">👤 Estudiante</button>
+            <button class="tab" onclick="switchTab('ex1')" role="tab" aria-selected="false">📝 Ejercicio 1</button>
+            <button class="tab" onclick="switchTab('ex2')" role="tab" aria-selected="false">⚡ Ejercicio 2</button>
+            <button class="tab" onclick="switchTab('ex3')" role="tab" aria-selected="false">💡 Ejercicio 3</button>
+            <button class="tab" onclick="switchTab('ex4')" role="tab" aria-selected="false">🗺️ Ejercicio 4</button>
+            <button class="tab" onclick="switchTab('results')" role="tab" aria-selected="false">📊 Resultados</button>
+        </nav>
 
-</body>
-</html>
+        <!-- Datos del Estudiante -->
+        <div class="tab-content active" id="student" role="tabpanel">
+            <h2 style="margin-bottom: 20px; color: #1e3c72;">Información del Estudiante</h2>
+            <div class="student-info">
+                <div class="form-group">
+                    <label for="studentName">Nombre del Estudiante:</label>
+                    <input id="studentName" type="text" placeholder="Ingrese su nombre completo" required aria-describedby="nameHelp" />
+                    <small id="nameHelp" class="visually-hidden">Ingrese su nombre completo como aparece en su identificación</small>
+                </div>
+                <div class="form-group">
+                    <label for="studentId">Matrícula:</label>
+                    <input id="studentId" type="text" placeholder="Ejemplo: U2303057N0001" required aria-describedby="idHelp" />
+                    <small id="idHelp" class="visually-hidden">Ingrese su matrícula universitaria</small>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn btn-success" onclick="startExam()" aria-describedby="startHelp">🚀 Comenzar Examen</button>
+                <small id="startHelp" class="visually-hidden">Al hacer clic iniciará el examen</small>
+            </div>
+        </div>
+
+        <!-- Ejercicio 1 -->
+        <div class="tab-content" id="ex1" role="tabpanel">
+            <div class="exercise-block">
+                <div class="exercise-header">
+                    <h3>📝 Ejercicio 1: Dibujar Circuitos y Simplificar (2.5 puntos)</h3>
+                    <p>Dibuje el circuito lógico y simplifique las expresiones</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h4>📋 Instrucciones:</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Use notación estándar: AND (·), OR (+), NOT (')</li>
+                        <li><strong>Ejemplo:</strong> A·B' + C o simplemente AB' + C</li>
+                        <li>Tiene <strong>5 intentos</strong> por pregunta</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-part">
+                    <h4 style="color: #1e3c72;">a) A̅B̅ + A̅B (1.25 puntos)</h4>
+                    <p><strong>Descripción del circuito:</strong></p>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1a_A" name="circuit1a" onchange="selectCircuitOption('1a', 'A')" type="radio" value="A"/>
+                        <label for="circuit1a_A" style="margin-left: 10px; font-weight: normal;">
+                            A) Las entradas A y B → compuertas NOT → van a una sola compuerta AND → salida
+                        </label>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1a_B" name="circuit1a" onchange="selectCircuitOption('1a', 'B')" type="radio" value="B"/>
+                        <label for="circuit1a_B" style="margin-left: 10px; font-weight: normal;">
+                            B) A y B → compuertas NOT → A̅ y B̅ van a AND, también A̅ y B van a otra AND → ambas salidas a OR
+                        </label>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1a_C" name="circuit1a" onchange="selectCircuitOption('1a', 'C')" type="radio" value="C"/>
+                        <label for="circuit1a_C" style="margin-left: 10px; font-weight: normal;">
+                            C) A y B van directamente a compuertas AND, luego la salida pasa por NOT
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="ex1a_simplified"><strong>Expresión simplificada:</strong></label>
+                        <input id="ex1a_simplified" placeholder="Resultado de la simplificación (ej: A')" type="text" aria-describedby="ex1a_help"/>
+                        <small id="ex1a_help" class="visually-hidden">Ingrese la expresión booleana simplificada</small>
+                    </div>
+                    <button class="btn" onclick="checkAnswer('1a')">Validar</button>
+                    <div class="attempts-counter">Intentos restantes: <span id="attempts1a">5</span></div>
+                    <div id="feedback1a" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="exercise-part">
+                    <h4 style="color: #1e3c72;">b) AB + A̅B + A̅BC (1.25 puntos)</h4>
+                    <p><strong>Descripción del circuito:</strong></p>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1b_A" name="circuit1b" onchange="selectCircuitOption('1b', 'A')" type="radio" value="A"/>
+                        <label for="circuit1b_A" style="margin-left: 10px; font-weight: normal;">
+                            A) A y B → AND, A pasa por NOT → A̅ y B → AND, A̅ y B y C → AND de 3 entradas → todas a OR
+                        </label>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1b_B" name="circuit1b" onchange="selectCircuitOption('1b', 'B')" type="radio" value="B"/>
+                        <label for="circuit1b_B" style="margin-left: 10px; font-weight: normal;">
+                            B) A, B y C van directamente a una compuerta OR de 3 entradas
+                        </label>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <input id="circuit1b_C" name="circuit1b" onchange="selectCircuitOption('1b', 'C')" type="radio" value="C"/>
+                        <label for="circuit1b_C" style="margin-left: 10px; font-weight: normal;">
+                            C) Todas las variables pasan por NOT, luego van a compuertas AND
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="ex1b_simplified"><strong>Expresión simplificada:</strong></label>
+                        <input id="ex1b_simplified" placeholder="Resultado de la simplificación (ej: B)" type="text" aria-describedby="ex1b_help"/>
+                        <small id="ex1b_help" class="visually-hidden">Ingrese la expresión booleana simplificada</small>
+                    </div>
+                    <button class="btn" onclick="checkAnswer('1b')">Validar</button>
+                    <div class="attempts-counter">Intentos restantes: <span id="attempts1b">5</span></div>
+                    <div id="feedback1b" role="alert" aria-live="polite"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="tab-content" id="ex2" role="tabpanel">
+            <div class="exercise-block">
+                <div class="exercise-header">
+                    <h3>⚡ Ejercicio 2: Simplificar Circuito Lógico (2.5 puntos)</h3>
+                    <p>Analice el circuito mostrado y simplifíquelo</p>
+                </div>
+
+                <div style="text-align: center; background: white; padding: 20px; border-radius: 8px; border: 2px solid #e9ecef; margin: 15px 0;">
+                    <h4>Circuito a Simplificar:</h4>
+                    <div class="alert alert-info" style="text-align: left;">
+                        <strong>Descripción del circuito:</strong><br>
+                        • Entrada A pasa por NOT → A̅<br>
+                        • Entrada C pasa por NOT → C̅<br>
+                        • A̅ y B van a una compuerta AND → A̅B<br>
+                        • B y C̅ van a otra compuerta AND → BC̅<br>
+                        • Las salidas A̅B y BC̅ van a una compuerta OR final
+                    </div>
+                </div>
+
+                <div class="exercise-part">
+                    <h4 style="color: #1e3c72;">a) Indique la expresión del circuito original (1 punto)</h4>
+                    <div class="form-group">
+                        <label for="ex2a_expression">Expresión del circuito:</label>
+                        <input id="ex2a_expression" placeholder="Ejemplo: A'B + BC' (NOT A AND B OR B AND NOT C)" type="text" aria-describedby="ex2a_help"/>
+                        <small id="ex2a_help" class="visually-hidden">Escriba la expresión booleana que representa el circuito</small>
+                    </div>
+                    <button class="btn" onclick="checkAnswer('2a')">Validar</button>
+                    <div class="attempts-counter">Intentos restantes: <span id="attempts2a">5</span></div>
+                    <div id="feedback2a" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="exercise-part">
+                    <h4 style="color: #1e3c72;">b) Expresión simplificada (1.5 puntos)</h4>
+                    <div class="form-group">
+                        <label for="ex2b_simplified">Expresión simplificada:</label>
+                        <input id="ex2b_simplified" placeholder="Ejemplo: B (use apostrofe para NOT)" type="text" aria-describedby="ex2b_help"/>
+                        <small id="ex2b_help" class="visually-hidden">Ingrese la expresión simplificada usando leyes booleanas</small>
+                    </div>
+                    <button class="btn" onclick="checkAnswer('2b')">Validar</button>
+                    <div class="attempts-counter">Intentos restantes: <span id="attempts2b">5</span></div>
+                    <div id="feedback2b" role="alert" aria-live="polite"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="tab-content" id="ex3" role="tabpanel">
+            <div class="exercise-block">
+                <div class="exercise-header">
+                    <h3>💡 Ejercicio 3: Circuito de Mayoría (2.5 puntos)</h3>
+                    <p>Diseñe un circuito que tenga salida ALTO cuando la mayoría de entradas esté en ALTO</p>
+                </div>
+
+                <div class="alert alert-info">
+                    <h4>📚 ¿Qué es un Circuito de Mayoría?</h4>
+                    <p>Un <strong>circuito de mayoría</strong> es un circuito lógico que produce una salida <strong>ALTO (1)</strong> cuando la <em>mayoría</em> de sus entradas están en estado <strong>ALTO</strong>.</p>
+                    
+                    <div class="alert alert-success" style="margin: 15px 0;">
+                        <h5>🎯 Regla del Circuito de Mayoría (3 entradas):</h5>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Salida = 1</strong> cuando <strong>al menos 2 de las 3 entradas</strong> están en <strong>1</strong></li>
+                            <li><strong>Salida = 0</strong> cuando <strong>menos de 2 entradas</strong> están en <strong>1</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-part">
+                    <h4 style="color: #1e3c72;">Tabla de Verdad - Circuito de Mayoría (1 punto)</h4>
+                    <p><strong>Instrucciones:</strong> Complete la tabla aplicando la regla de mayoría. La salida es <strong>1</strong> cuando <em>al menos 2 de las 3 entradas</em> son <strong>1</strong>.</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>Suma</th>
+                                <th>Salida Y</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td><td>0</td><td>0</td>
+                                <td style="background: #f8f9fa; font-weight: bold;">0</td>
+                                <td>
+                                    <select id="tt3_0" style="width: 50px; padding: 5px;">
+                                        <option value="">?</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>0</td><td>0</td><td>1</td>
+                                <td style="background: #f8f9fa; font-weight: bold;">1</td>
+                                <td>
+                                    <select id="tt3_1" style="width: 50px; padding: 5px;">
+                                        <option value="">?</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>0</td><td>1</td><td>0</td>
+                                <td style="background: #f8f9fa; font-weight: bold;">1</td>
+                                <td>
+                                    <select id="tt3_2" style="width: 50px; padding: 5px;">
+                                        <option value="">?</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>0</td><td>1</td><td>1</td>
+                                <td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">2 ✓</td>
+                                <td>
+                                    <select id="tt3_3" style="width: 50px; padding: 5px;">
+                                        <option value="">?</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td><td>0</td><td>0</td>
+                                <td style="background: #f8f9fa; font-weight: bold;">1</td>
+                                <td>
+                                    <select id="tt3_4" style="width: 50px; padding: 5px;">
+                                        <option value="">?</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td><td>0</td><td>1</td>
+                                <td style="background: #e8f5e8; font-weight: bold; color: #1b5e20;">2 ✓</td>
+                                <td>
