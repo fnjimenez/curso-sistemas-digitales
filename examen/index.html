@@ -1003,8 +1003,14 @@ Y = C̅(AB̅D̅ + D) + A̅BC + D̅
 
 <!-- Resultados -->
 <div class="tab-content" id="results">
+<div style="text-align: center; padding: 20px;">
+<button class="btn btn-success" onclick="finishExam()" style="font-size: 18px; padding: 15px 30px;">
+📊 Calcular Calificación Final
+</button>
+<p style="margin-top: 15px; color: #6c757d;">Haga clic para ver sus resultados y calificación</p>
+</div>
 <div id="resultsArea">
-<div class="loading">Los resultados aparecerán aquí al completar el examen</div>
+<div class="loading">Los resultados aparecerán aquí al calcular la calificación</div>
 </div>
 </div>
 
@@ -1437,28 +1443,53 @@ function calculateTotalScore() {
 }
 
 function checkAnswerCorrect(answerKey) {
+    console.log(`🔍 Verificando respuesta para: ${answerKey}`);
+    
     let inputElement;
     
     if (answerKey.includes('simplified')) {
         const exerciseNum = answerKey.replace('_simplified', '').replace('simplified', '');
         inputElement = document.getElementById(`ex${exerciseNum}_simplified`);
+        console.log(`Buscando elemento: ex${exerciseNum}_simplified`);
+    } else if (answerKey.includes('expression')) {
+        const exerciseNum = answerKey.replace('_expression', '');
+        inputElement = document.getElementById(`ex${exerciseNum}_expression`);
+        console.log(`Buscando elemento: ex${exerciseNum}_expression`);
     } else {
         inputElement = document.getElementById(`ex${answerKey}`) || 
                      document.getElementById(`ex${answerKey.replace('_', '')}`);
+        console.log(`Buscando elemento: ex${answerKey}`);
     }
     
-    if (!inputElement) return false;
+    if (!inputElement) {
+        console.log(`❌ No se encontró elemento para ${answerKey}`);
+        return false;
+    }
     
-    const userAnswer = inputElement.value.trim().toLowerCase();
+    const userAnswer = inputElement.value.trim();
+    console.log(`Respuesta del usuario: "${userAnswer}"`);
+    
+    if (!userAnswer) {
+        console.log(`❌ Respuesta vacía`);
+        return false;
+    }
+    
     const correctOptions = correctAnswers[answerKey] || correctAnswers[answerKey.replace('_', '')];
+    console.log(`Opciones correctas:`, correctOptions);
     
-    if (!correctOptions) return false;
+    if (!correctOptions) {
+        console.log(`❌ No hay opciones correctas definidas para ${answerKey}`);
+        return false;
+    }
     
-    return correctOptions.some(answer => {
-        const normalizedUser = userAnswer.replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
+    const isCorrect = correctOptions.some(answer => {
+        const normalizedUser = userAnswer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
         const normalizedAnswer = answer.toLowerCase().replace(/\s/g, '').replace(/'/g, '').replace(/̅/g, '').replace(/~/g, '');
         return normalizedUser === normalizedAnswer;
     });
+    
+    console.log(`¿Es correcta? ${isCorrect}`);
+    return isCorrect;
 }
 
 function displayResults(score) {
