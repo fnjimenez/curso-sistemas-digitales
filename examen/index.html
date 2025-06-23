@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actividad 3. Ejercicios de Simplificación de Circuitos</title>
+    <title>Sistemas Digitales - Examen Completo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Verificar que jsPDF se cargue correctamente
+        window.addEventListener('load', function() {
+            if (typeof window.jspdf === 'undefined') {
+                console.error('jsPDF no se pudo cargar');
+            } else {
+                console.log('jsPDF cargado correctamente');
+            }
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -1665,30 +1675,98 @@
 
         // Función para generar PDF
         function downloadPDF() {
-            if (typeof jsPDF === 'undefined') {
-                alert('Error: Biblioteca PDF no disponible');
-                return;
-            }
+            try {
+                // Verificar si jsPDF está disponible
+                if (typeof window.jspdf === 'undefined') {
+                    alert('❌ Error: La librería PDF no está disponible.\n\n💡 Solución alternativa:\n• Usa el botón "Imprimir" y selecciona "Guardar como PDF"\n• O usa "Copiar Texto" para obtener los resultados');
+                    return;
+                }
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Agregar contenido al PDF
-            doc.setFontSize(16);
-            doc.text('UNIVERSIDAD DEL SABES', 20, 20);
-            doc.setFontSize(12);
-            doc.text('Campus San Felipe - Sistemas Digitales', 20, 30);
-            doc.text('Cuatrimestre: Enero-Abril 2025', 20, 40);
-            
-            doc.text(`Estudiante: ${studentData.name}`, 20, 60);
-            doc.text(`Matrícula: ${studentData.matricula}`, 20, 70);
-            doc.text(`Carrera: ${studentData.career}`, 20, 80);
-            
-            doc.text(`Calificación Final: ${studentScores.total.toFixed(1)}/10.0`, 20, 100);
-            doc.text(`Fecha: ${examEndTime.toLocaleDateString('es-MX')}`, 20, 110);
-            
-            // Guardar PDF
-            doc.save(`ACT_03_SistemasDigitales_${studentData.name.replace(/\s+/g, '_')}_Resultados.pdf`);
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Configurar fuente y tamaño
+                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.text('UNIVERSIDAD DEL SABES', 105, 20, { align: 'center' });
+                
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "normal");
+                doc.text('Campus San Felipe', 105, 30, { align: 'center' });
+                doc.text('Sistemas Digitales - Enero-Abril 2025', 105, 38, { align: 'center' });
+                
+                // Línea separadora
+                doc.line(20, 45, 190, 45);
+                
+                // Información del estudiante
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text('INFORMACIÓN DEL ESTUDIANTE', 20, 55);
+                
+                doc.setFont("helvetica", "normal");
+                doc.text(`Nombre: ${studentData.name}`, 20, 65);
+                doc.text(`Matrícula: ${studentData.matricula}`, 20, 73);
+                doc.text(`Carrera: ${studentData.career}`, 20, 81);
+                doc.text(`Grupo: ${studentData.group}`, 20, 89);
+                
+                // Detalles del examen
+                doc.setFont("helvetica", "bold");
+                doc.text('DETALLES DEL EXAMEN', 20, 105);
+                
+                doc.setFont("helvetica", "normal");
+                doc.text(`Actividad: ACT_03_SistemasDigitales`, 20, 115);
+                doc.text(`Profesor: Fausto Noé Jiménez`, 20, 123);
+                doc.text(`Versión: ${currentVersion}`, 20, 131);
+                doc.text(`Fecha: ${examEndTime.toLocaleDateString('es-MX')}`, 20, 139);
+                doc.text(`Hora: ${examEndTime.toLocaleTimeString('es-MX')}`, 20, 147);
+                
+                // Calificación final
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text('CALIFICACIÓN FINAL', 20, 165);
+                
+                doc.setFontSize(24);
+                const finalGrade = studentScores.total.toFixed(1);
+                const gradeStatus = finalGrade >= 7.0 ? 'APROBADO' : finalGrade >= 6.0 ? 'LÍMITE' : 'REPROBADO';
+                
+                doc.text(`${finalGrade}/10.0`, 105, 180, { align: 'center' });
+                
+                doc.setFontSize(14);
+                doc.text(`${gradeStatus}`, 105, 190, { align: 'center' });
+                
+                // Desglose por ejercicio
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text('DESGLOSE POR EJERCICIO', 20, 210);
+                
+                doc.setFont("helvetica", "normal");
+                doc.text(`Ejercicio 1 (Dibujar Circuitos): ${studentScores.ex1.toFixed(1)}/2.5`, 20, 220);
+                doc.text(`Ejercicio 2 (Simplificar Circuito): ${studentScores.ex2.toFixed(1)}/2.5`, 20, 228);
+                doc.text(`Ejercicio 3 (Circuito de Mayoría): ${studentScores.ex3.toFixed(1)}/2.5`, 20, 236);
+                doc.text(`Ejercicio 4 (Mapas de Karnaugh): ${studentScores.ex4.toFixed(1)}/2.5`, 20, 244);
+                
+                // Línea final
+                doc.line(20, 250, 190, 250);
+                doc.setFont("helvetica", "bold");
+                doc.text(`TOTAL: ${studentScores.total.toFixed(1)}/10.0`, 20, 260);
+                
+                // Enlaces importantes
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text('Enlaces importantes:', 20, 280);
+                doc.text('• Campus: campusuniversidad.sabes.edu.mx/u2023/mod/assign/view.php?id=45284', 20, 288);
+                doc.text('• Plantilla: fnjimenez.github.io/curso-sistemas-digitales/examen/', 20, 296);
+                
+                // Guardar PDF con nombre específico
+                const fileName = `ACT_03_SistemasDigitales_${studentData.name.replace(/\s+/g, '_')}_${studentData.matricula}.pdf`;
+                doc.save(fileName);
+                
+                alert('✅ PDF generado exitosamente!\n📄 Archivo: ' + fileName);
+                
+            } catch (error) {
+                console.error('Error al generar PDF:', error);
+                alert(`❌ Error al generar PDF: ${error.message}\n\n💡 Alternativas:\n• Usa "Imprimir" → "Guardar como PDF"\n• Usa "Copiar Texto" para obtener los resultados`);
+            }
         }
 
         // Función para copiar resultados
