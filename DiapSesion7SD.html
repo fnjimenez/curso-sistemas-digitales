@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sistemas Digitales - Semana 7 | Universidad del SABES</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .university-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .university-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .course-info h1 {
+            font-size: 1.3rem;
+            color: #90EE90;
+            margin-bottom: 2px;
+        }
+
+        .course-info p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer-display {
+            background: rgba(144, 238, 144, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #90EE90;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(255, 140, 0, 0.3);
+            border-color: #FF8C00;
+            color: #FF8C00;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-header:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-btn-header:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #90EE90;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e8f4fd;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "➕";
+            position: absolute;
+            left: -30px;
+        }
+
+        .clippy-tip {
+            background: rgba(144, 238, 144, 0.2);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clippy-tip:hover {
+            background: rgba(144, 238, 144, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .clippy-tip::before {
+            content: "🧮";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #2E8B57;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .clippy-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .clippy-content.active {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        .clippy-header {
+            color: #90EE90;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .collapsible {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .collapsible.active {
+            background: rgba(144, 238, 144, 0.2);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0 20px;
+        }
+
+        .content.active {
+            max-height: 1000px;
+            padding: 20px;
+        }
+
+        .adder-demo {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .inputs-section, .outputs-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-wire, .output-wire {
+            background: rgba(144, 238, 144, 0.3);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-wire.active, .output-wire.active {
+            background: rgba(255, 140, 0, 0.5);
+            border-color: #FF8C00;
+            color: #000;
+        }
+
+        .adder-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .expression-display {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #90EE90;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #90EE90;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #90EE90;
+        }
+
+        .truth-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .truth-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background: rgba(144, 238, 144, 0.3);
+            color: #90EE90;
+            font-weight: bold;
+        }
+
+        .truth-table td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .steps-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #90EE90;
+        }
+
+        .step strong {
+            color: #90EE90;
+        }
+
+        .exercise-box {
+            background: rgba(255, 140, 0, 0.2);
+            border: 2px solid rgba(255, 140, 0, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .exercise-box h4 {
+            color: #FF8C00;
+            margin-bottom: 15px;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #32CD32, #228B22);
+            transition: width 0.3s ease;
+        }
+
+        .intro-slide {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .circuit-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            font-size: 1.5rem;
+            border: 2px dashed rgba(144, 238, 144, 0.5);
+            font-family: 'Courier New', monospace;
+            text-align: left;
+        }
+
+        .industrial-application {
+            background: rgba(46, 139, 87, 0.2);
+            border: 2px solid rgba(46, 139, 87, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .application-scenario {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #32CD32;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #90EE90;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
+            }
+            
+            .slide {
+                padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .adder-demo {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<div class="university-info">
+<div class="university-logo">➕</div>
+<div class="course-info">
+<h1>SISTEMAS DIGITALES</h1>
+<p>Universidad del SABES | Semana 7 de 12 | 01 - 07 de julio 2025</p>
+<p>Prof. Fausto Noé Jiménez | fausto.jimenez@sabes.edu.mx</p>
+</div>
+</div>
+</div>
+<div class="header-center">
+<button class="nav-btn-header" id="prevBtn">
+                    ⬅️ Anterior
+                </button>
+<div class="slide-counter">
+<div>Diapositiva</div>
+<div><span id="currentSlide">1</span> / <span id="totalSlides">20</span></div>
+</div>
+<button class="nav-btn-header" id="nextBtn">
+                    Siguiente ➡️
+                </button>
+</div>
+<div class="header-right">
+<div class="session-timer">
+<div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">50:00</span>
+</div>
+<div class="timer-controls">
+<button class="timer-btn" id="startBtn">▶️</button>
+<button class="timer-btn" id="pauseBtn">⏸️</button>
+<button class="timer-btn" id="resetBtn">🔄</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="progress-indicator">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Slides -->
+<div class="slide-container">
+
+<!-- Slide 1: Título -->
+<div class="slide active intro-slide">
+<h1>➕ SUMADORES Y RESTADORES BINARIOS</h1>
+<div style="font-size: 8rem; margin: 30px 0;">🧮⚡📊</div>
+<h3>Semana 7: Circuitos Aritméticos Fundamentales</h3>
+<p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+<p><strong>Duración:</strong> 50 minutos + Actividad 5</p>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h3>🎯 Temas Principales:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li><strong>3.3.5.</strong> Sumadores y Restadores</li>
+<li><strong>Half Adder:</strong> Sumador de 1 bit básico</li>
+<li><strong>Full Adder:</strong> Sumador completo de 1 bit</li>
+<li><strong>Ripple Carry:</strong> Sumador por acarreo en cascada</li>
+<li><strong>Aplicaciones:</strong> Sistemas industriales reales</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h3>🏭 Actividad 5:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li>Sumador binario de 4 bits</li>
+<li>Aplicaciones industriales</li>
+<li>Implementación en VHDL</li>
+<li>Simulación profesional</li>
+<li>Control aritmético automotriz</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Slide 2: ¿Por qué Necesitamos Sumadores? -->
+<div class="slide">
+<h2>🤔 ¿POR QUÉ NECESITAMOS SUMADORES DIGITALES?</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🧮 Aritmética Digital Fundamental</div>
+<div class="clippy-content">
+<p><strong>Base de la computación:</strong> Toda operación matemática se reduce a sumas</p>
+<p><strong>Velocidad:</strong> Operaciones instantáneas vs. cálculo humano</p>
+<p><strong>Precisión:</strong> 100% exactitud en cálculos repetitivos</p>
+<p><strong>Automatización:</strong> Control sin intervención humana</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🏭 Aplicaciones Industriales</h4>
+<ul>
+<li><strong>Fábricas automotrices:</strong> Conteo de terminales en arneses</li>
+<li><strong>CEDIS:</strong> Control de inventarios automático</li>
+<li><strong>Líneas de producción:</strong> Totalización de piezas</li>
+<li><strong>Sistemas Poka-Yoke:</strong> Verificación de componentes</li>
+<li><strong>Control de calidad:</strong> Suma de defectos detectados</li>
+<li><strong>Logística:</strong> Cálculo de cargas y capacidades</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚡ Ventajas Digitales</h4>
+<ul>
+<li><strong>Velocidad:</strong> Nanosegundos vs. segundos humanos</li>
+<li><strong>Precisión:</strong> Sin errores de cálculo</li>
+<li><strong>Repetibilidad:</strong> Mismo resultado siempre</li>
+<li><strong>Escalabilidad:</strong> De 1 bit a 64+ bits</li>
+<li><strong>Integración:</strong> Parte de sistemas complejos</li>
+<li><strong>Confiabilidad:</strong> Funcionamiento 24/7</li>
+</ul>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🚗 Ejemplo: Planta Automotriz en Guanajuato</h4>
+<div class="application-scenario">
+<strong>Escenario:</strong> Línea de producción de arneses eléctricos<br/>
+<strong>Problema:</strong> Contar terminales insertados automáticamente<br/>
+<strong>Solución:</strong> Sumador digital que totaliza sensores de posición<br/>
+<strong>Beneficio:</strong> Detección inmediata de faltantes o sobrantes
+</div>
+</div>
+</div>
+
+<!-- Slide 3: Introducción a la Aritmética Binaria -->
+<div class="slide">
+<h2>🔢 ARITMÉTICA BINARIA FUNDAMENTAL</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📚 Reglas Básicas</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>Suma</th><th>Acarreo</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observación:</strong> 1 + 1 = 10 en binario (0 + acarreo 1)</p>
+</div>
+<div class="comparison-card">
+<h4>🎯 Ejemplos Prácticos</h4>
+<div class="expression-display">
+Ejemplos de suma binaria:<br/>
+  0101  (5 decimal)<br/>
++ 0011  (3 decimal)<br/>
+------<br/>
+  1000  (8 decimal)<br/><br/>
+  1111  (15 decimal)<br/>
++ 0001  (1 decimal)<br/>
+------<br/>
+ 10000  (16 decimal - ¡overflow!)
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🔍 Análisis Detallado: Propagación del Acarreo <span>▼</span>
+</button>
+<div class="content">
+container">
+<div class="step">
+<strong>Compuerta XOR:</strong> Genera la suma (S = A ⊕ B)
+<br/>• A=0, B=0 → S=0 | A=0, B=1 → S=1 | A=1, B=0 → S=1 | A=1, B=1 → S=0
+</div>
+<div class="step">
+<strong>Compuerta AND:</strong> Genera el acarreo (C = A · B)
+<br/>• Solo cuando ambas entradas son 1 se genera acarreo
+</div>
+<div class="step">
+<strong>Análisis:</strong> XOR detecta diferencias, AND detecta coincidencia de 1s
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Sensor Básico de Conteo</h4>
+<div class="application-scenario">
+<strong>Caso:</strong> Detector simple de 2 componentes<br/>
+<strong>A:</strong> Sensor de terminal tipo A (0/1)<br/>
+<strong>B:</strong> Sensor de terminal tipo B (0/1)<br/>
+<strong>S:</strong> Indica si hay exactamente 1 componente<br/>
+<strong>C:</strong> Indica si hay 2 componentes (overflow simple)
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 5: Full Adder (Sumador Completo) -->
+<div class="slide">
+<h2>⚡ FULL ADDER (SUMADOR COMPLETO)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 El Componente Clave</div>
+<div class="clippy-content">
+<p><strong>Full Adder:</strong> Suma dos bits más un acarreo de entrada</p>
+<p><strong>Versatilidad:</strong> Puede usarse en cualquier posición</p>
+<p><strong>Escalabilidad:</strong> Base para sumadores de n bits</p>
+<p><strong>Completitud:</strong> Maneja todas las situaciones posibles</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Tabla de Verdad Completa</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>Cin</th><th>S</th><th>Cout</th><th>Caso</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Sin componentes</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>Solo acarreo previo</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1 componente tipo B</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1 componente + acarreo</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1 componente tipo A</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1 componente + acarreo</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2 componentes</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>Máximo: 3 entradas</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="comparison-card">
+<h4>⚙️ Ecuaciones Booleanas</h4>
+<div class="expression-display">
+<strong>Suma:</strong><br/>
+S = A ⊕ B ⊕ Cin<br/><br/>
+<strong>Acarreo de salida:</strong><br/>
+Cout = A·B + Cin·(A ⊕ B)<br/><br/>
+<strong>Forma alternativa:</strong><br/>
+Cout = A·B + A·Cin + B·Cin
+</div>
+</div>
+</div>
+<div class="circuit-diagram">
+A ──┬─── XOR ──┬─── XOR ──── S<br/>
+    │          │<br/>
+B ──┼─── XOR ──┘<br/>
+    │          │<br/>
+    │          ├─── AND ──┐<br/>
+    │          │         │<br/>
+Cin ───────────┴─────────┼─── OR ──── Cout<br/>
+    │                    │<br/>
+    └─── AND ────────────┘
+</div>
+<div class="exercise-box">
+<h4>🎯 Verificación Manual</h4>
+<p><strong>Caso ejemplo:</strong> A=1, B=1, Cin=1</p>
+<p><strong>Suma:</strong> S = 1 ⊕ 1 ⊕ 1 = 0 ⊕ 1 = 1 ✓</p>
+<p><strong>Acarreo:</strong> Cout = 1·1 + 1·(1 ⊕ 1) = 1 + 1·0 = 1 ✓</p>
+<p><strong>Interpretación:</strong> 1+1+1 = 11₂ = 3₁₀ (S=1, Cout=1)</p>
+</div>
+</div>
+
+<!-- Slide 6: Implementación del Full Adder -->
+<div class="slide">
+<h2>🔧 IMPLEMENTACIÓN DEL FULL ADDER</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🛠️ Método 1: Dos Half Adders + OR <span>▼</span>
+</button>
+<div class="content">
+<div class="circuit-diagram">
+A ──┐<br/>
+    ├── HA1 ──┬── S1 ──┐<br/>
+B ──┘        └── C1   │<br/>
+                      ├── HA2 ──┬── S (Final)<br/>
+Cin ──────────────────┘        └── C2<br/>
+                                    │<br/>
+C1 ────────────────────┬─── OR ──── Cout<br/>
+                       │<br/>
+C2 ────────────────────┘
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>HA1:</strong> Suma A + B → genera S1 y C1
+</div>
+<div class="step">
+<strong>HA2:</strong> Suma S1 + Cin → genera S final y C2
+</div>
+<div class="step">
+<strong>OR final:</strong> Cout = C1 + C2 (cualquier acarreo activa salida)
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+⚡ Método 2: Implementación Directa <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+-- VHDL para Full Adder directo
+entity full_adder is
+    port ( 
+        A, B, Cin : in  std_logic;
+        S, Cout   : out std_logic
+    );
+end full_adder;
+
+architecture rtl of full_adder is
+begin
+    S    <= A xor B xor Cin;
+    Cout <= (A and B) or (Cin and (A xor B));
+end rtl;
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Ventajas Método 1</h4>
+<ul>
+<li>Reutiliza diseños existentes</li>
+<li>Fácil de entender conceptualmente</li>
+<li>Modular y mantenible</li>
+<li>Bueno para aprendizaje</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚡ Ventajas Método 2</h4>
+<ul>
+<li>Menor número de compuertas</li>
+<li>Mayor velocidad de propagación</li>
+<li>Menos área en chip</li>
+<li>Optimizado para producción</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 7: Ripple Carry Adder (4 bits) -->
+<div class="slide">
+<h2>🔗 RIPPLE CARRY ADDER DE 4 BITS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Sumador Industrial Completo</div>
+<div class="clippy-content">
+<p><strong>Ripple Carry:</strong> Acarreo se propaga como ondas en el agua</p>
+<p><strong>Capacidad:</strong> 0-15 + 0-15 = 0-31 (con overflow)</p>
+<p><strong>Aplicación:</strong> Ideal para conteo industrial hasta 31 unidades</p>
+<p><strong>Escalabilidad:</strong> Base para sumadores de 8, 16, 32+ bits</p>
+</div>
+</div>
+<div class="circuit-diagram">
+A3 B3     A2 B2     A1 B1     A0 B0<br/>
+ │  │      │  │      │  │      │  │<br/>
+ ▼  ▼      ▼  ▼      ▼  ▼      ▼  ▼<br/>
+┌────┐    ┌────┐    ┌────┐    ┌────┐<br/>
+│FA3 │◄───│FA2 │◄───│FA1 │◄───│FA0 │◄─── Cin<br/>
+└─┬──┘    └─┬──┘    └─┬──┘    └─┬──┘<br/>
+  │         │         │         │<br/>
+  S3        S2        S1        S0<br/>
+  │<br/>
+ Cout (Overflow)
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Especificaciones Técnicas</h4>
+<ul>
+<li><strong>Entradas:</strong> A[3:0], B[3:0], Cin</li>
+<li><strong>Salidas:</strong> S[3:0], Cout</li>
+<li><strong>Rango:</strong> 0-31 (sin signo)</li>
+<li><strong>Propagación:</strong> ~4 × retardo_FA</li>
+<li><strong>Compuertas:</strong> 4 Full Adders</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🏭 Aplicaciones Industriales</h4>
+<ul>
+<li><strong>Conteo de terminales:</strong> Hasta 31 por arnés</li>
+<li><strong>Control de inventario:</strong> 31 cajas por sección</li>
+<li><strong>Líneas de producción:</strong> 31 piezas por lote</li>
+<li><strong>Sistemas Poka-Yoke:</strong> Verificación automática</li>
+<li><strong>Control de calidad:</strong> Suma de defectos</li>
+</ul>
+</div>
+</div>
+<div class="steps-container">
+<h4>🔄 Propagación del Acarreo:</h4>
+<div class="step">
+<strong>T=0ns:</strong> Entradas A, B estables. Cin aplicado a FA0
+</div>
+<div class="step">
+<strong>T=10ns:</strong> FA0 genera S0 y C0. C0 se propaga a FA1
+</div>
+<div class="step">
+<strong>T=20ns:</strong> FA1 genera S1 y C1. C1 se propaga a FA2
+</div>
+<div class="step">
+<strong>T=30ns:</strong> FA2 genera S2 y C2. C2 se propaga a FA3
+</div>
+<div class="step">
+<strong>T=40ns:</strong> FA3 genera S3 y Cout. Resultado final estable
+</div>
+</div>
+</div>
+
+<!-- Slide 8: Demostración Interactiva -->
+<div class="slide">
+<h2>🎮 DEMOSTRACIÓN INTERACTIVA: SUMADOR 4-BIT</h2>
+<div class="adder-demo" id="adderDemo">
+<div class="inputs-section">
+<h4>Operando A:</h4>
+<div class="input-wire" onclick="toggleAdderInput('a', 3)">A₃: <span id="a3">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('a', 2)">A₂: <span id="a2">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('a', 1)">A₁: <span id="a1">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('a', 0)">A₀: <span id="a0">0</span></div>
+<h4>Operando B:</h4>
+<div class="input-wire" onclick="toggleAdderInput('b', 3)">B₃: <span id="b3">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('b', 2)">B₂: <span id="b2">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('b', 1)">B₁: <span id="b1">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('b', 0)">B₀: <span id="b0">0</span></div>
+<div class="input-wire" onclick="toggleAdderInput('cin', 0)">Cin: <span id="cin">0</span></div>
+</div>
+<div class="adder-symbol">
+SUMADOR<br/>4-BIT<br/>🧮
+</div>
+<div class="outputs-section">
+<h4>Resultado:</h4>
+<div class="output-wire" id="s3_out">S₃: <span id="s3_val">0</span></div>
+<div class="output-wire" id="s2_out">S₂: <span id="s2_val">0</span></div>
+<div class="output-wire" id="s1_out">S₁: <span id="s1_val">0</span></div>
+<div class="output-wire" id="s0_out">S₀: <span id="s0_val">0</span></div>
+<div class="output-wire" id="cout_out">Cout: <span id="cout_val">0</span></div>
+<div style="margin-top: 20px; font-size: 0.9rem;">
+<div>A = <span id="decimal_a">0</span></div>
+<div>B = <span id="decimal_b">0</span></div>
+<div>Resultado = <span id="decimal_result">0</span></div>
+<div id="overflow_status">Status: Normal</div>
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Casos de Prueba Sugeridos</h4>
+<p><strong>Prueba 1:</strong> A=5 (0101), B=3 (0011) → Esperado: 8 (1000)</p>
+<p><strong>Prueba 2:</strong> A=15 (1111), B=1 (0001) → Esperado: 0 (0000) + Cout=1</p>
+<p><strong>Prueba 3:</strong> A=12 (1100), B=7 (0111) → Esperado: 3 (0011) + Cout=1</p>
+<p><strong>Interactúa:</strong> Haz clic en las entradas para cambiar valores</p>
+</div>
+</div>
+
+<!-- Slide 9: Aplicaciones Industriales Específicas -->
+<div class="slide">
+<h2>🏭 APLICACIONES INDUSTRIALES ESPECÍFICAS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🚗 Industria Automotriz</h4>
+<div class="industrial-application">
+<h5>Fábricas de Arneses Eléctricos</h5>
+<div class="application-scenario">
+<strong>Localización:</strong> Bajío (Guanajuato, Aguascalientes, Querétaro)<br/>
+<strong>Aplicación:</strong> Control de terminales por arnés<br/>
+<strong>Capacidad:</strong> Hasta 31 terminales por sumador 4-bit<br/>
+<strong>Beneficio:</strong> Detección automática de faltantes
+</div>
+<div class="application-scenario">
+<strong>Proceso:</strong> Inserción de terminales<br/>
+• Sensor A: Terminales tipo macho (8 max)<br/>
+• Sensor B: Terminales tipo hembra (7 max)<br/>
+• Sumador: 8 + 7 = 15 terminales procesadas<br/>
+• Control: Si suma ≠ esperada → Alarma de calidad
+</div>
+</div>
+</div>
+<div class="comparison-card">
+<h4>📦 Centros de Distribución</h4>
+<div class="industrial-application">
+<h5>CEDIS - Control de Inventarios</h5>
+<div class="application-scenario">
+<strong>Empresas:</strong> Amazon México, Mercado Libre, Liverpool<br/>
+<strong>Aplicación:</strong> Totalización automática de mercancías<br/>
+<strong>Overflow:</strong> Cout=1 indica capacidad máxima alcanzada<br/>
+<strong>Acción:</strong> Redirección automática a siguiente sección
+</div>
+<div class="application-scenario">
+<strong>Ejemplo operativo:</strong><br/>
+• Inventario actual: 12 cajas<br/>
+• Mercancía nueva: 7 cajas<br/>
+• Suma: 12 + 7 = 19 (3 + overflow)<br/>
+• Sistema: ⚠️ ALERTA - Redirigir inventario
+</div>
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🎯 Sistemas Poka-Yoke con Sumadores <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Definición Poka-Yoke:</strong> Sistema "a prueba de errores" que previene defectos
+</div>
+<div class="step">
+<strong>Aplicación con sumadores:</strong> Verificación automática de componentes
+<br/>• 8 componentes sector A + 8 componentes sector B = 16 total
+<br/>• Si suma ≠ 16: Error de ensamblaje detectado
+<br/>• Si suma = 16: ✅ Proceso OK, continuar producción
+</div>
+<div class="step">
+<strong>Ventajas:</strong> Detección inmediata, sin inspección humana, 100% confiable
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎮 Actividad 5: Sistema Industrial Completo</h4>
+<p><strong>Objetivo:</strong> Implementar sumador 4-bit para planta automotriz</p>
+<p><strong>Herramientas:</strong> EDA Playground + VHDL + Intel Quartus</p>
+<p><strong>Aplicación:</strong> Control aritmético para fábricas de arneses</p>
+<p><strong>Entregable:</strong> Código VHDL + simulación + reporte industrial</p>
+</div>
+</div>
+
+<!-- Slide 10: Detección de Overflow -->
+<div class="slide">
+<h2>⚠️ DETECCIÓN DE OVERFLOW</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🚨 ¿Cuándo Ocurre Overflow?</div>
+<div class="clippy-content">
+<p><strong>Overflow:</strong> Cuando el resultado no cabe en el número de bits disponibles</p>
+<p><strong>Sin signo:</strong> Cout = 1 indica resultado > 15</p>
+<p><strong>Con signo:</strong> Cambio inesperado de signo del resultado</p>
+<p><strong>Crítico:</strong> En sistemas industriales puede indicar condiciones peligrosas</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔢 Overflow Sin Signo</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>Operación</th><th>Resultado</th><th>Cout</th><th>Overflow?</th></tr>
+</thead>
+<tbody>
+<tr><td>15 + 0</td><td>15 (1111)</td><td>0</td><td>No</td></tr>
+<tr><td>15 + 1</td><td>0 (0000)</td><td>1</td><td>Sí</td></tr>
+<tr><td>12 + 7</td><td>3 (0011)</td><td>1</td><td>Sí</td></tr>
+<tr><td>8 + 8</td><td>0 (0000)</td><td>1</td><td>Sí</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+<strong>Detección:</strong><br/>
+Overflow = Cout<br/>
+(Simple: acarreo final)
+</div>
+</div>
+<div class="comparison-card">
+<h4>➕➖ Overflow Con Signo</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>Operación</th><th>Esperado</th><th>Obtenido</th><th>Overflow?</th></tr>
+</thead>
+<tbody>
+<tr><td>7 + 7</td><td>+14</td><td>-2 (1110)</td><td>Sí</td></tr>
+<tr><td>-8 + (-8)</td><td>-16</td><td>0 (0000)</td><td>Sí</td></tr>
+<tr><td>7 + (-3)</td><td>+4</td><td>+4 (0100)</td><td>No</td></tr>
+<tr><td>-5 + 3</td><td>-2</td><td>-2 (1110)</td><td>No</td></tr>
+</tbody>
+</table>
+</div>
+<div class="expression-display">
+<strong>Detección:</strong><br/>
+Overflow = C2 ⊕ Cout<br/>
+(XOR de acarreos bit 2 y 3)
+</div>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Implicaciones Industriales del Overflow</h4>
+<div class="application-scenario">
+<strong>CEDIS - Control de Capacidad:</strong><br/>
+• Capacidad máxima: 15 unidades por sección<br/>
+• Inventario actual: 12 unidades<br/>
+• Llegada nueva: 7 unidades<br/>
+• Suma: 12 + 7 = 19 → Overflow detectado<br/>
+• Acción automática: Redirigir 4 unidades a siguiente sección
+</div>
+<div class="application-scenario">
+<strong>Línea de Producción - Meta Cumplida:</strong><br/>
+• Meta diaria: 15 piezas<br/>
+• Producción actual: 15 piezas<br/>
+• Pieza adicional: +1<br/>
+• Suma: 15 + 1 = 16 → Overflow = Meta superada ✅<br/>
+• Acción: Notificar supervisión, bonificación activada
+</div>
+</div>
+</div>
+
+<!-- Slide 11: Implementación en VHDL -->
+<div class="slide">
+<h2>💻 IMPLEMENTACIÓN EN VHDL</h2>
+<div class="code-block">
+-- SUMADOR BINARIO 4-BIT INDUSTRIAL
+-- Aplicación: Control aritmético para fábricas de arneses eléctricos
+-- Universidad del SABES - Sistemas Digitales
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity sumador_4bit is
+    port (
+        a : in std_logic_vector(3 downto 0);  -- Operando A
+        b : in std_logic_vector(3 downto 0);  -- Operando B
+        cin : in std_logic;                   -- Carry entrada
+        s : out std_logic_vector(3 downto 0); -- Suma resultado
+        cout : out std_logic;                 -- Carry salida
+        overflow : out std_logic              -- Overflow con signo
+    );
+end sumador_4bit;
+
+architecture rtl of sumador_4bit is
+    -- Señal temporal de 5 bits para manejar carry
+    signal sum_temp : unsigned(4 downto 0);
+begin
+    -- Lógica principal del sumador
+    sum_temp <= unsigned('0' & a) + unsigned('0' & b) + ("0000" & cin);
+    
+    -- Asignación de salidas
+    s <= std_logic_vector(sum_temp(3 downto 0)); -- 4 bits resultado
+    cout <= sum_temp(4);                         -- Carry bit
+    
+    -- Detección de overflow para aritmética con signo
+    overflow <= (a(3) and b(3) and not sum_temp(3)) or
+                (not a(3) and not b(3) and sum_temp(3));
+end rtl;
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🧪 Testbench para Casos Industriales <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+-- TESTBENCH PARA SUMADOR 4-BIT INDUSTRIAL
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity tb_sumador is
+end tb_sumador;
+
+architecture behavior of tb_sumador is
+    -- Señales de prueba
+    signal a_tb : std_logic_vector(3 downto 0) := (others => '0');
+    signal b_tb : std_logic_vector(3 downto 0) := (others => '0');
+    signal cin_tb : std_logic := '0';
+    signal s_tb : std_logic_vector(3 downto 0);
+    signal cout_tb : std_logic;
+    signal overflow_tb: std_logic;
+    
+    constant PERIODO : time := 10 ns;
+begin
+    -- Instancia del sumador
+    dut: entity work.sumador_4bit port map (
+        a => a_tb, b => b_tb, cin => cin_tb,
+        s => s_tb, cout => cout_tb, overflow => overflow_tb
+    );
+    
+    -- Proceso de estímulos industriales
+    stim_proc: process
+    begin
+        report "=== SIMULACION SUMADOR 4-BIT INDUSTRIAL ===";
+        
+        -- CASO 1: Conteo básico de terminales (5 + 3 = 8)
+        a_tb <= "0101"; b_tb <= "0011"; cin_tb <= '0';
+        wait for PERIODO;
+        report "CASO 1 OK: 5 terminales + 3 terminales = 8 total";
+        
+        -- CASO 2: Overflow en CEDIS (12 + 7 = 19)
+        a_tb <= "1100"; b_tb <= "0111"; cin_tb <= '0';
+        wait for PERIODO;
+        report "CASO 2 OK: CEDIS - 12 cajas + 7 nuevas = OVERFLOW!";
+        
+        -- CASO 3: Meta de producción (15 + 1 = 16)
+        a_tb <= "1111"; b_tb <= "0001"; cin_tb <= '0';
+        wait for PERIODO;
+        report "CASO 3 OK: META CUMPLIDA - 15 + 1 = 16 piezas!";
+        
+        report "=== SIMULACION COMPLETADA ===";
+        wait;
+    end process;
+end behavior;
+</div>
+</div>
+</div>
+
+<!-- Slide 12: Sumadores Alternativos -->
+<div class="slide">
+<h2>⚡ SUMADORES ALTERNATIVOS AVANZADOS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🚀 Carry Lookahead Adder</h4>
+<ul>
+<li><strong>Ventaja:</strong> Velocidad constante O(1)</li>
+<li><strong>Principio:</strong> Calcula todos los acarreos simultáneamente</li>
+<li><strong>Aplicación:</strong> Procesadores de alta velocidad</li>
+<li><strong>Costo:</strong> Mayor complejidad y área</li>
+</ul>
+<div class="expression-display">
+Funciones CLA:<br/>
+G = A·B (Genera)<br/>
+P = A⊕B (Propaga)<br/>
+C₁ = G₀ + P₀·C₀<br/>
+C₂ = G₁ + P₁·G₀ + P₁·P₀·C₀
+</div>
+</div>
+<div class="comparison-card">
+<h4>🔄 Carry Select Adder</h4>
+<ul>
+<li><strong>Estrategia:</strong> Calcula dos sumas en paralelo</li>
+<li><strong>Método:</strong> Una con Cin=0, otra con Cin=1</li>
+<li><strong>Selección:</strong> MUX elige resultado correcto</li>
+<li><strong>Compromiso:</strong> Velocidad vs. área</li>
+</ul>
+<div class="expression-display">
+Estructura CS:<br/>
+Adder₀: A+B+0 → S₀, C₀<br/>
+Adder₁: A+B+1 → S₁, C₁<br/>
+MUX: Cin selecciona S₀/S₁
+</div>
+</div>
+</div>
+<div class="truth-table">
+<h4>📊 Comparación de Rendimiento</h4>
+<table>
+<thead>
+<tr><th>Tipo</th><th>Velocidad</th><th>Área</th><th>Potencia</th><th>Aplicación</th></tr>
+</thead>
+<tbody>
+<tr><td>Ripple Carry</td><td>Lenta O(n)</td><td>Pequeña</td><td>Baja</td><td>Sistemas simples</td></tr>
+<tr><td>Carry Lookahead</td><td>Rápida O(1)</td><td>Grande</td><td>Alta</td><td>CPUs, DSPs</td></tr>
+<tr><td>Carry Select</td><td>Media</td><td>Media</td><td>Media</td><td>Microcontroladores</td></tr>
+<tr><td>Carry Save</td><td>Pipeline</td><td>Variable</td><td>Media</td><td>Multiplicadores</td></tr>
+</tbody>
+</table>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 ¿Cuál Elegir?</div>
+<div class="clippy-content">
+<p><strong>Ripple Carry:</strong> Ideal para aprendizaje y aplicaciones de 4-8 bits</p>
+<p><strong>Carry Lookahead:</strong> Para sistemas que requieren máxima velocidad</p>
+<p><strong>Carry Select:</strong> Cuando se necesita balance velocidad/costo</p>
+<p><strong>Decisión:</strong> Depende de especificaciones de tiempo, área y potencia</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 13: Restadores Binarios -->
+<div class="slide">
+<h2>➖ RESTADORES BINARIOS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🔄 De Suma a Resta</div>
+<div class="clippy-content">
+<p><strong>Principio clave:</strong> A - B = A + (-B) = A + complemento_a_2(B)</p>
+<p><strong>Ventaja:</strong> Reutiliza el mismo hardware del sumador</p>
+<p><strong>Implementación:</strong> Inversor + sumador + Cin=1</p>
+<p><strong>Eficiencia:</strong> No necesita circuito separado para restar</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔢 Complemento a 2</h4>
+<div class="steps-container">
+<div class="step">
+<strong>Paso 1:</strong> Invertir todos los bits (complemento a 1)
+</div>
+<div class="step">
+<strong>Paso 2:</strong> Sumar 1 al resultado
+</div>
+<div class="step">
+<strong>Ejemplo:</strong> -5 en 4 bits
+<br/>5 = 0101 → ~5 = 1010 → ~5+1 = 1011 = -5
+</div>
+</div>
+<div class="expression-display">
+Fórmula general:<br/>
+-N = ~N + 1<br/>
+A - B = A + (~B + 1)
+</div>
+</div>
+<div class="comparison-card">
+<h4>🔧 Implementación Práctica</h4>
+<div class="circuit-diagram">
+A ─────┬─── SUMADOR ──── Resultado<br/>
+       │      4-BIT<br/>
+B ──[~]┴─── SUMADOR<br/>
+            ↑<br/>
+           Cin=1
+</div>
+<div class="steps-container">
+<div class="step">
+<strong>Entrada A:</strong> Primer operando (sin modificar)
+</div>
+<div class="step">
+<strong>Entrada B:</strong> Segundo operando invertido bit a bit
+</div>
+<div class="step">
+<strong>Cin = 1:</strong> Completa el complemento a 2
+</div>
+<div class="step">
+<strong>Resultado:</strong> A - B calculado como suma
+</div>
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejemplo Industrial: Control de Inventario</h4>
+<p><strong>Problema:</strong> Calcular faltantes en almacén</p>
+<p><strong>Operación:</strong> Requerido - Disponible = Faltante</p>
+<p><strong>Caso:</strong> 12 requeridos - 8 disponibles = 4 faltantes</p>
+<p><strong>Binario:</strong> 1100 - 1000 = 0100 (verificar manualmente)</p>
+</div>
+</div>
+
+<!-- Slide 14: Sumador/Restador Configurable -->
+<div class="slide">
+<h2>🔀 SUMADOR/RESTADOR CONFIGURABLE</h2>
+<div class="circuit-diagram">
+        MODO (0=Suma, 1=Resta)<br/>
+            │<br/>
+A ──────────┬─── SUMADOR ──── Resultado<br/>
+            │      4-BIT      ┌─ Cout<br/>
+B ──[XOR]───┴─── SUMADOR ────┘<br/>
+    ↑ ↑          ↑<br/>
+    │ └──────────┼─ MODO<br/>
+    └────────────┘<br/>
+                Cin = MODO
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Tabla de Funcionamiento</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>MODO</th><th>Operación</th><th>B modificado</th><th>Cin</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>A + B</td><td>B (sin cambio)</td><td>0</td></tr>
+<tr><td>1</td><td>A - B</td><td>~B (invertido)</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="comparison-card">
+<h4>🔧 Ventajas del Diseño</h4>
+<ul>
+<li><strong>Versatilidad:</strong> Una sola señal controla operación</li>
+<li><strong>Eficiencia:</strong> Mismo hardware para ambas operaciones</li>
+<li><strong>Simplicidad:</strong> Solo requiere compuertas XOR adicionales</li>
+<li><strong>Industrial:</strong> Fácil integración en sistemas de control</li>
+</ul>
+</div>
+</div>
+<div class="code-block">
+-- SUMADOR/RESTADOR CONFIGURABLE EN VHDL
+entity sumador_restador_4bit is
+    port (
+        a, b : in std_logic_vector(3 downto 0);
+        modo : in std_logic;  -- 0=suma, 1=resta
+        resultado : out std_logic_vector(3 downto 0);
+        cout : out std_logic;
+        overflow : out std_logic
+    );
+end sumador_restador_4bit;
+
+architecture rtl of sumador_restador_4bit is
+    signal b_modificado : std_logic_vector(3 downto 0);
+    signal suma_temp : unsigned(4 downto 0);
+begin
+    -- Modificar B según el modo
+    b_modificado <= b xor (modo & modo & modo & modo);
+    
+    -- Realizar operación
+    suma_temp <= unsigned('0' & a) + unsigned('0' & b_modificado) + 
+                 ("0000" & modo);
+    
+    -- Asignar salidas
+    resultado <= std_logic_vector(suma_temp(3 downto 0));
+    cout <= suma_temp(4);
+    
+    -- Detección de overflow
+    overflow <= (a(3) and b_modificado(3) and not suma_temp(3)) or
+                (not a(3) and not b_modificado(3) and suma_temp(3));
+end rtl;
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Sistema de Inventario Dinámico</h4>
+<div class="application-scenario">
+<strong>Modo Suma (MODO=0):</strong> Recepción de mercancía<br/>
+• Inventario actual + Mercancía nueva = Inventario total<br/>
+• Ejemplo: 8 + 5 = 13 unidades en almacén
+</div>
+<div class="application-scenario">
+<strong>Modo Resta (MODO=1):</strong> Despacho de pedidos<br/>
+• Inventario actual - Mercancía despachada = Inventario restante<br/>
+• Ejemplo: 13 - 4 = 9 unidades restantes
+</div>
+</div>
+</div>
+
+<!-- Slide 15: Implementación en Hardware -->
+<div class="slide">
+<h2>🔧 IMPLEMENTACIÓN EN HARDWARE REAL</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🛠️ Implementación en Altera MAX II EPM240 <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Dispositivo objetivo:</strong> Altera MAX II EPM240T100C5
+<br/>• 240 elementos lógicos disponibles
+<br/>• Sumador 4-bit requiere ~20 LEs (8% utilización)
+<br/>• Paquete TQFP-100 con 84 pines I/O
+</div>
+<div class="step">
+<strong>Asignación de pines sugerida:</strong>
+<br/>• A[3:0] → Pines 15-18 (switches DIP)
+<br/>• B[3:0] → Pines 19-22 (switches DIP)
+<br/>• Cin/MODO → Pin 23 (switch simple)
+<br/>• S[3:0] → Pines 25-28 (LEDs con resistencias 330Ω)
+<br/>• Cout → Pin 29 (LED indicador overflow)
+</div>
+<div class="step">
+<strong>Configuración en Quartus:</strong>
+<br/>• Crear proyecto nuevo para MAX II
+<br/>• Importar código VHDL
+<br/>• Asignar pines en Pin Planner
+<br/>• Compilar y generar archivo .pof
+<br/>• Programar via USB-Blaster
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🧪 Alternativa: Simulación en Arduino <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+// SUMADOR 4-BIT PARA ARDUINO
+// Simula comportamiento del sumador binario
+
+// Pines para entradas A y B
+#define A0 2
+#define A1 3
+#define A2 4
+#define A3 5
+#define B0 6
+#define B1 7
+#define B2 8
+#define B3 9
+#define MODO 10  // 0=suma, 1=resta
+
+// Pines para salidas
+#define S0 11
+#define S1 12
+#define S2 A0
+#define S3 A1
+#define COUT A2
+
+void setup() {
+  // Configurar entradas con pull-up
+  for(int i=2; i<=10; i++) {
+    pinMode(i, INPUT_PULLUP);
+  }
+  
+  // Configurar salidas
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(COUT, OUTPUT);
+  
+  Serial.begin(9600);
+  Serial.println("=== SUMADOR/RESTADOR 4-BIT INDUSTRIAL ===");
+}
+
+void loop() {
+  // Leer entradas (invertidas por pull-up)
+  bool a[4] = {!digitalRead(A0), !digitalRead(A1), 
+               !digitalRead(A2), !digitalRead(A3)};
+  bool b[4] = {!digitalRead(B0), !digitalRead(B1), 
+               !digitalRead(B2), !digitalRead(B3)};
+  bool modo = !digitalRead(MODO);
+  
+  // Convertir a valores decimales
+  int valorA = a[3]*8 + a[2]*4 + a[1]*2 + a[0];
+  int valorB = b[3]*8 + b[2]*4 + b[1]*2 + b[0];
+  
+  // Realizar operación
+  int resultado = modo ? (valorA - valorB) : (valorA + valorB);
+  bool overflow = (resultado < 0) || (resultado > 15);
+  
+  if(resultado < 0) resultado += 16;  // Manejo de números negativos
+  resultado = resultado & 0x0F;       // Limitar a 4 bits
+  
+  // Escribir salidas
+  digitalWrite(S0, resultado & 0x01);
+  digitalWrite(S1, (resultado >> 1) & 0x01);
+  digitalWrite(S2, (resultado >> 2) & 0x01);
+  digitalWrite(S3, (resultado >> 3) & 0x01);
+  digitalWrite(COUT, overflow);
+  
+  // Mostrar en monitor serie
+  Serial.print(modo ? "RESTA: " : "SUMA: ");
+  Serial.print(valorA);
+  Serial.print(modo ? " - " : " + ");
+  Serial.print(valorB);
+  Serial.print(" = ");
+  Serial.print(resultado);
+  if(overflow) Serial.print(" (OVERFLOW!)");
+  Serial.println();
+  
+  delay(1000);
+}
+</div>
+</div>
+</div>
+
+<!-- Slide 16: Casos de Prueba Industriales -->
+<div class="slide">
+<h2>🧪 CASOS DE PRUEBA INDUSTRIALES</h2>
+<div class="truth-table">
+<h4>📊 Tabla de Verificación Completa</h4>
+<table>
+<thead>
+<tr><th>Caso</th><th>A (dec)</th><th>B (dec)</th><th>Modo</th><th>Resultado (dec)</th><th>Cout</th><th>Aplicación Industrial</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>5</td><td>3</td><td>Suma</td><td>8</td><td>0</td><td>5 terminales + 3 terminales = 8 total</td></tr>
+<tr><td>2</td><td>12</td><td>7</td><td>Suma</td><td>3</td><td>1</td><td>CEDIS: 12 cajas + 7 nuevas = 19 (¡ALERTA!)</td></tr>
+<tr><td>3</td><td>15</td><td>1</td><td>Suma</td><td>0</td><td>1</td><td>Producción: 15 + 1 = 16 (¡META CUMPLIDA!)</td></tr>
+<tr><td>4</td><td>8</td><td>8</td><td>Suma</td><td>0</td><td>1</td><td>Poka-Yoke: 8 + 8 = 16 componentes ✓</td></tr>
+<tr><td>5</td><td>12</td><td>8</td><td>Resta</td><td>4</td><td>0</td><td>Inventario: 12 - 8 despachadas = 4 restantes</td></tr>
+<tr><td>6</td><td>15</td><td>3</td><td>Resta</td><td>12</td><td>0</td><td>Control: 15 requeridas - 3 disponibles = 12 faltantes</td></tr>
+<tr><td>7</td><td>0</td><td>0</td><td>Suma</td><td>0</td><td>0</td><td>Sistema en reset/inicial</td></tr>
+<tr><td>8</td><td>7</td><td>9</td><td>Resta</td><td>14</td><td>1</td><td>Resta negativa (7-9 = -2 → 14 en complemento)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Casos de Éxito</h4>
+<ul>
+<li><strong>Casos 1, 5, 6, 7:</strong> Operaciones normales</li>
+<li><strong>Verificación:</strong> Resultado dentro del rango esperado</li>
+<li><strong>Control:</strong> Sin alarmas de overflow</li>
+<li><strong>Aplicación:</strong> Operación rutinaria del sistema</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>⚠️ Casos de Overflow</h4>
+<ul>
+<li><strong>Casos 2, 3, 4:</strong> Overflow en suma (Cout=1)</li>
+<li><strong>Caso 8:</strong> Resultado negativo en resta</li>
+<li><strong>Acción requerida:</strong> Activar alarmas/controles</li>
+<li><strong>Sistema:</strong> Respuesta automática programada</li>
+</ul>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Actividad 5: Verificación Completa</h4>
+<p><strong>Objetivo:</strong> Implementar y probar todos los casos en EDA Playground</p>
+<p><strong>Herramientas:</strong> VHDL + simulación + formas de onda</p>
+<p><strong>Entregable:</strong> Captura de resultados + análisis de aplicaciones</p>
+<p><strong>Bonus:</strong> Implementación física en FPGA o Arduino</p>
+</div>
+</div>
+
+<!-- Slide 17: Extensión a 8 y 16 bits -->
+<div class="slide">
+<h2>📈 EXTENSIÓN A 8 Y 16 BITS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🚀 Escalabilidad Industrial</div>
+<div class="clippy-content">
+<p><strong>Modularidad:</strong> Sumadores 4-bit como bloques básicos</p>
+<p><strong>8 bits:</strong> Dos sumadores 4-bit en cascada</p>
+<p><strong>16 bits:</strong> Cuatro sumadores 4-bit o dos de 8-bit</p>
+<p><strong>Aplicación:</strong> Sistemas industriales más complejos</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔗 Sumador 8-bit Modular</h4>
+<div class="circuit-diagram">
+A[7:4] B[7:4]  A[3:0] B[3:0]<br/>
+    │     │       │     │<br/>
+    ▼     ▼       ▼     ▼<br/>
+┌─────────┐   ┌─────────┐<br/>
+│ SUM4_H  │◄──│ SUM4_L  │◄─ Cin<br/>
+└────┬────┘   └────┬────┘<br/>
+     │             │<br/>
+   S[7:4]        S[3:0]<br/>
+     │<br/>
+   Cout
+</div>
+<div class="expression-display">
+Capacidades:<br/>
+• 4-bit: 0-31<br/>
+• 8-bit: 0-511<br/>
+• 16-bit: 0-65,535<br/>
+• 32-bit: 0-4,294,967,295
+</div>
+</div>
+<div class="comparison-card">
+<h4>🏭 Aplicaciones Expandidas</h4>
+<ul>
+<li><strong>8-bit:</strong> Arneses complejos (hasta 255 terminales)</li>
+<li><strong>16-bit:</strong> Líneas de producción grandes</li>
+<li><strong>32-bit:</strong> Control de inventarios nacionales</li>
+<li><strong>Integración:</strong> Sistemas ERP industriales</li>
+<li><strong>Precisión:</strong> Conteos de alta granularidad</li>
+</ul>
+</div>
+</div>
+<div class="code-block">
+-- SUMADOR 8-BIT USANDO MÓDULOS DE 4-BIT
+entity sumador_8bit is
+    port (
+        a, b : in std_logic_vector(7 downto 0);
+        cin : in std_logic;
+        s : out std_logic_vector(7 downto 0);
+        cout : out std_logic;
+        overflow : out std_logic
+    );
+end sumador_8bit;
+
+architecture modular of sumador_8bit is
+    component sumador_4bit
+        port ( 
+            a, b : in std_logic_vector(3 downto 0);
+            cin : in std_logic;
+            s : out std_logic_vector(3 downto 0);
+            cout : out std_logic
+        );
+    end component;
+    
+    signal carry_intermedio : std_logic;
+begin
+    -- Sumador de bits bajos (0-3)
+    SUM_LOW: sumador_4bit 
+        port map (a(3 downto 0), b(3 downto 0), cin, 
+                 s(3 downto 0), carry_intermedio);
+    
+    -- Sumador de bits altos (4-7)
+    SUM_HIGH: sumador_4bit 
+        port map (a(7 downto 4), b(7 downto 4), carry_intermedio, 
+                 s(7 downto 4), cout);
+    
+    -- Detección de overflow para 8 bits
+    overflow <= carry_intermedio xor cout;
+end modular;
+</div>
+<div class="industrial-application">
+<h4>🚗 Ejemplo: Sistema Automotriz Avanzado</h4>
+<div class="application-scenario">
+<strong>Arnés principal de vehículo:</strong> Hasta 255 terminales (8-bit)<br/>
+<strong>Línea de producción:</strong> 65,535 piezas por turno (16-bit)<br/>
+<strong>Control nacional:</strong> Millones de vehículos (32-bit)<br/>
+<strong>Ventaja:</strong> Mismo diseño base, escalado según necesidades
+</div>
+</div>
+</div>
+
+<!-- Slide 18: Optimizaciones y Mejoras -->
+<div class="slide">
+<h2>⚡ OPTIMIZACIONES Y MEJORAS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🚀 Mejoras en Velocidad</h4>
+<ul>
+<li><strong>Carry Lookahead:</strong> Cálculo paralelo de acarreos</li>
+<li><strong>Pipeline:</strong> División en etapas temporales</li>
+<li><strong>Carry Skip:</strong> Salto de acarreos en bloques</li>
+<li><strong>Arquitectura paralela:</strong> Múltiples sumadores</li>
+</ul>
+<div class="expression-display">
+Mejora temporal:<br/>
+Ripple: O(n)<br/>
+Lookahead: O(log n)<br/>
+Pipeline: 1 ciclo/operación
+</div>
+</div>
+<div class="comparison-card">
+<h4>💡 Mejoras en Eficiencia</h4>
+<ul>
+<li><strong>Gating de reloj:</strong> Reducir consumo dinámico</li>
+<li><strong>Voltage scaling:</strong> Operación a menor voltaje</li>
+<li><strong>Diseño asíncrono:</strong> Sin reloj global</li>
+<li><strong>Lógica de bajo consumo:</strong> Familias CMOS avanzadas</li>
+</ul>
+<div class="expression-display">
+Reducción consumo:<br/>
+P = C·V²·f<br/>
+↓V = ↓P² exponencial<br/>
+Gating = 30-50% ahorro
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🔧 Implementación de Carry Lookahead <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+-- CARRY LOOKAHEAD ADDER 4-BIT
+entity cla_4bit is
+    port (
+        a, b : in std_logic_vector(3 downto 0);
+        cin : in std_logic;
+        s : out std_logic_vector(3 downto 0);
+        cout : out std_logic;
+        pgg, ggg : out std_logic  -- Propagate/Generate grupales
+    );
+end cla_4bit;
+
+architecture cla of cla_4bit is
+    signal p, g : std_logic_vector(3 downto 0);
+    signal c : std_logic_vector(4 downto 0);
+begin
+    -- Generar P y G para cada bit
+    p <= a xor b;  -- Propagate
+    g <= a and b;  -- Generate
+    
+    -- Calcular acarreos con lookahead
+    c(0) <= cin;
+    c(1) <= g(0) or (p(0) and c(0));
+    c(2) <= g(1) or (p(1) and g(0)) or (p(1) and p(0) and c(0));
+    c(3) <= g(2) or (p(2) and g(1)) or (p(2) and p(1) and g(0)) or 
+            (p(2) and p(1) and p(0) and c(0));
+    c(4) <= g(3) or (p(3) and g(2)) or (p(3) and p(2) and g(1)) or
+            (p(3) and p(2) and p(1) and g(0)) or 
+            (p(3) and p(2) and p(1) and p(0) and c(0));
+    
+    -- Generar sumas
+    s <= p xor c(3 downto 0);
+    cout <= c(4);
+    
+    -- Señales grupales para cascada
+    pgg <= p(3) and p(2) and p(1) and p(0);
+    ggg <= g(3) or (p(3) and g(2)) or (p(3) and p(2) and g(1)) or
+           (p(3) and p(2) and p(1) and g(0));
+end cla;
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Comparación de Rendimiento</h4>
+<p><strong>Ripple Carry 4-bit:</strong> 4 × 10ns = 40ns</p>
+<p><strong>Carry Lookahead 4-bit:</strong> 2 × 10ns = 20ns (50% más rápido)</p>
+<p><strong>Trade-off:</strong> 2x velocidad vs. 3x área en chip</p>
+<p><strong>Decisión:</strong> Depende de especificaciones del sistema</p>
+</div>
+</div>
+
+<!-- Slide 19: Aplicaciones Futuras -->
+<div class="slide">
+<h2>🚀 APLICACIONES FUTURAS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🤖 Industria 4.0</h4>
+<ul>
+<li><strong>IoT Industrial:</strong> Sensores inteligentes con sumadores</li>
+<li><strong>Edge Computing:</strong> Procesamiento local en tiempo real</li>
+<li><strong>AI/ML:</strong> Acumuladores para redes neuronales</li>
+<li><strong>Digital Twins:</strong> Modelos virtuales con aritmética real</li>
+<li><strong>Predictive Analytics:</strong> Suma de patrones históricos</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🌐 Integración Avanzada</h4>
+<ul>
+<li><strong>Blockchain:</strong> Verificación inmutable de conteos</li>
+<li><strong>Cloud Integration:</strong> Sumadores como microservicios</li>
+<li><strong>5G Industrial:</strong> Latencia ultra-baja para control</li>
+<li><strong>Quantum Computing:</strong> Sumadores cuánticos del futuro</li>
+<li><strong>Neuromorphic:</strong> Chips que imitan el cerebro</li>
+</ul>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Visión 2030: Fábrica Completamente Autónoma</h4>
+<div class="application-scenario">
+<strong>Nivel 1 - Sensores:</strong> Millones de sumadores micro embebidos<br/>
+<strong>Nivel 2 - Control:</strong> Sumadores 32/64-bit para agregación masiva<br/>
+<strong>Nivel 3 - Decisión:</strong> IA que usa aritmética para optimización<br/>
+<strong>Nivel 4 - Global:</strong> Red de fábricas con contabilidad distribuida
+</div>
+<div class="application-scenario">
+<strong>Ejemplo concreto:</strong> Planta automotriz en Bajío 2030<br/>
+• Cada terminal tiene sensor + sumador individual<br/>
+• Agregación tiempo real de todos los arneses<br/>
+• Predicción de fallas basada en patrones aritméticos<br/>
+• Optimización automática de líneas de producción<br/>
+• Integración con proveedores globales vía blockchain
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 El Futuro de los Sumadores</div>
+<div class="clippy-content">
+<p><strong>Ubicuidad:</strong> En cada dispositivo, invisible pero esencial</p>
+<p><strong>Inteligencia:</strong> Sumadores que aprenden y se adaptan</p>
+<p><strong>Velocidad:</strong> Operaciones a frecuencias de THz</p>
+<p><strong>Eficiencia:</strong> Consumo energético cerca de límites físicos</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 20: Resumen y Próximos Pasos -->
+<div class="slide">
+<h2>📚 RESUMEN Y PRÓXIMOS PASOS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Lo que Hemos Aprendido</h4>
+<ul>
+<li><strong>Half Adder:</strong> Sumador básico de 1 bit</li>
+<li><strong>Full Adder:</strong> Sumador completo con acarreo</li>
+<li><strong>Ripple Carry:</strong> Sumador de múltiples bits</li>
+<li><strong>Overflow:</strong> Detección de condiciones límite</li>
+<li><strong>Restadores:</strong> Implementación con complemento a 2</li>
+<li><strong>VHDL:</strong> Implementación profesional</li>
+<li><strong>Aplicaciones:</strong> Casos industriales reales</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🎯 Próxima Semana 8: Multiplicadores</h4>
+<ul>
+<li><strong>Multiplicación binaria:</strong> Algoritmos básicos</li>
+<li><strong>Array multipliers:</strong> Implementación paralela</li>
+<li><strong>Booth algorithm:</strong> Multiplicación optimizada</li>
+<li><strong>DSP applications:</strong> Procesamiento de señales</li>
+<li><strong>MAC units:</strong> Multiplicar y acumular</li>
+</ul>
+</div>
+</div>
+<div class="exercise-box">
+<h4>📝 Actividad 5: Sumador Industrial Completo</h4>
+<ol style="text-align: left;">
+<li><strong>Implementación VHDL:</strong> Sumador 4-bit con aplicaciones industriales</li>
+<li><strong>Simulación:</strong> 8 casos de prueba específicos de manufactura</li>
+<li><strong>Documentación:</strong> Reporte con análisis de aplicaciones reales</li>
+<li><strong>Extensión opcional:</strong> Implementación física en FPGA</li>
+<li><strong>Fecha límite:</strong> 7 de julio, 2025</li>
+</ol>
+</div>
+<div class="industrial-application">
+<h4>🏆 Logros del Proyecto</h4>
+<div class="application-scenario">
+<strong>Competencias desarrolladas:</strong><br/>
+✅ Diseño de circuitos aritméticos fundamentales<br/>
+✅ Implementación en lenguajes HDL profesionales<br/>
+✅ Aplicación de conceptos teóricos a casos industriales<br/>
+✅ Análisis de rendimiento y optimización<br/>
+✅ Conexión directa con la industria mexicana actual
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Consejos para el Éxito Profesional</div>
+<div class="clippy-content">
+<p><strong>Fundamentos sólidos:</strong> Los sumadores son la base de toda computación</p>
+<p><strong>Pensamiento modular:</strong> Diseños escalables y reutilizables</p>
+<p><strong>Aplicación práctica:</strong> Siempre conectar teoría con industria real</p>
+<p><strong>Mejora continua:</strong> Optimizar velocidad, área y potencia</p>
+</div>
+</div>
+<div class="expression-display">
+<strong>¡Gracias por su atención!</strong><br/>
+Dudas: fausto.jimenez@sabes.edu.mx | Próxima clase: Lunes 8 de julio<br/>
+<strong>Actividad 5:</strong> Disponible en GitHub y EDA Playground
+</div>
+</div>
+
+</div>
+
+<script>
+        // Navegación y controles - Variables globales
+        let currentSlideIndex = 0;
+        let slides = [];
+        let totalSlides = 0;
+        let timer = 3000; // 50 minutos en segundos
+        let timerInterval = null;
+
+        // Estado del sumador interactivo
+        const adderState = {
+            a: [0, 0, 0, 0],  // A[3:0]
+            b: [0, 0, 0, 0],  // B[3:0]
+            cin: 0
+        };
+
+        // Inicialización al cargar el DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando presentación de Semana 7...');
+            
+            // Obtener elementos
+            slides = document.querySelectorAll('.slide');
+            totalSlides = slides.length;
+            
+            console.log(`Total de diapositivas: ${totalSlides}`);
+            
+            // Configurar navegación
+            setupNavigation();
+            
+            // Configurar temporizador
+            setupTimer();
+            
+            // Configurar demostración de sumador
+            setupAdderDemo();
+            
+            // Inicializar visualización
+            updateSlideDisplay();
+            
+            console.log('Presentación inicializada correctamente');
+        });
+
+        // Configuración de navegación
+        function setupNavigation() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.addEventListener("click", () => changeSlide(-1));
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener("click", () => changeSlide(1));
+            }
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        changeSlide(-1);
+                        break;
+                    case 'ArrowRight':
+                        changeSlide(1);
+                        break;
+                    case ' ': // Espaciador
+                        event.preventDefault();
+                        changeSlide(1);
+                        break;
+                }
+            });
+        }
+
+        // Cambio de diapositivas
+        function changeSlide(direction) {
+            slides[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex >= totalSlides) {
+                currentSlideIndex = totalSlides - 1;
+            }
+            
+            slides[currentSlideIndex].classList.add('active');
+            updateSlideDisplay();
+            
+            console.log(`Navegando a diapositiva: ${currentSlideIndex + 1}/${totalSlides}`);
+        }
+
+        // Actualización de la visualización
+        function updateSlideDisplay() {
+            const currentSlideElement = document.getElementById("currentSlide");
+            const totalSlidesElement = document.getElementById("totalSlides");
+            const progressBar = document.getElementById("progressBar");
+            
+            if (currentSlideElement) {
+                currentSlideElement.textContent = currentSlideIndex + 1;
+            }
+            
+            if (totalSlidesElement) {
+                totalSlidesElement.textContent = totalSlides;
+            }
+            
+            if (progressBar) {
+                const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+            }
+            
+            // Habilitar/deshabilitar botones
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.style.opacity = currentSlideIndex > 0 ? '1' : '0.5';
+                prevBtn.disabled = currentSlideIndex <= 0;
+            }
+            
+            if (nextBtn) {
+                nextBtn.style.opacity = currentSlideIndex < totalSlides - 1 ? '1' : '0.5';
+                nextBtn.disabled = currentSlideIndex >= totalSlides - 1;
+            }
+        }
+
+        // Configuración del temporizador
+        function setupTimer() {
+            const startBtn = document.getElementById("startBtn");
+            const pauseBtn = document.getElementById("pauseBtn");
+            const resetBtn = document.getElementById("resetBtn");
+            const timerDisplay = document.getElementById("sessionTimer");
+            
+            function formatTime(seconds) {
+                const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                return `${mins}:${secs}`;
+            }
+            
+            function updateTimer() {
+                if (timer > 0) {
+                    timer--;
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    
+                    // Advertencia en los últimos 5 minutos
+                    if (timer <= 300 && timerDisplay) {
+                        timerDisplay.classList.add('warning');
+                    }
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    console.log('Tiempo agotado');
+                    alert('⏰ ¡Tiempo de clase terminado!');
+                }
+            }
+            
+            if (startBtn) {
+                startBtn.addEventListener("click", function() {
+                    if (!timerInterval) {
+                        timerInterval = setInterval(updateTimer, 1000);
+                        console.log('Temporizador iniciado');
+                    }
+                });
+            }
+            
+            if (pauseBtn) {
+                pauseBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        console.log('Temporizador pausado');
+                    }
+                });
+            }
+            
+            if (resetBtn) {
+                resetBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    timer = 3000; // 50 minutos
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    if (timerDisplay) {
+                        timerDisplay.classList.remove('warning');
+                    }
+                    console.log('Temporizador reiniciado');
+                });
+            }
+            
+            // Inicializar visualización del timer
+            const timeRemaining = document.getElementById("timeRemaining");
+            if (timeRemaining) {
+                timeRemaining.textContent = formatTime(timer);
+            }
+        }
+
+        // Configuración de la demostración del sumador
+        function setupAdderDemo() {
+            // Inicializar estado
+            updateAdderOutput();
+        }
+
+        // Función para alternar entradas del sumador
+        function toggleAdderInput(type, bit) {
+            if (type === 'a') {
+                adderState.a[bit] = adderState.a[bit] ? 0 : 1;
+                const element = document.getElementById(`a${bit}`);
+                if (element) {
+                    element.textContent = adderState.a[bit];
+                    element.parentElement.className = adderState.a[bit] ? "input-wire active" : "input-wire";
+                }
+            } else if (type === 'b') {
+                adderState.b[bit] = adderState.b[bit] ? 0 : 1;
+                const element = document.getElementById(`b${bit}`);
+                if (element) {
+                    element.textContent = adderState.b[bit];
+                    element.parentElement.className = adderState.b[bit] ? "input-wire active" : "input-wire";
+                }
+            } else if (type === 'cin') {
+                adderState.cin = adderState.cin ? 0 : 1;
+                const element = document.getElementById('cin');
+                if (element) {
+                    element.textContent = adderState.cin;
+                    element.parentElement.className = adderState.cin ? "input-wire active" : "input-wire";
+                }
+            }
+            
+            updateAdderOutput();
+        }
+
+        // Actualizar salida del sumador
+        function updateAdderOutput() {
+            // Convertir a valores decimales
+            const valueA = adderState.a[3]*8 + adderState.a[2]*4 + adderState.a[1]*2 + adderState.a[0];
+            const valueB = adderState.b[3]*8 + adderState.b[2]*4 + adderState.b[1]*2 + adderState.b[0];
+            
+            // Calcular suma
+            const sum = valueA + valueB + adderState.cin;
+            const result4bit = sum & 0x0F; // Limitar a 4 bits
+            const cout = sum > 15 ? 1 : 0;
+            
+            // Convertir resultado a binario
+            const resultBits = [
+                result4bit & 0x01,
+                (result4bit >> 1) & 0x01,
+                (result4bit >> 2) & 0x01,
+                (result4bit >> 3) & 0x01
+            ];
+            
+            // Actualizar visualización de salidas
+            for (let i = 0; i < 4; i++) {
+                const element = document.getElementById(`s${i}_val`);
+                const wireElement = document.getElementById(`s${i}_out`);
+                if (element && wireElement) {
+                    element.textContent = resultBits[i];
+                    wireElement.className = resultBits[i] ? "output-wire active" : "output-wire";
+                }
+            }
+            
+            // Actualizar carry out
+            const coutElement = document.getElementById('cout_val');
+            const coutWireElement = document.getElementById('cout_out');
+            if (coutElement && coutWireElement) {
+                coutElement.textContent = cout;
+                coutWireElement.className = cout ? "output-wire active" : "output-wire";
+            }
+            
+            // Actualizar valores decimales
+            const decimalAElement = document.getElementById('decimal_a');
+            const decimalBElement = document.getElementById('decimal_b');
+            const decimalResultElement = document.getElementById('decimal_result');
+            const overflowStatusElement = document.getElementById('overflow_status');
+            
+            if (decimalAElement) decimalAElement.textContent = valueA;
+            if (decimalBElement) decimalBElement.textContent = valueB;
+            if (decimalResultElement) decimalResultElement.textContent = result4bit;
+            
+            if (overflowStatusElement) {
+                if (cout) {
+                    overflowStatusElement.textContent = "⚠️ OVERFLOW detectado";
+                    overflowStatusElement.style.color = "#FF8C00";
+                } else {
+                    overflowStatusElement.textContent = "✅ Operación normal";
+                    overflowStatusElement.style.color = "#90EE90";
+                }
+            }
+            
+            console.log(`Sumador: ${valueA} + ${valueB} + ${adderState.cin} = ${result4bit} (Cout: ${cout})`);
+        }
+
+        // Funciones para elementos interactivos
+        function toggleClippy(element) {
+            const content = element.querySelector('.clippy-content');
+            if (content) {
+                content.classList.toggle('active');
+                console.log('Clippy tip toggled');
+            }
+        }
+
+        function toggleCollapsible(button) {
+            const content = button.nextElementSibling;
+            const arrow = button.querySelector('span');
+            
+            if (content && arrow) {
+                const isActive = content.classList.contains('active');
+                
+                content.classList.toggle('active');
+                button.classList.toggle('active');
+                arrow.textContent = isActive ? '▼' : '▲';
+                
+                console.log(`Sección collapsible ${isActive ? 'cerrada' : 'abierta'}`);
+            }
+        }
+
+        // Hacer funciones disponibles globalmente
+        window.changeSlide = changeSlide;
+        window.toggleClippy = toggleClippy;
+        window.toggleCollapsible = toggleCollapsible;
+        window.toggleAdderInput = toggleAdderInput;
+        
+        console.log('Script de Semana 7 cargado completamente');
+    </script>
+
+</body>
+</html>
+<div class="steps-container">
+<div class="step">
+<strong>Posición 0 (LSB):</strong> 1 + 1 = 0 con acarreo 1
+</div>
+<div class="step">
+<strong>Posición 1:</strong> 1 + 1 + acarreo(1) = 1 con acarreo 1
+</div>
+<div class="step">
+<strong>Posición 2:</strong> 1 + 0 + acarreo(1) = 0 con acarreo 1
+</div>
+<div class="step">
+<strong>Posición 3 (MSB):</strong> 1 + 0 + acarreo(1) = 0 con acarreo 1
+</div>
+<div class="step">
+<strong>Resultado:</strong> El acarreo final indica overflow (resultado > capacidad)
+</div>
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Importancia del Acarreo</div>
+<div class="clippy-content">
+<p><strong>En sistemas industriales:</strong> El acarreo indica condiciones críticas</p>
+<p><strong>CEDIS:</strong> Acarreo = capacidad máxima alcanzada</p>
+<p><strong>Producción:</strong> Acarreo = meta superada</p>
+<p><strong>Control:</strong> Acarreo activa alarmas o acciones automáticas</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 4: Half Adder (Medio Sumador) -->
+<div class="slide">
+<h2>🔄 HALF ADDER (MEDIO SUMADOR)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🧩 El Bloque Más Básico</div>
+<div class="clippy-content">
+<p><strong>Half Adder:</strong> Suma dos bits sin considerar acarreo previo</p>
+<p><strong>Limitación:</strong> Solo para la posición menos significativa (LSB)</p>
+<p><strong>Utilidad:</strong> Base para construir sumadores más complejos</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📊 Tabla de Verdad</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>S (Suma)</th><th>C (Carry)</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="comparison-card">
+<h4>⚙️ Ecuaciones Booleanas</h4>
+<div class="expression-display">
+<strong>Suma:</strong> S = A ⊕ B<br/>
+<strong>Acarreo:</strong> C = A · B<br/><br/>
+<strong>Donde:</strong><br/>
+⊕ = XOR (OR exclusivo)<br/>
+· = AND
+</div>
+</div>
+</div>
+<div class="circuit-diagram">
+A ──┬─── XOR ──── S (Suma)<br/>
+    │<br/>
+B ──┼─── XOR<br/>
+    │<br/>
+    └─── AND ──── C (Carry)
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🔧 Implementación con Compuertas Básicas <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-
