@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sistemas Digitales - Semana 8 | Universidad del SABES</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .university-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .university-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .course-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-info h1 {
+            font-size: 1.3rem;
+            color: #90EE90;
+            margin-bottom: 2px;
+        }
+
+        .course-info p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            line-height: 1.2;
+            margin: 1px 0;
+        }
+
+        .session-timer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer-display {
+            background: rgba(144, 238, 144, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #90EE90;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            animation: pulse 1s infinite;
+            background: rgba(255, 140, 0, 0.3);
+            border-color: #FF8C00;
+            color: #FF8C00;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn-header {
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-header:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-btn-header:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #90EE90;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e8f4fd;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "➕";
+            position: absolute;
+            left: -30px;
+        }
+
+        .clippy-tip {
+            background: rgba(144, 238, 144, 0.2);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clippy-tip:hover {
+            background: rgba(144, 238, 144, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .clippy-tip::before {
+            content: "🧮";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #2E8B57;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .clippy-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .clippy-content.active {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        .clippy-header {
+            color: #90EE90;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .collapsible {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .collapsible.active {
+            background: rgba(144, 238, 144, 0.2);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0 20px;
+        }
+
+        .content.active {
+            max-height: 1000px;
+            padding: 20px;
+        }
+
+        .adder-demo {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .inputs-section, .outputs-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-wire, .output-wire {
+            background: rgba(144, 238, 144, 0.3);
+            border: 2px solid rgba(144, 238, 144, 0.5);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-wire.active, .output-wire.active {
+            background: rgba(255, 140, 0, 0.5);
+            border-color: #FF8C00;
+            color: #000;
+        }
+
+        .adder-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .expression-display {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #90EE90;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #90EE90;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #90EE90;
+        }
+
+        .truth-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .truth-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background: rgba(144, 238, 144, 0.3);
+            color: #90EE90;
+            font-weight: bold;
+        }
+
+        .truth-table td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .steps-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #90EE90;
+        }
+
+        .step strong {
+            color: #90EE90;
+        }
+
+        .exercise-box {
+            background: rgba(255, 140, 0, 0.2);
+            border: 2px solid rgba(255, 140, 0, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .exercise-box h4 {
+            color: #FF8C00;
+            margin-bottom: 15px;
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #32CD32, #228B22);
+            transition: width 0.3s ease;
+        }
+
+        .intro-slide {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .circuit-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            font-size: 1.5rem;
+            border: 2px dashed rgba(144, 238, 144, 0.5);
+            font-family: 'Courier New', monospace;
+            text-align: left;
+        }
+
+        .industrial-application {
+            background: rgba(46, 139, 87, 0.2);
+            border: 2px solid rgba(46, 139, 87, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .application-scenario {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #32CD32;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #90EE90;
+        }
+
+        .flipflop-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .ff-inputs, .ff-outputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .ff-visual {
+            grid-column: span 2;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .ff-state {
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .course-info h1 {
+                font-size: 1.1rem;
+            }
+            
+            .slide {
+                padding: 30px 20px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .adder-demo {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .flipflop-demo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<div class="university-info">
+<div class="university-logo">🔄</div>
+<div class="course-info">
+<h1>SISTEMAS DIGITALES</h1>
+<p>Universidad del SABES | Semana 8 de 12 | 08 - 14 de julio 2025</p>
+<p>Prof. Fausto Noé Jiménez | fausto.jimenez@sabes.edu.mx</p>
+</div>
+</div>
+</div>
+<div class="header-center">
+<button class="nav-btn-header" id="prevBtn">
+                    ⬅️ Anterior
+                </button>
+<div class="slide-counter">
+<div>Diapositiva</div>
+<div><span id="currentSlide">1</span> / <span id="totalSlides">20</span></div>
+</div>
+<button class="nav-btn-header" id="nextBtn">
+                    Siguiente ➡️
+                </button>
+</div>
+<div class="header-right">
+<div class="session-timer">
+<div class="timer-display" id="sessionTimer">
+                        ⏱️ <span id="timeRemaining">50:00</span>
+</div>
+<div class="timer-controls">
+<button class="timer-btn" id="startBtn">▶️</button>
+<button class="timer-btn" id="pauseBtn">⏸️</button>
+<button class="timer-btn" id="resetBtn">🔄</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="progress-indicator">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Slides -->
+<div class="slide-container">
+
+<!-- Slide 1: Título -->
+<div class="slide active intro-slide">
+<h1>🔄 ELEMENTOS SECUENCIALES</h1>
+<div style="font-size: 8rem; margin: 30px 0;">⏳🔌🤖</div>
+<h3>Semana 8: Fundamentos de Circuitos Secuenciales</h3>
+<p><strong>Cuatrimestre:</strong> Mayo - Agosto 2025</p>
+<p><strong>Duración:</strong> 50 minutos + Actividad 6</p>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h3>🎯 Temas Principales:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li><strong>4.1.</strong> Fundamentos de elementos secuenciales</li>
+<li><strong>4.2.</strong> Latch NAND y NOR</li>
+<li><strong>4.3.</strong> Flip Flop R-S, J-K, D y T</li>
+<li><strong>Aplicaciones:</strong> Sistemas de control industrial</li>
+<li><strong>Memoria:</strong> Bases del almacenamiento digital</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h3>🤖 Actividad 6:</h3>
+<ul style="text-align: left; font-size: 1.1rem;">
+<li>Proyecto Robot seguidor de línea</li>
+<li>Primera parte: Diseño de control</li>
+<li>Implementación con Flip Flops</li>
+<li>Simulación en Proteus/Quartus</li>
+<li>Integración con sensores IR</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Slide 2: Introducción a Circuitos Secuenciales -->
+<div class="slide">
+<h2>🔄 INTRODUCCIÓN A CIRCUITOS SECUENCIALES</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🧠 Memoria Digital Fundamental</div>
+<div class="clippy-content">
+<p><strong>Diferencia clave:</strong> Los circuitos secuenciales tienen memoria</p>
+<p><strong>Retroalimentación:</strong> Las salidas dependen de entradas y estado previo</p>
+<p><strong>Temporización:</strong> Operan con señales de reloj para sincronización</p>
+<p><strong>Aplicación:</strong> Bases para registros, contadores, memorias y CPUs</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔍 Comparación: Combinacional vs. Secuencial</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>Característica</th><th>Combinacional</th><th>Secuencial</th></tr>
+</thead>
+<tbody>
+<tr><td>Memoria</td><td>No</td><td>Sí</td></tr>
+<tr><td>Salidas</td><td>Solo entradas actuales</td><td>Entradas + estado previo</td></tr>
+<tr><td>Reloj</td><td>No requiere</td><td>Requiere (sincrónico)</td></tr>
+<tr><td>Velocidad</td><td>Rápida</td><td>Depende de reloj</td></tr>
+<tr><td>Complejidad</td><td>Baja</td><td>Alta</td></tr>
+<tr><td>Aplicación</td><td>Lógica simple</td><td>Estado y control</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="comparison-card">
+<h4>🏭 Aplicaciones Industriales</h4>
+<ul>
+<li><strong>Control de procesos:</strong> Máquinas de estados</li>
+<li><strong>Registros:</strong> Almacenamiento temporal</li>
+<li><strong>Contadores:</strong> Conteo de piezas/productos</li>
+<li><strong>Memorias:</strong> Almacenamiento de datos</li>
+<li><strong>Interfaces:</strong> Sincronización de señales</li>
+<li><strong>Robótica:</strong> Control de movimientos</li>
+</ul>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Ejemplo: Línea de Ensamblaje Automotriz</h4>
+<div class="application-scenario">
+<strong>Problema:</strong> Control secuencial de estaciones de trabajo<br/>
+<strong>Solución:</strong> Máquina de estados con Flip Flops<br/>
+<strong>Estados:</strong> 1. Ensamble chasis → 2. Instalación motor → 3. Cableado → 4. Pruebas<br/>
+<strong>Ventaja:</strong> Sincronización precisa entre estaciones
+</div>
+</div>
+</div>
+
+<!-- Slide 3: Concepto de Memoria Digital -->
+<div class="slide">
+<h2>💾 CONCEPTO DE MEMORIA DIGITAL</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🔌 El Latch más Simple (NOR)</h4>
+<div class="circuit-diagram">
+S (Set) ────┐<br/>
+           NOR1 ─── Q<br/>
+R (Reset) ────┘    │<br/>
+                   └───┐<br/>
+                       NOR2 ─── Q'<br/>
+                       ▲<br/>
+                       └───────┘
+</div>
+<div class="expression-display">
+Ecuaciones:<br/>
+Q = ¬(R ∨ Q')<br/>
+Q' = ¬(S ∨ Q)
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>S</th><th>R</th><th>Q</th><th>Q'</th><th>Estado</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>Q<sub>prev</sub></td><td>Q'<sub>prev</sub></td><td>Mantiene</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>Reset</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>Set</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>Prohibido</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Condición prohibida:</strong> Q y Q' no deben ser iguales (viola principio de complemento)</p>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🔍 Análisis de Operación <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Estado SET (S=1, R=0):</strong><br/>
+• NOR1: 1 ∨ 0 = 1 → ¬1 = 0 (Q=0)<br/>
+• NOR2: 0 ∨ 0 = 0 → ¬0 = 1 (Q'=1)<br/>
+• Estado estable: Q=0, Q'=1
+</div>
+<div class="step">
+<strong>Estado RESET (S=0, R=1):</strong><br/>
+• NOR2: 0 ∨ 1 = 1 → ¬1 = 0 (Q'=0)<br/>
+• NOR1: 1 ∨ 0 = 1 → ¬1 = 0 (Q=0)<br/>
+• Estado estable: Q=1, Q'=0
+</div>
+<div class="step">
+<strong>Estado HOLD (S=0, R=0):</strong><br/>
+• Mantiene el estado anterior debido a la retroalimentación<br/>
+• Base de la memoria digital
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Sistema de Alarma Industrial</h4>
+<div class="application-scenario">
+<strong>Set:</strong> Sensor detecta condición peligrosa (S=1)<br/>
+<strong>Reset:</strong> Operador confirma alarma (R=1)<br/>
+<strong>Estado:</strong> Mantiene condición de alarma hasta reset<br/>
+<strong>Ventaja:</strong> No se pierde la alerta aunque el sensor deje de detectar
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 4: Latch con Compuertas NAND -->
+<div class="slide">
+<h2>🔌 LATCH CON COMPUERTAS NAND</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🔧 Versión con Entradas Activas en Bajo</div>
+<div class="clippy-content">
+<p><strong>Diferencia clave:</strong> Entradas activas en nivel bajo (0)</p>
+<p><strong>Ventaja:</strong> Mejor inmunidad al ruido eléctrico</p>
+<p><strong>Implementación:</strong> Más común en circuitos integrados</p>
+<p><strong>Equivalencia:</strong> Similar al Latch NOR pero con lógica invertida</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Diagrama del Circuito</h4>
+<div class="circuit-diagram">
+S' (Set) ────┐<br/>
+            NAND1 ─── Q<br/>
+R' (Reset) ────┘     │<br/>
+                    └───┐<br/>
+                        NAND2 ─── Q'<br/>
+                        ▲<br/>
+                        └───────┘
+</div>
+<div class="expression-display">
+Ecuaciones:<br/>
+Q = ¬(R' ∧ Q')<br/>
+Q' = ¬(S' ∧ Q)
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>S'</th><th>R'</th><th>Q</th><th>Q'</th><th>Estado</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>1</td><td>Q<sub>prev</sub></td><td>Q'<sub>prev</sub></td><td>Mantiene</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>Reset</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>Set</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>Prohibido</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Notación:</strong> S' y R' indican activo en bajo (burbuja en diagramas)</p>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Ejercicio: Conversión NOR ↔ NAND</h4>
+<p><strong>Objetivo:</strong> Demostrar equivalencia entre ambas implementaciones</p>
+<p><strong>Paso 1:</strong> Aplicar teoremas de DeMorgan a las ecuaciones NOR</p>
+<p><strong>Paso 2:</strong> Mostrar equivalencia con ecuaciones NAND</p>
+<p><strong>Resultado:</strong> Son lógicamente equivalentes con entradas invertidas</p>
+</div>
+</div>
+
+<!-- Slide 5: Problemas con los Latch -->
+<div class="slide">
+<h2>⚠️ PROBLEMAS CON LOS LATCH</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🚨 Limitaciones en Diseños Sincrónicos</div>
+<div class="clippy-content">
+<p><strong>Transparencia:</strong> Sensibles a cambios en las entradas todo el tiempo</p>
+<p><strong>Glitches:</strong> Cambios no deseados por pulsos cortos</p>
+<p><strong>Metastabilidad:</strong> Estados indefinidos con violaciones de tiempo</p>
+<p><strong>Solución:</strong> Flip Flops disparados por flanco</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📉 Problema de Transparencia</h4>
+<div class="steps-container">
+<div class="step">
+<strong>Escenario:</strong> Entradas cambian durante periodo activo<br/>
+• Q puede cambiar múltiples veces<br/>
+• Comportamiento impredecible en sistemas sincrónicos
+</div>
+<div class="step">
+<strong>Ejemplo industrial:</strong><br/>
+• Sensor fluctuante causa múltiples cambios de estado<br/>
+• Conteo incorrecto de piezas en línea de producción
+</div>
+</div>
+<div class="expression-display">
+Solución:<br/>
+Flip Flop disparado por flanco<br/>
+(Edge-triggered)
+</div>
+</div>
+<div class="comparison-card">
+<h4>⚡ Problema de Metastabilidad</h4>
+<div class="steps-container">
+<div class="step">
+<strong>Definición:</strong> Estado intermedio entre 0 y 1<br/>
+• Ocurre cuando entradas cambian cerca del reloj<br/>
+• Puede persistir por tiempo indefinido
+</div>
+<div class="step">
+<strong>Impacto industrial:</strong><br/>
+• Fallas aleatorias en sistemas de control<br/>
+• Difíciles de diagnosticar y reproducir
+</div>
+<div class="step">
+<strong>Solución:</strong><br/>
+• Sincronizadores de múltiples etapas<br/>
+• Cumplimiento de tiempos de setup/hold
+</div>
+</div>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Caso Real: Fallo en Línea de Producción</h4>
+<div class="application-scenario">
+<strong>Empresa:</strong> Fabricante de arneses en Guanajuato<br/>
+<strong>Problema:</strong> Conteo errático de terminales insertadas<br/>
+<strong>Causa:</strong> Uso de Latch para conteo (sensores ruidosos)<br/>
+<strong>Solución:</strong> Reemplazo por Flip Flops D edge-triggered<br/>
+<strong>Resultado:</strong> Conteo 100% preciso, eliminación de fallos
+</div>
+</div>
+</div>
+
+<!-- Slide 6: Flip Flop RS (Reset-Set) -->
+<div class="slide">
+<h2>🔄 FLIP FLOP RS (RESET-SET)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">⏱️ Primer Flip Flop Sincrónico</div>
+<div class="clippy-content">
+<p><strong>Mejora clave:</strong> Disparado por flanco de reloj</p>
+<p><strong>Ventaja:</strong> Solo responde a entradas en transición de reloj</p>
+<p><strong>Estructura:</strong> Dos latch en maestro-esclavo</p>
+<p><strong>Limitación:</strong> Todavía tiene estado prohibido (S=R=1)</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Diagrama Maestro-Esclavo</h4>
+<div class="circuit-diagram">
+S ────┐         ┌─── Q<br/>
+      ▼         │<br/>
+   LATCH MAESTRO │<br/>
+      ▲         │<br/>
+CLK ──┘         ▼<br/>
+               LATCH ESCLAVO<br/>
+R ────┐         ▲<br/>
+      ▼         │<br/>
+   LATCH MAESTRO │<br/>
+      ▲         │<br/>
+CLK ──┘         └─── Q'
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>CLK</th><th>S</th><th>R</th><th>Q</th><th>Q'</th></tr>
+</thead>
+<tbody>
+<tr><td>↑</td><td>0</td><td>0</td><td>Q<sub>prev</sub></td><td>Q'<sub>prev</sub></td></tr>
+<tr><td>↑</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>↑</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>↑</td><td>1</td><td>1</td><td>?</td><td>?</td></tr>
+<tr><td>↓</td><td>X</td><td>X</td><td>Q<sub>prev</sub></td><td>Q'<sub>prev</sub></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Notación:</strong> ↑ = flanco ascendente, ↓ = flanco descendente, X = no importa</p>
+</div>
+</div>
+<div class="steps-container">
+<h4>🔄 Operación Maestro-Esclavo</h4>
+<div class="step">
+<strong>Fase 1 (CLK=1):</strong> Maestro captura entradas, esclavo aislado
+</div>
+<div class="step">
+<strong>Fase 2 (CLK ↓):</strong> Maestro se bloquea, esclavo actualiza su estado
+</div>
+<div class="step">
+<strong>Resultado:</strong> Transición limpia en flanco descendente
+</div>
+</div>
+</div>
+
+<!-- Slide 7: Flip Flop D (Data) -->
+<div class="slide">
+<h2>📊 FLIP FLOP D (DATA)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💾 El Flip Flop Más Utilizado</div>
+<div class="clippy-content">
+<p><strong>Simplificación:</strong> Elimina estado prohibido del RS</p>
+<p><strong>Operación:</strong> Q = D en cada flanco de reloj</p>
+<p><strong>Aplicación:</strong> Registros, memorias, pipelines</p>
+<p><strong>Variantes:</strong> Con enable, reset asíncrono, múltiples datos</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Implementación desde RS</h4>
+<div class="circuit-diagram">
+D ────┬─── INV ──── R<br/>
+      └──────────── S<br/>
+CLK ────────────────┘
+</div>
+<div class="expression-display">
+Conversión:<br/>
+S = D<br/>
+R = ¬D<br/>
+Elimina estado prohibido
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>CLK</th><th>D</th><th>Q</th><th>Q'</th></tr>
+</thead>
+<tbody>
+<tr><td>↑</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>↑</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>↓</td><td>X</td><td>Q<sub>prev</sub></td><td>Q'<sub>prev</sub></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Característica clave:</strong> Nunca estado prohibido</p>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Registro de Desplazamiento</h4>
+<div class="application-scenario">
+<strong>Función:</strong> Almacenar y desplazar datos seriales<br/>
+<strong>Implementación:</strong> Cadena de Flip Flops D<br/>
+<strong>Uso industrial:</strong> Comunicación con sensores remotos<br/>
+<strong>Ejemplo:</strong> Lectura de 8 sensores con 1 cable (shift register)
+</div>
+</div>
+<div class="code-block">
+-- FLIP FLOP D EN VHDL
+entity d_flipflop is
+    port (
+        clk : in std_logic;
+        d   : in std_logic;
+        q   : out std_logic
+    );
+end d_flipflop;
+
+architecture rtl of d_flipflop is
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            q <= d;
+        end if;
+    end process;
+end rtl;
+</div>
+</div>
+
+<!-- Slide 8: Flip Flop JK -->
+<div class="slide">
+<h2>🔄 FLIP FLOP JK</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Versátil y Completo</div>
+<div class="clippy-content">
+<p><strong>Mejora:</strong> Elimina estado prohibido del RS</p>
+<p><strong>Comportamiento:</strong> J=K=1 toggle (cambio de estado)</p>
+<p><strong>Uso común:</strong> Contadores, divisores de frecuencia</p>
+<p><strong>Variantes:</strong> Master-slave, edge-triggered</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Diagrama Lógico</h4>
+<div class="circuit-diagram">
+J ────┐         ┌─── Q<br/>
+      ▼         │<br/>
+   LATCH MAESTRO │<br/>
+      ▲         │<br/>
+CLK ──┘         ▼<br/>
+               LATCH ESCLAVO<br/>
+K ────┐         ▲<br/>
+      ▼         │<br/>
+   LATCH MAESTRO │<br/>
+      ▲         │<br/>
+CLK ──┘         └─── Q'
+</div>
+<div class="expression-display">
+Ecuación característica:<br/>
+Q<sub>next</sub> = (J ∧ ¬Q) ∨ (¬K ∧ Q)
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>CLK</th><th>J</th><th>K</th><th>Q<sub>next</sub></th></tr>
+</thead>
+<tbody>
+<tr><td>↑</td><td>0</td><td>0</td><td>Q<sub>prev</sub></td></tr>
+<tr><td>↑</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>↑</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>↑</td><td>1</td><td>1</td><td>¬Q<sub>prev</sub></td></tr>
+<tr><td>↓</td><td>X</td><td>X</td><td>Q<sub>prev</sub></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Toggle:</strong> J=K=1 invierte el estado en cada flanco</p>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Divisor de Frecuencia</h4>
+<div class="application-scenario">
+<strong>Problema:</strong> Reducir velocidad de motor paso a paso<br/>
+<strong>Solución:</strong> Cadena de Flip Flops JK en modo toggle<br/>
+<strong>Resultado:</strong> Frecuencia dividida por 2<sup>n</sup> (n = número de etapas)<br/>
+<strong>Ventaja:</strong> Control preciso sin necesidad de software
+</div>
+</div>
+</div>
+
+<!-- Slide 9: Flip Flop T (Toggle) -->
+<div class="slide">
+<h2>🔄 FLIP FLOP T (TOGGLE)</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🔁 Simplificación del JK</div>
+<div class="clippy-content">
+<p><strong>Derivado de:</strong> Flip Flop JK con J=K=T</p>
+<p><strong>Comportamiento:</strong> T=1 → toggle, T=0 → mantiene</p>
+<p><strong>Aplicación:</strong> Contadores binarios simples</p>
+<p><strong>Eficiencia:</strong> Menos entradas que JK</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Implementación desde JK</h4>
+<div class="circuit-diagram">
+T ────┬─── J<br/>
+      └─── K<br/>
+CLK ───────┘
+</div>
+<div class="expression-display">
+Conversión:<br/>
+J = K = T<br/>
+Q<sub>next</sub> = T ⊕ Q<sub>prev</sub>
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>CLK</th><th>T</th><th>Q<sub>next</sub></th></tr>
+</thead>
+<tbody>
+<tr><td>↑</td><td>0</td><td>Q<sub>prev</sub></td></tr>
+<tr><td>↑</td><td>1</td><td>¬Q<sub>prev</sub></td></tr>
+<tr><td>↓</td><td>X</td><td>Q<sub>prev</sub></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Ecuación característica:</strong> Q<sub>next</sub> = T ⊕ Q<sub>prev</sub></p>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Contador de Eventos</h4>
+<div class="application-scenario">
+<strong>Problema:</strong> Contar piezas en línea de producción<br/>
+<strong>Solución:</strong> Cadena de Flip Flops T con entrada de sensor<br/>
+<strong>Implementación:</strong> Cada FF divide la frecuencia por 2<br/>
+<strong>Resultado:</strong> Contador binario de n bits (2<sup>n</sup> piezas)
+</div>
+</div>
+<div class="code-block">
+-- FLIP FLOP T EN VHDL
+entity t_flipflop is
+    port (
+        clk : in std_logic;
+        t   : in std_logic;
+        q   : out std_logic
+    );
+end t_flipflop;
+
+architecture rtl of t_flipflop is
+    signal q_int : std_logic := '0';
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if t = '1' then
+                q_int <= not q_int;
+            end if;
+        end if;
+    end process;
+    q <= q_int;
+end rtl;
+</div>
+</div>
+
+<!-- Slide 10: Demostración Interactiva Flip Flop D -->
+<div class="slide">
+<h2>🎮 DEMOSTRACIÓN INTERACTIVA: FLIP FLOP D</h2>
+<div class="flipflop-demo" id="ffDemo">
+<div class="ff-inputs">
+<h4>Entradas:</h4>
+<div class="input-wire" onclick="toggleFFInput('clk')">CLK: <span id="clk_val">0</span></div>
+<div class="input-wire" onclick="toggleFFInput('d')">D: <span id="d_val">0</span></div>
+<button class="timer-btn" onclick="clockPulse()">Generar Pulso de Reloj</button>
+</div>
+<div class="ff-outputs">
+<h4>Salidas:</h4>
+<div class="output-wire" id="q_out">Q: <span id="q_val">0</span></div>
+<div class="output-wire" id="qprime_out">Q': <span id="qprime_val">1</span></div>
+</div>
+<div class="ff-visual">
+<h4>Estado Actual:</h4>
+<div class="ff-state" id="ff_state">🟢 Manteniendo (Q=0)</div>
+<div style="margin-top: 20px;">
+<h4>Último Evento:</h4>
+<div id="last_event">Esperando flanco de reloj...</div>
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Casos de Prueba Sugeridos</h4>
+<p><strong>Prueba 1:</strong> D=1, pulso CLK → Q debe cambiar a 1 en flanco ascendente</p>
+<p><strong>Prueba 2:</strong> D=0, pulso CLK → Q debe cambiar a 0 en flanco ascendente</p>
+<p><strong>Prueba 3:</strong> Cambiar D durante CLK=1 → Q no debe cambiar hasta próximo flanco</p>
+<p><strong>Interactúa:</strong> Haz clic en las entradas para cambiar valores</p>
+</div>
+</div>
+
+<!-- Slide 11: Temporización y Parámetros Críticos -->
+<div class="slide">
+<h2>⏱️ TEMPORIZACIÓN Y PARÁMETROS CRÍTICOS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🚨 Fundamentos para Diseño Confiable</div>
+<div class="clippy-content">
+<p><strong>Setup time (t<sub>su</sub>):</strong> Tiempo que D debe ser estable antes del reloj</p>
+<p><strong>Hold time (t<sub>h</sub>):</strong> Tiempo que D debe mantenerse después del reloj</p>
+<p><strong>Clock-to-Q (t<sub>cq</sub>):</strong> Retardo desde reloj hasta salida estable</p>
+<p><strong>Violaciones:</strong> Causan metastabilidad y fallos intermitentes</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📈 Diagrama de Temporización</h4>
+<div class="circuit-diagram" style="text-align: center;">
+CLK   ────┐           ┌───┐           ┌───<br/>
+           │           │   │           │<br/>
+           └───┘           └───┘           └<br/>
+D     ──────────┐   ┌───────────┐   ┌───────<br/>
+                │   │           │   │<br/>
+                └───┘           └───┘<br/>
+                t<sub>su</sub> t<sub>h</sub><br/>
+Q     ────────────────┐       ┌───────┐<br/>
+                      │       │       │<br/>
+                      └───────┘       └───────<br/>
+                      t<sub>cq</sub>
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Valores Típicos (FPGA Altera)</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>Parámetro</th><th>Valor</th><th>Unidad</th></tr>
+</thead>
+<tbody>
+<tr><td>t<sub>su</sub></td><td>0.5</td><td>ns</td></tr>
+<tr><td>t<sub>h</sub></td><td>0.2</td><td>ns</td></tr>
+<tr><td>t<sub>cq</sub></td><td>1.2</td><td>ns</td></tr>
+<tr><td>f<sub>max</sub></td><td>250</td><td>MHz</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Nota:</strong> Valores varían por tecnología y familia de dispositivos</p>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Caso Real: Fallo en Sistema de Control</h4>
+<div class="application-scenario">
+<strong>Empresa:</strong> Manufacturera de autopartes en Querétaro<br/>
+<strong>Problema:</strong> Fallos aleatorios en control de línea de pintura<br/>
+<strong>Causa:</strong> Violación de t<sub>h</sub> en señal de sensor<br/>
+<strong>Solución:</strong> Inserción de registros de sincronización<br/>
+<strong>Resultado:</strong> Sistema 100% estable, eliminación de fallos
+</div>
+</div>
+</div>
+
+<!-- Slide 12: Aplicaciones Industriales -->
+<div class="slide">
+<h2>🏭 APLICACIONES INDUSTRIALES</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>🏗️ Control de Procesos</h4>
+<ul>
+<li><strong>Máquinas de estados:</strong> Secuenciación de operaciones</li>
+<li><strong>Registros:</strong> Almacenamiento temporal de datos</li>
+<li><strong>Interfaces:</strong> Sincronización entre dominios de reloj</li>
+<li><strong>Debouncing:</strong> Eliminación de rebotes en interruptores</li>
+</ul>
+<div class="expression-display">
+Ejemplo:<br/>
+Estado actual = Q1Q0<br/>
+00: Inicio<br/>
+01: Cargar material<br/>
+10: Procesar<br/>
+11: Descargar
+</div>
+</div>
+<div class="comparison-card">
+<h4>🤖 Robótica Industrial</h4>
+<ul>
+<li><strong>Control de posición:</strong> Registro de coordenadas</li>
+<li><strong>Secuenciación:</strong> Movimientos complejos</li>
+<li><strong>Memoria:</strong> Almacenamiento de patrones</li>
+<li><strong>Contadores:</strong> Control de pasos en motores</li>
+</ul>
+<div class="expression-display">
+Brazo robótico:<br/>
+Flip Flops almacenan:<br/>
+• Posición actual<br/>
+• Siguiente movimiento<br/>
+• Estado de sensores
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🚗 Ejemplo: Sistema de Ensamblaje Automotriz <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Estación 1:</strong> Flip Flop D almacena "chasis listo"<br/>
+• Sensor activa D=1<br/>
+• Flanco de reloj captura estado
+</div>
+<div class="step">
+<strong>Estación 2:</strong> Flip Flop JK en modo toggle cuenta piezas<br/>
+• Cada pieza activa J=K=1<br/>
+• Conteo binario en salidas Q
+</div>
+<div class="step">
+<strong>Control:</strong> Máquina de estados con Flip Flops<br/>
+• Transiciones entre estaciones<br/>
+• Sincronización precisa
+</div>
+</div>
+</div>
+<div class="exercise-box">
+<h4>🤖 Actividad 6: Robot Seguidor de Línea</h4>
+<p><strong>Objetivo:</strong> Diseñar control con Flip Flops para robot seguidor</p>
+<p><strong>Componentes:</strong> 2 sensores IR, 2 motores, Flip Flops JK</p>
+<p><strong>Lógica:</strong><br/>
+• Sensor izquierdo activo → Girar derecha<br/>
+• Sensor derecho activo → Girar izquierda<br/>
+• Ambos → Avanzar recto</p>
+<p><strong>Entrega:</strong> Diagrama de estados + simulación VHDL</p>
+</div>
+</div>
+
+<!-- Slide 13: Implementación en VHDL -->
+<div class="slide">
+<h2>💻 IMPLEMENTACIÓN EN VHDL</h2>
+<div class="code-block">
+-- BIBLIOTECA DE FLIP FLOPS EN VHDL
+-- Universidad del SABES - Sistemas Digitales
+-- Semana 8: Elementos Secuenciales
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+-- Flip Flop D con reset asíncrono
+entity d_flipflop_async_rst is
+    port (
+        clk, rst, d : in std_logic;
+        q : out std_logic
+    );
+end d_flipflop_async_rst;
+
+architecture rtl of d_flipflop_async_rst is
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then     -- Reset asíncrono
+            q <= '0';
+        elsif rising_edge(clk) then
+            q <= d;           -- Captura síncrona
+        end if;
+    end process;
+end rtl;
+
+-- Flip Flop JK con enable
+entity jk_flipflop is
+    port (
+        clk, en, j, k : in std_logic;
+        q : out std_logic
+    );
+end jk_flipflop;
+
+architecture rtl of jk_flipflop is
+    signal q_int : std_logic := '0';
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if en = '1' then
+                if j = '0' and k = '0' then
+                    q_int <= q_int;       -- Mantener
+                elsif j = '0' and k = '1' then
+                    q_int <= '0';         -- Reset
+                elsif j = '1' and k = '0' then
+                    q_int <= '1';         -- Set
+                else
+                    q_int <= not q_int;   -- Toggle
+                end if;
+            end if;
+        end if;
+    end process;
+    q <= q_int;
+end rtl;
+
+-- Flip Flop T para división de frecuencia
+entity t_flipflop_divider is
+    port (
+        clk, rst : in std_logic;
+        q : out std_logic
+    );
+end t_flipflop_divider;
+
+architecture rtl of t_flipflop_divider is
+    signal q_int : std_logic := '0';
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            q_int <= '0';
+        elsif rising_edge(clk) then
+            q_int <= not q_int;  -- Siempre toggle
+        end if;
+    end process;
+    q <= q_int;
+end rtl;
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🧪 Testbench para Flip Flop D <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+-- TESTBENCH PARA FLIP FLOP D
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tb_d_flipflop is
+end tb_d_flipflop;
+
+architecture behavior of tb_d_flipflop is
+    signal clk_tb : std_logic := '0';
+    signal d_tb, q_tb : std_logic;
+    constant PERIODO : time := 10 ns;
+    
+begin
+    dut: entity work.d_flipflop_async_rst port map (
+        clk => clk_tb,
+        rst => '0',
+        d => d_tb,
+        q => q_tb
+    );
+    
+    -- Generación de reloj
+    clk_tb <= not clk_tb after PERIODO/2;
+    
+    -- Proceso de estímulos
+    stim_proc: process
+    begin
+        report "=== TESTBENCH FLIP FLOP D ===";
+        
+        -- Test 1: Reset asíncrono
+        d_tb <= '1';
+        wait for PERIODO*0.7;
+        assert q_tb = '0' report "Error reset" severity error;
+        
+        -- Test 2: Captura de '1'
+        d_tb <= '1';
+        wait until rising_edge(clk_tb);
+        wait for 1 ns;
+        assert q_tb = '1' report "Error captura 1" severity error;
+        
+        -- Test 3: Cambio durante CLK=1
+        d_tb <= '0';
+        wait for PERIODO*0.3;
+        assert q_tb = '1' report "Error hold time" severity error;
+        
+        -- Test 4: Captura de '0'
+        wait until rising_edge(clk_tb);
+        wait for 1 ns;
+        assert q_tb = '0' report "Error captura 0" severity error;
+        
+        report "=== PRUEBAS COMPLETADAS ===";
+        wait;
+    end process;
+end behavior;
+</div>
+</div>
+</div>
+
+<!-- Slide 14: Registros y Memorias -->
+<div class="slide">
+<h2>💾 REGISTROS Y MEMORIAS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🧱 Bloques de Construcción con Flip Flops</div>
+<div class="clippy-content">
+<p><strong>Registro:</strong> Grupo de Flip Flops que almacenan datos</p>
+<p><strong>Memoria:</strong> Arreglo de registros direccionables</p>
+<p><strong>Buffer:</strong> Almacenamiento temporal para transferencia</p>
+<p><strong>Shift Register:</strong> Registro de desplazamiento para datos seriales</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📦 Registro Paralelo de 4 bits</h4>
+<div class="circuit-diagram">
+D[3:0] ────┬─── FF3 ──── Q3<br/>
+           ├─── FF2 ──── Q2<br/>
+           ├─── FF1 ──── Q1<br/>
+           └─── FF0 ──── Q0<br/>
+CLK ────────────────┘
+</div>
+<div class="expression-display">
+VHDL:<br/>
+process(clk)<br/>
+begin<br/>
+  if rising_edge(clk) then<br/>
+    q_out <= d_in;<br/>
+  end if;<br/>
+end process;
+</div>
+</div>
+<div class="comparison-card">
+<h4>🔄 Shift Register (Serial a Paralelo)</h4>
+<div class="circuit-diagram">
+Serial IN ────┬─── FF3 ────┬─── FF2 ────┬─── FF1 ────┬─── FF0 ──── Q[3:0]<br/>
+              │           │           │           │<br/>
+CLK ──────────┴───────────┴───────────┴───────────┴───────────┘
+</div>
+<div class="expression-display">
+Aplicación:<br/>
+• Comunicación SPI/I2C<br/>
+• Lectura de sensores seriales<br/>
+• Conversión serial-paralelo
+</div>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Control de Calidad Automotriz</h4>
+<div class="application-scenario">
+<strong>Proceso:</strong> Inspección de 8 puntos críticos en chasis<br/>
+<strong>Implementación:</strong><br/>
+• 8 sensores conectados a shift register<br/>
+• Datos serializados a controlador principal<br/>
+• Registro de 8 bits almacena estado de inspección<br/>
+<strong>Ventaja:</strong> Reduce cables y simplifica interfaz
+</div>
+</div>
+</div>
+
+<!-- Slide 15: Contadores Sincrónicos -->
+<div class="slide">
+<h2>🔢 CONTADORES SINCRÓNICOS</h2>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">🎯 Aplicación Clave de Flip Flops</div>
+<div class="clippy-content">
+<p><strong>Contador:</strong> Secuencia de estados con cada pulso de reloj</p>
+<p><strong>Sincrónico:</strong> Todos los Flip Flops comparten mismo reloj</p>
+<p><strong>Módulo:</strong> Número de estados distintos (ej. módulo 4: 0-1-2-3-0...)</p>
+<p><strong>Aplicación:</strong> Temporizadores, divisores de frecuencia, control</p>
+</div>
+</div>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>⚙️ Contador de 3 bits con Flip Flops JK</h4>
+<div class="circuit-diagram">
+CLK ────┬─── FF2 (J=K=1) ──── Q2<br/>
+        ├─── FF1 (J=K=Q2) ─── Q1<br/>
+        └─── FF0 (J=K=Q2∧Q1)─ Q0
+</div>
+<div class="expression-display">
+Secuencia:<br/>
+000 → 001 → 010 → 011 →<br/>
+100 → 101 → 110 → 111 → 000...
+</div>
+</div>
+<div class="comparison-card">
+<h4>📊 Tabla de Estados</h4>
+<div class="truth-table">
+<table>
+<thead>
+<tr><th>Pulso</th><th>Q2</th><th>Q1</th><th>Q0</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>2</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>3</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>4</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>5</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>6</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>7</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>8</td><td>0</td><td>0</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="code-block">
+-- CONTADOR SINCRÓNICO DE 3 BITS EN VHDL
+entity sync_counter_3bit is
+    port (
+        clk, rst : in std_logic;
+        count : out std_logic_vector(2 downto 0)
+    );
+end sync_counter_3bit;
+
+architecture rtl of sync_counter_3bit is
+    signal q_int : std_logic_vector(2 downto 0);
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            q_int <= "000";
+        elsif rising_edge(clk) then
+            q_int <= std_logic_vector(unsigned(q_int) + 1);
+        end if;
+    end process;
+    count <= q_int;
+end rtl;
+</div>
+<div class="industrial-application">
+<h4>🏭 Aplicación: Conteo de Piezas en Línea</h4>
+<div class="application-scenario">
+<strong>Problema:</strong> Contar hasta 100 piezas por lote<br/>
+<strong>Solución:</strong> Contador de 7 bits (128 estados)<br/>
+• Sensor activa entrada de reloj<br/>
+• Salidas conectadas a comparador<br/>
+• Al llegar a 100: activar señal de lote completo<br/>
+<strong>Ventaja:</strong> Precisión 100%, sin software requerido
+</div>
+</div>
+</div>
+
+<!-- Slide 16: Implementación en Hardware -->
+<div class="slide">
+<h2>🔧 IMPLEMENTACIÓN EN HARDWARE REAL</h2>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🛠️ Implementación en Altera MAX II EPM240 <span>▼</span>
+</button>
+<div class="content">
+<div class="steps-container">
+<div class="step">
+<strong>Dispositivo objetivo:</strong> Altera MAX II EPM240T100C5
+<br/>• 240 elementos lógicos disponibles
+<br/>• Flip Flop D requiere ~16 LEs (6% utilización)
+<br/>• Paquete TQFP-100 con 84 pines I/O
+</div>
+<div class="step">
+<strong>Asignación de pines sugerida:</strong>
+<br/>• CLK → Pin 23 (oscilador de 1MHz)
+<br/>• D → Pin 15 (switch DIP)
+<br/>• Q → Pin 25 (LED con resistencia 330Ω)
+<br/>• RST → Pin 16 (botón pulsador)
+</div>
+<div class="step">
+<strong>Configuración en Quartus:</strong>
+<br/>• Crear proyecto nuevo para MAX II
+<br/>• Importar código VHDL
+<br/>• Asignar pines en Pin Planner
+<br/>• Compilar y generar archivo .pof
+<br/>• Programar via USB-Blaster
+</div>
+</div>
+</div>
+<button class="collapsible" onclick="toggleCollapsible(this)">
+🤖 Alternativa: Robot Seguidor con Arduino <span>▼</span>
+</button>
+<div class="content">
+<div class="code-block">
+// ROBOT SEGUIDOR DE LÍNEA - CONTROL CON FLIP FLOPS
+// Universidad del SABES - Sistemas Digitales
+
+// Pines para sensores IR
+#define IR_LEFT 2
+#define IR_RIGHT 3
+
+// Pines para control de motores
+#define MOTOR_LEFT_A 4
+#define MOTOR_LEFT_B 5
+#define MOTOR_RIGHT_A 6
+#define MOTOR_RIGHT_B 7
+
+// Variables para estado de Flip Flops
+bool ff_left = false;
+bool ff_right = false;
+
+void setup() {
+  // Configurar entradas con pull-up
+  pinMode(IR_LEFT, INPUT_PULLUP);
+  pinMode(IR_RIGHT, INPUT_PULLUP);
+  
+  // Configurar salidas para motores
+  pinMode(MOTOR_LEFT_A, OUTPUT);
+  pinMode(MOTOR_LEFT_B, OUTPUT);
+  pinMode(MOTOR_RIGHT_A, OUTPUT);
+  pinMode(MOTOR_RIGHT_B, OUTPUT);
+  
+  Serial.begin(9600);
+  Serial.println("=== ROBOT SEGUIDOR - CONTROL DIGITAL ===");
+}
+
+void loop() {
+  // Leer sensores (activo en bajo)
+  bool ir_left = !digitalRead(IR_LEFT);
+  bool ir_right = !digitalRead(IR_RIGHT);
+  
+  // Actualizar Flip Flops (comportamiento JK)
+  // FF izquierdo
+  if (ir_left && !ir_right) {
+    ff_left = true;   // Set
+    ff_right = false; // Reset
+  } 
+  // FF derecho
+  else if (!ir_left && ir_right) {
+    ff_left = false;  // Reset
+    ff_right = true;  // Set
+  }
+  // Ambos sensores (toggle)
+  else if (ir_left && ir_right) {
+    ff_left = !ff_left;
+    ff_right = !ff_right;
+  }
+  
+  // Control de motores según estado FF
+  if (ff_left && !ff_right) {
+    // Girar derecha
+    digitalWrite(MOTOR_LEFT_A, HIGH);
+    digitalWrite(MOTOR_LEFT_B, LOW);
+    digitalWrite(MOTOR_RIGHT_A, LOW);
+    digitalWrite(MOTOR_RIGHT_B, LOW);
+  } 
+  else if (!ff_left && ff_right) {
+    // Girar izquierda
+    digitalWrite(MOTOR_LEFT_A, LOW);
+    digitalWrite(MOTOR_LEFT_B, LOW);
+    digitalWrite(MOTOR_RIGHT_A, HIGH);
+    digitalWrite(MOTOR_RIGHT_B, LOW);
+  } 
+  else {
+    // Avanzar recto
+    digitalWrite(MOTOR_LEFT_A, HIGH);
+    digitalWrite(MOTOR_LEFT_B, LOW);
+    digitalWrite(MOTOR_RIGHT_A, HIGH);
+    digitalWrite(MOTOR_RIGHT_B, LOW);
+  }
+  
+  delay(50); // Pequeño retardo para estabilidad
+}
+</div>
+</div>
+</div>
+
+<!-- Slide 17: Actividad 6 - Robot Seguidor -->
+<div class="slide">
+<h2>🤖 ACTIVIDAD 6: ROBOT SEGUIDOR DE LÍNEA</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>📋 Especificaciones Técnicas</h4>
+<ul>
+<li><strong>Plataforma:</strong> Chasis robótico con 2 motores DC</li>
+<li><strong>Sensores:</strong> 2 módulos IR (seguimiento de línea)</li>
+<li><strong>Control:</strong> Implementado con Flip Flops JK</li>
+<li><strong>Lógica:</strong>
+  <ul>
+    <li>Solo sensor izquierdo → Girar derecha</li>
+    <li>Solo sensor derecho → Girar izquierda</li>
+    <li>Ambos sensores → Avanzar recto</li>
+    <li>Ningún sensor → Buscar línea</li>
+  </ul>
+</li>
+<li><strong>Entregables:</strong> Diagramas, código VHDL, video demostración</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>📅 Cronograma y Evaluación</h4>
+<ul>
+<li><strong>Semana 8:</strong> Diseño lógico y simulación</li>
+<li><strong>Semana 9:</strong> Implementación física</li>
+<li><strong>Semana 10:</strong> Pruebas y ajustes</li>
+<li><strong>Criterios:</strong>
+  <ul>
+    <li>Correcto funcionamiento (50%)</li>
+    <li>Documentación técnica (30%)</li>
+    <li>Creatividad y mejoras (20%)</li>
+  </ul>
+</li>
+<li><strong>Fecha límite:</strong> 14 de julio, 2025</li>
+</ul>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏭 Conexión con Industria 4.0</h4>
+<div class="application-scenario">
+<strong>Aplicaciones reales:</strong><br/>
+• Vehículos guiados automáticamente (AGV) en almacenes<br/>
+• Robots de transporte en líneas de producción<br/>
+• Sistemas de clasificación automática en logística<br/>
+<strong>Habilidades desarrolladas:</strong><br/>
+• Diseño de sistemas de control digital<br/>
+• Integración hardware/software<br/>
+• Solución de problemas industriales
+</div>
+</div>
+<div class="exercise-box">
+<h4>🎯 Entregables Requeridos</h4>
+<ol style="text-align: left;">
+<li><strong>Diagrama de estados:</strong> Comportamiento del robot</li>
+<li><strong>Esquemático:</strong> Conexión de Flip Flops y sensores</li>
+<li><strong>Código VHDL:</strong> Implementación del control</li>
+<li><strong>Video:</strong> Demostración de funcionamiento</li>
+<li><strong>Reporte:</strong> Análisis de resultados y mejoras</li>
+</ol>
+</div>
+</div>
+
+<!-- Slide 18: Resumen y Próximos Pasos -->
+<div class="slide">
+<h2>📚 RESUMEN Y PRÓXIMOS PASOS</h2>
+<div class="comparison-grid">
+<div class="comparison-card">
+<h4>✅ Lo que Hemos Aprendido</h4>
+<ul>
+<li><strong>Latch:</strong> Elementos de memoria básicos</li>
+<li><strong>Flip Flops:</strong> RS, D, JK, T y sus características</li>
+<li><strong>Temporización:</strong> t<sub>su</sub>, t<sub>h</sub>, t<sub>cq</sub></li>
+<li><strong>Aplicaciones:</strong> Registros, contadores, memorias</li>
+<li><strong>Implementación:</strong> VHDL y sistemas embebidos</li>
+</ul>
+</div>
+<div class="comparison-card">
+<h4>🔜 Próxima Semana 9: Máquinas de Estado</h4>
+<ul>
+<li><strong>FSM:</strong> Máquinas de estado finito</li>
+<li><strong>Diseño:</strong> Diagramas de estado y ASM</li>
+<li><strong>Codificación:</strong> One-hot, binaria, gray</li>
+<li><strong>Aplicaciones:</strong> Control industrial avanzado</li>
+<li><strong>Actividad 6:</strong> Segunda parte del robot seguidor</li>
+</ul>
+</div>
+</div>
+<div class="industrial-application">
+<h4>🏆 Logros del Proyecto</h4>
+<div class="application-scenario">
+<strong>Competencias desarrolladas:</strong><br/>
+✅ Diseño de circuitos secuenciales<br/>
+✅ Implementación en VHDL y sistemas embebidos<br/>
+✅ Análisis de temporización y sincronización<br/>
+✅ Aplicación a problemas industriales reales<br/>
+✅ Trabajo en equipo en proyecto complejo
+</div>
+</div>
+<div class="clippy-tip" onclick="toggleClippy(this)">
+<div class="clippy-header">💡 Consejos para el Éxito Profesional</div>
+<div class="clippy-content">
+<p><strong>Fundamentos sólidos:</strong> Los Flip Flops son la base de sistemas digitales</p>
+<p><strong>Pensamiento secuencial:</strong> Entender tiempo y estados es crucial</p>
+<p><strong>Práctica constante:</strong> Implementar diseños en hardware real</p>
+<p><strong>Actualización:</strong> Seguir evoluciones en tecnologías de memoria</p>
+</div>
+</div>
+<div class="expression-display">
+<strong>¡Gracias por su atención!</strong><br/>
+Dudas: fausto.jimenez@sabes.edu.mx | Próxima clase: Lunes 15 de julio<br/>
+<strong>Actividad 6:</strong> Disponible en GitHub y EDA Playground
+</div>
+</div>
+
+</div>
+
+<script>
+        // Navegación y controles - Variables globales
+        let currentSlideIndex = 0;
+        let slides = [];
+        let totalSlides = 0;
+        let timer = 3000; // 50 minutos en segundos
+        let timerInterval = null;
+
+        // Estado del Flip Flop interactivo
+        const ffState = {
+            clk: 0,
+            d: 0,
+            q: 0,
+            lastEvent: "Esperando flanco de reloj..."
+        };
+
+        // Inicialización al cargar el DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando presentación de Semana 8...');
+            
+            // Obtener elementos
+            slides = document.querySelectorAll('.slide');
+            totalSlides = slides.length;
+            
+            console.log(`Total de diapositivas: ${totalSlides}`);
+            
+            // Configurar navegación
+            setupNavigation();
+            
+            // Configurar temporizador
+            setupTimer();
+            
+            // Configurar demostración de Flip Flop
+            setupFFDemo();
+            
+            // Inicializar visualización
+            updateSlideDisplay();
+            
+            console.log('Presentación inicializada correctamente');
+        });
+
+        // Configuración de navegación
+        function setupNavigation() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.addEventListener("click", () => changeSlide(-1));
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener("click", () => changeSlide(1));
+            }
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        changeSlide(-1);
+                        break;
+                    case 'ArrowRight':
+                        changeSlide(1);
+                        break;
+                    case ' ': // Espaciador
+                        event.preventDefault();
+                        changeSlide(1);
+                        break;
+                }
+            });
+        }
+
+        // Cambio de diapositivas
+        function changeSlide(direction) {
+            slides[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex >= totalSlides) {
+                currentSlideIndex = totalSlides - 1;
+            }
+            
+            slides[currentSlideIndex].classList.add('active');
+            updateSlideDisplay();
+            
+            console.log(`Navegando a diapositiva: ${currentSlideIndex + 1}/${totalSlides}`);
+        }
+
+        // Actualización de la visualización
+        function updateSlideDisplay() {
+            const currentSlideElement = document.getElementById("currentSlide");
+            const totalSlidesElement = document.getElementById("totalSlides");
+            const progressBar = document.getElementById("progressBar");
+            
+            if (currentSlideElement) {
+                currentSlideElement.textContent = currentSlideIndex + 1;
+            }
+            
+            if (totalSlidesElement) {
+                totalSlidesElement.textContent = totalSlides;
+            }
+            
+            if (progressBar) {
+                const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+            }
+            
+            // Habilitar/deshabilitar botones
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (prevBtn) {
+                prevBtn.style.opacity = currentSlideIndex > 0 ? '1' : '0.5';
+                prevBtn.disabled = currentSlideIndex <= 0;
+            }
+            
+            if (nextBtn) {
+                nextBtn.style.opacity = currentSlideIndex < totalSlides - 1 ? '1' : '0.5';
+                nextBtn.disabled = currentSlideIndex >= totalSlides - 1;
+            }
+        }
+
+        // Configuración del temporizador
+        function setupTimer() {
+            const startBtn = document.getElementById("startBtn");
+            const pauseBtn = document.getElementById("pauseBtn");
+            const resetBtn = document.getElementById("resetBtn");
+            const timerDisplay = document.getElementById("sessionTimer");
+            
+            function formatTime(seconds) {
+                const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                return `${mins}:${secs}`;
+            }
+            
+            function updateTimer() {
+                if (timer > 0) {
+                    timer--;
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    
+                    // Advertencia en los últimos 5 minutos
+                    if (timer <= 300 && timerDisplay) {
+                        timerDisplay.classList.add('warning');
+                    }
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    console.log('Tiempo agotado');
+                    alert('⏰ ¡Tiempo de clase terminado!');
+                }
+            }
+            
+            if (startBtn) {
+                startBtn.addEventListener("click", function() {
+                    if (!timerInterval) {
+                        timerInterval = setInterval(updateTimer, 1000);
+                        console.log('Temporizador iniciado');
+                    }
+                });
+            }
+            
+            if (pauseBtn) {
+                pauseBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        console.log('Temporizador pausado');
+                    }
+                });
+            }
+            
+            if (resetBtn) {
+                resetBtn.addEventListener("click", function() {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    timer = 3000; // 50 minutos
+                    const timeRemaining = document.getElementById("timeRemaining");
+                    if (timeRemaining) {
+                        timeRemaining.textContent = formatTime(timer);
+                    }
+                    if (timerDisplay) {
+                        timerDisplay.classList.remove('warning');
+                    }
+                    console.log('Temporizador reiniciado');
+                });
+            }
+            
+            // Inicializar visualización del timer
+            const timeRemaining = document.getElementById("timeRemaining");
+            if (timeRemaining) {
+                timeRemaining.textContent = formatTime(timer);
+            }
+        }
+
+        // Configuración de la demostración del Flip Flop
+        function setupFFDemo() {
+            // Inicializar estado
+            updateFFOutput();
+        }
+
+        // Función para alternar entradas del Flip Flop
+        function toggleFFInput(type) {
+            if (type === 'clk') {
+                // El reloj se maneja con el botón de pulso
+                return;
+            } else if (type === 'd') {
+                ffState.d = ffState.d ? 0 : 1;
+                const element = document.getElementById('d_val');
+                if (element) {
+                    element.textContent = ffState.d;
+                    element.parentElement.className = ffState.d ? "input-wire active" : "input-wire";
+                }
+            }
+            
+            updateFFOutput();
+        }
+
+        // Generar pulso de reloj
+        function clockPulse() {
+            // Flanco ascendente
+            ffState.clk = 1;
+            updateFFOutput();
+            ffState.lastEvent = "Flanco ascendente detectado";
+            
+            // Capturar dato en flanco ascendente
+            if (ffState.d !== ffState.q) {
+                ffState.q = ffState.d;
+                ffState.lastEvent = `D=${ffState.d} capturado, Q=${ffState.q}`;
+            }
+            
+            // Actualizar visualización
+            updateFFOutput();
+            
+            // Pequeño delay para visualización
+            setTimeout(() => {
+                // Flanco descendente
+                ffState.clk = 0;
+                updateFFOutput();
+            }, 300);
+        }
+
+        // Actualizar salida del Flip Flop
+        function updateFFOutput() {
+            // Actualizar visualización de salidas
+            const qElement = document.getElementById('q_val');
+            const qPrimeElement = document.getElementById('qprime_val');
+            const qWireElement = document.getElementById('q_out');
+            const qPrimeWireElement = document.getElementById('qprime_out');
+            const stateElement = document.getElementById('ff_state');
+            const lastEventElement = document.getElementById('last_event');
+            
+            if (qElement && qPrimeElement) {
+                qElement.textContent = ffState.q;
+                qPrimeElement.textContent = ffState.q ? 0 : 1;
+                
+                qWireElement.className = ffState.q ? "output-wire active" : "output-wire";
+                qPrimeWireElement.className = ffState.q ? "output-wire" : "output-wire active";
+            }
+            
+            if (stateElement) {
+                if (ffState.clk) {
+                    stateElement.textContent = `🔼 Flanco ascendente (Q=${ffState.q})`;
+                } else {
+                    stateElement.textContent = ffState.q ? "🔴 Set (Q=1)" : "🟢 Reset (Q=0)";
+                }
+            }
+            
+            if (lastEventElement) {
+                lastEventElement.textContent = ffState.lastEvent;
+            }
+            
+            // Actualizar visualización del reloj
+            const clkElement = document.getElementById('clk_val');
+            if (clkElement) {
+                clkElement.textContent = ffState.clk;
+                clkElement.parentElement.className = ffState.clk ? "input-wire active" : "input-wire";
+            }
+        }
+
+        // Funciones para elementos interactivos
+        function toggleClippy(element) {
+            const content = element.querySelector('.clippy-content');
+            if (content) {
+                content.classList.toggle('active');
+                console.log('Clippy tip toggled');
+            }
+        }
+
+        function toggleCollapsible(button) {
+            const content = button.nextElementSibling;
+            const arrow = button.querySelector('span');
+            
+            if (content && arrow) {
+                const isActive = content.classList.contains('active');
+                
+                content.classList.toggle('active');
+                button.classList.toggle('active');
+                arrow.textContent = isActive ? '▼' : '▲';
+                
+                console.log(`Sección collapsible ${isActive ? 'cerrada' : 'abierta'}`);
+            }
+        }
+
+        // Hacer funciones disponibles globalmente
+        window.changeSlide = changeSlide;
+        window.toggleClippy = toggleClippy;
+        window.toggleCollapsible = toggleCollapsible;
+        window.toggleFFInput = toggleFFInput;
+        window.clockPulse = clockPulse;
+        
+        console.log('Script de Semana 8 cargado completamente');
+    </script>
+
+</body>
+</html>
